@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.main {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  grid-template-rows: 70px 1fr;
+  grid-template-areas:
+    "nav sidebar"
+    "main sidebar";
+}
+
+.nav {
+  grid-area: nav;
+  position: relative;
+}
+
+.nav::before {
+  content: "";
+  position: absolute;
+  background-color: white;
+  filter: blur(5px);
+  width: 2rem;
+  height: 70px;
+  left: 0;
+  top: -2px;
+  bottom: 0;
+  z-index: 2;
+}
+.nav::after {
+  content: "";
+  position: absolute;
+  background-color: white;
+  filter: blur(5px);
+  width: 4rem;
+  height: 70px;
+  right: -15px;
+  top: -2px;
+  bottom: 0;
+  z-index: 2;
+}
+.sidebar {
+  grid-area: sidebar;
+}
+.main {
+  grid-area: main;
+}
+
+@media (max-width: 768px) {
+  .main {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+      "nav"
+      "main"
+      "sidebar";
+  }
+}
