@@ -1,0 +1,1 @@
+export const Topic_list = ["Coding", "Software", "JavaScript", "Cafes", "Animal", "Python", "Web Development", "React.js", "Wildlife"]
