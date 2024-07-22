@@ -17,7 +17,7 @@ const MyToolTip = ({ Trigger, Content, tag }: ToolTipType) => {
       <Tooltip>
         <TooltipTrigger>{Trigger}</TooltipTrigger>
         <TooltipContent
-          className={`${tag ? "bg-primary text-white" : "bg-white text-primary"}  border-none tooltipContent`}
+          className={`${tag ? "bg-primary text-white" : "bg-white text-primary"} tooltipContent border-none`}
         >
           {Content}
         </TooltipContent>

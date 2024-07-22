@@ -4,30 +4,30 @@ import MyAvatar from "./avatar/MyAvatar";
 
 const Card_profil = () => {
   return (
-    <div className="grid grid-cols-[1fr_50px] grid-rows-[auto_auto_1fr_auto] gap-4 px-8 py-4 box-border bg-white w-[300px] rounded-lg">
-      <div className="col-span-2 flex justify-between items-end">
+    <div className="box-border grid w-[300px] grid-cols-[1fr_50px] grid-rows-[auto_auto_1fr_auto] gap-4 rounded-lg bg-white px-8 py-4">
+      <div className="col-span-2 flex items-end justify-between">
         <MyAvatar size="size-20" img="https://github.com/shadcn.png" />
         <Button
-          variant="outline"
-          className="bg-black text-white rounded-3xl px-4 py-2"
+          variant={"outline"}
+          className="rounded-3xl bg-black px-4 py-2 text-white"
         >
           Follow
         </Button>
       </div>
-      <div className="col-span-2 flex flex-col justify-center items-start">
+      <div className="col-span-2 flex flex-col items-start justify-center">
         <h1 className="font-bold text-black">Will Smith</h1>
         <span className="text-sm text-slate-600">
           <span>2.6k</span> Followers
         </span>
       </div>
       <div className="col-span-2 text-start">
-        <p className="text-slate-700 text-sm leading-5">
+        <p className="text-sm leading-5 text-slate-700">
           Author of “Python Tools for Scientists,” “Impractical Python
           Projects,” and “Real World Python.” Former Senior Principal Scientist
           for ExxonMobil.
         </p>
       </div>
-      <div className="col-span-2 flex items-center gap-2 text-sm text-blue-500 font-semibold capitalize">
+      <div className="col-span-2 flex items-center gap-2 text-sm font-semibold capitalize text-blue-500">
         <BookBookmark size={16} color="#0a0a0a" weight="thin" />
         <p>Bookmark author</p>
       </div>

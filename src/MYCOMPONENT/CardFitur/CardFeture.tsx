@@ -3,14 +3,14 @@ import MyToolTip from "../MyToolTip/MyToolTip";
 
 type CardFeture = {
   date: string;
-  likes: string;
-  comments: number;
+  likes: number;
+  comments: string | null;
 };
 
 const CardFeture = (props: CardFeture) => {
   return (
     <div className="flex items-center justify-start gap-4 w-full text-sm pt-4 md:pt-0">
-      <div className="flex justify-center items-center gap-2">
+      <div className="flex justify-center items-center gap-1 text-xs text-icon">
         <MyToolTip
           Content={<p className="bg-primary">Member-only story</p>}
           Trigger={
@@ -23,8 +23,10 @@ const CardFeture = (props: CardFeture) => {
           tag="p"
         />
       </div>
-      <div className="flex justify-center items-center gap-2">{props.date}</div>
-      <div className="flex justify-center items-center gap-2">
+      <div className="flex justify-center items-center gap-2  font-medium text-xs">
+        {props.date}
+      </div>
+      <div className="flex justify-center items-center gap-1">
         <MyToolTip
           Content={<p className="bg-primary">{props.likes} claps</p>}
           Trigger={
@@ -38,7 +40,7 @@ const CardFeture = (props: CardFeture) => {
         />
         {props.likes}
       </div>
-      <div className="flex justify-center items-center gap-1">
+      <div className="flex justify-center items-center gap-1 ">
         <MyToolTip
           Content={<p className="bg-primary ">{props.comments} response</p>}
           Trigger={
