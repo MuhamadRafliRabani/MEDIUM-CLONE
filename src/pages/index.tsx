@@ -1,37 +1,9 @@
 import Image from "next/image";
 import { Inter } from "next/font/google";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import {
-  BookmarkSimple,
-  ChatCircle,
-  DotsThree,
-  HandsClapping,
-  StarFour,
-} from "@phosphor-icons/react";
-import { MinusCircle, PlusCircle } from "lucide-react";
-import { articles } from "@/data/dummy_artikel";
+import { BookmarkSimple } from "@phosphor-icons/react";
+import { MinusCircle } from "lucide-react";
 import MyCarousel from "@/MYCOMPONENT/Carousell";
 import Card_profil from "@/MYCOMPONENT/card profil";
 import StaffContainer from "@/MYCOMPONENT/sidemenu/Staff/StaffContainer";
@@ -39,12 +11,11 @@ import MyAvatar from "@/MYCOMPONENT/avatar/MyAvatar";
 import MyToolTip from "@/MYCOMPONENT/MyToolTip/MyToolTip";
 import MyDropDownMenu from "@/MYCOMPONENT/MyDropDownMenu/MyDropDownMenu";
 import CardFeture from "@/MYCOMPONENT/CardFitur/CardFeture";
-import { axiosInstence } from "@/lib/axios";
-import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { useGetArticle } from "@/features/article/useGetArticle";
+import { useGetArticle } from "@/hooks/article/useGetArticle";
 import Navbar from "@/MYCOMPONENT/navbar/navbar";
 import MySkeleton from "@/MYCOMPONENT/MySkeleton/MySkeleton";
+import { useUser } from "@/hooks/zustand/useUser";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -66,6 +37,8 @@ export default function Home() {
   const { data: dataArticle, isLoading, isError } = useGetArticle();
 
   if (isError) return <div>Error loading data</div>;
+  const { user } = useUser();
+  console.log(user);
 
   return (
     <>
