@@ -15,11 +15,12 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { axiosInstence } from "@/lib/axios";
 import { useParams, useRouter } from "next/navigation";
-import { useUser } from "@/hooks/zustand/useUser";
+import { useUser } from "@/hooks/store/useUser";
 
 const FormCard = () => {
   const { mutate, data } = useSignWithEmail();
   const { setUser } = useUser();
+  const { user } = useUser();
   const Route = useRouter();
 
   const formik = useFormik({
@@ -35,16 +36,17 @@ const FormCard = () => {
     }),
     onSubmit: (values: string) => {
       console.log(values);
-
-      mutate(values);
-      if (data) {
-        setUser(data);
-        Route.back();
-      }
-      alert("gagal");
+      setUser(values);
+      //   mutate(values);
+      //   if (data) {
+      //     setUser(data);
+      //     Route.back();
+      //   }
+      //   alert("gagal");
     },
   });
   console.log(data);
+  console.log(user);
 
   return (
     <Card className="mx-auto my-8 w-full max-w-md shadow-md">

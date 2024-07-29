@@ -1,12 +1,3 @@
-import {
-  ChatCircle,
-  Dot,
-  DotsThree,
-  Export,
-  HandsClapping,
-  MedalMilitary,
-  StarFour,
-} from "@phosphor-icons/react";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
@@ -17,6 +8,17 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import Image from "next/image";
 import { axiosInstence } from "@/lib/axios";
 import Card_profil from "@/MYCOMPONENT/card profil";
+import {
+  ChatCircle,
+  Dot,
+  DotsThree,
+  Export,
+  HandsClapping,
+  MedalMilitary,
+  StarFour,
+} from "@phosphor-icons/react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const Article = () => {
   const router = useRouter();
@@ -35,6 +37,7 @@ const Article = () => {
   });
 
   const article = dataArticle?.data;
+  console.log(article);
 
   if (isLoading) return <div>Loading...</div>;
 
@@ -51,7 +54,7 @@ const Article = () => {
           <p>Member-only story</p>
         </div>
         <h1 className="text-2xl font-extrabold leading-6 md:text-4xl md:leading-[3rem]">
-          {article.title}
+          {article?.title}
         </h1>
         <div className="flex items-center gap-3 font-medium">
           <MyToolTip
@@ -131,7 +134,12 @@ const Article = () => {
             />
           </AspectRatio>
         </div>
-        <article className="prose lg:prose-xl">{article.article}</article>
+        <ReactMarkdown
+          className="prose lg:prose-xl"
+          remarkPlugins={[remarkGfm]}
+        >
+          {article.article}
+        </ReactMarkdown>
       </div>
     </section>
   );

@@ -14,8 +14,9 @@ import CardFeture from "@/MYCOMPONENT/CardFitur/CardFeture";
 import Link from "next/link";
 import { useGetArticle } from "@/hooks/article/useGetArticle";
 import Navbar from "@/MYCOMPONENT/navbar/navbar";
-import MySkeleton from "@/MYCOMPONENT/MySkeleton/MySkeleton";
-import { useUser } from "@/hooks/zustand/useUser";
+import { useUser } from "@/hooks/store/useUser";
+import SkeletonCard from "@/MYCOMPONENT/cardSeleton";
+import { useEffect, useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -53,11 +54,9 @@ export default function Home() {
         </div>
 
         <section className="content container w-full space-y-4 border-e border-slate-100">
-          {dataArticle?.data.map((article: article, i: number) => (
-            <>
-              {isLoading ? (
-                <MySkeleton />
-              ) : (
+          {dataArticle?.data ? (
+            dataArticle?.data.map((article: article, i: number) => (
+              <>
                 <div
                   key={i}
                   className="space-y-4 border-b-[0.1px] border-slate-200"
@@ -128,7 +127,7 @@ export default function Home() {
                           alt="Image"
                           width={180}
                           height={100}
-                          className="mx-auto block rounded-md object-cover"
+                          className="mx-auto block h-[120px] rounded-md object-cover"
                         />
                       </AspectRatio>
                       <div className="-mb-[4.5px] flex w-full justify-between md:hidden">
@@ -147,9 +146,11 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-              )}
-            </>
-          ))}
+              </>
+            ))
+          ) : (
+            <SkeletonCard />
+          )}
         </section>
 
         <div className="sidebar relative h-full w-full ps-8 pt-6">
