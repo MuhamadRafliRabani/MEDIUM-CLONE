@@ -3,12 +3,12 @@ import StaffMedium from "./Staff";
 
 const StaffContainer = () => {
   return (
-    <div className="font-bold text-lg w-full space-y-4">
+    <div className="w-full space-y-4 text-lg font-bold">
       <h1>Staff Picks</h1>
       <StaffMedium />
       <StaffMedium />
       <StaffMedium />
-      <Link href={"/"} className="text-green-600 text-sm font-normal mt-8">
+      <Link href={"/"} className="mt-8 text-sm font-normal text-green-600">
         See the full list
       </Link>
     </div>

@@ -1,10 +1,14 @@
 import FormCard from "@/features/auth";
+import Navbar from "@/MYCOMPONENT/navbar/navbar";
 
 const Index = () => {
   return (
-    <section className="container flex min-h-svh items-center justify-center">
-      <FormCard />
-    </section>
+    <>
+      <Navbar />
+      <section className="container -mt-8 flex min-h-svh items-center justify-center">
+        <FormCard />
+      </section>
+    </>
   );
 };
 

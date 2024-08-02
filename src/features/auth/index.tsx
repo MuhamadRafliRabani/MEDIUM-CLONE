@@ -13,39 +13,46 @@ import { Github } from "lucide-react";
 import { useSignWithEmail } from "./useSignWithEmail";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { axiosInstence } from "@/lib/axios";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useUser } from "@/hooks/store/useUser";
+import { authgoogle } from "./auth";
+
+const validationSchema = Yup.object({
+  email: Yup.string().email("Invalid email address").required("Required"),
+  password: Yup.string()
+    .min(8, "Password minimal 8 characters")
+    .required("Required"),
+});
 
 const FormCard = () => {
   const { mutate, data } = useSignWithEmail();
-  const { setUser } = useUser();
-  const { user } = useUser();
-  const Route = useRouter();
+  const { setUser, user } = useUser();
+  const router = useRouter();
+
+  const authGoogle = async () => {
+    try {
+      const user = await authgoogle();
+      console.log(user);
+      setUser(user);
+    } catch (error) {
+      console.error("Error during Google authentication:", error);
+    }
+  };
 
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
-    validationSchema: Yup.object({
-      email: Yup.string().email("Invalid email address").required("Required"),
-      password: Yup.string()
-        .min(8, "Password minimal 8 characters")
-        .required("Required"),
-    }),
-    onSubmit: (values: string) => {
+    validationSchema,
+    onSubmit: (values) => {
       console.log(values);
       setUser(values);
-      //   mutate(values);
-      //   if (data) {
-      //     setUser(data);
-      //     Route.back();
-      //   }
-      //   alert("gagal");
+      router.back();
+      // mutate(values);
     },
   });
-  console.log(data);
+
   console.log(user);
 
   return (
@@ -57,7 +64,7 @@ const FormCard = () => {
           <Button className="w-full" variant="outline">
             <Github className="mr-2 size-4" /> Github
           </Button>
-          <Button className="w-full" variant="outline">
+          <Button className="w-full" variant="outline" onClick={authGoogle}>
             <GoogleLogo className="mr-2 size-4" /> Google
           </Button>
         </div>

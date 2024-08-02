@@ -5,7 +5,7 @@ import MyDropDownMenu from "../MyDropDownMenu/MyDropDownMenu";
 
 const Navbar: React.FC = () => {
   return (
-    <nav className="border-b border-gray-200 bg-white">
+    <nav className="bg-white shadow-sm">
       <div className="container mx-auto flex items-center justify-between px-4 py-2">
         <div className="flex items-center space-x-4">
           <Link href="/">

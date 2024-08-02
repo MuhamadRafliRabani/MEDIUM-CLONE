@@ -14,9 +14,9 @@ import CardFeture from "@/MYCOMPONENT/CardFitur/CardFeture";
 import Link from "next/link";
 import { useGetArticle } from "@/hooks/article/useGetArticle";
 import Navbar from "@/MYCOMPONENT/navbar/navbar";
-import { useUser } from "@/hooks/store/useUser";
+import { usesetTopic, useUser } from "@/hooks/store/useUser";
 import SkeletonCard from "@/MYCOMPONENT/cardSeleton";
-import { useEffect, useState } from "react";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,31 +35,34 @@ export type article = {
 };
 
 export default function Home() {
-  const { data: dataArticle, isLoading, isError } = useGetArticle();
+  const { topic } = usesetTopic();
+  const { data: dataArticle, isLoading, isError } = useGetArticle(topic);
 
   if (isError) return <div>Error loading data</div>;
   const { user } = useUser();
   console.log(user);
+  console.log(dataArticle);
 
   return (
     <>
       <header>
         <Navbar />
+        <Toaster />
       </header>
       <main
-        className={`flex w-svw flex-col items-center justify-between px-4 md:px-24 ${inter.className} main main relative pt-20 md:container`}
+        className={`flex w-svw flex-col items-center justify-between px-4 ${inter.className} main relative pt-4 md:container`}
       >
-        <div className="nav mx-auto block w-4/5">
+        <div className="md:nav mx-auto block w-full md:w-4/5">
           <MyCarousel />
         </div>
 
-        <section className="content container w-full space-y-4 border-e border-slate-100">
-          {dataArticle?.data ? (
-            dataArticle?.data.map((article: article, i: number) => (
+        <section className="content w-full space-y-4 border-e border-slate-100 pt-6 md:container">
+          {dataArticle ? (
+            dataArticle?.map((article: article, i: number) => (
               <>
                 <div
                   key={i}
-                  className="space-y-4 border-b-[0.1px] border-slate-200"
+                  className="w-full space-y-4 border-b-[0.1px] border-slate-200 pb-4 md:pb-0"
                 >
                   <div className="profil flex w-full items-center justify-start gap-3 text-sm">
                     <MyToolTip
@@ -79,11 +82,11 @@ export default function Home() {
                   <div className="grid grid-cols-[1fr_120px] grid-rows-[1fr] md:grid-cols-[1fr_250px]">
                     <div className="flex flex-col gap-2 pe-[0.7rem] md:pe-8">
                       <Link href={"/article/" + article.id}>
-                        <h1 className="text-pretty text-[1.22rem] font-extrabold leading-6 md:text-2xl md:font-extrabold md:leading-8">
+                        <h1 className="text-lg font-extrabold leading-6 md:text-pretty md:text-2xl md:font-extrabold md:leading-8">
                           {article.title}
                         </h1>
                       </Link>
-                      <span className="text-[0.95rem] leading-4 text-slate-500">
+                      <span className="text-base text-slate-500 md:text-lg">
                         {article.description}
                       </span>
                       <div className="flex items-center justify-between md:py-4">
@@ -130,7 +133,7 @@ export default function Home() {
                           className="mx-auto block h-[120px] rounded-md object-cover"
                         />
                       </AspectRatio>
-                      <div className="-mb-[4.5px] flex w-full justify-between md:hidden">
+                      <div className="-mb-[13px] flex w-full items-center justify-between md:-mb-[4.5px] md:hidden">
                         <div className="font-light text-slate-800">
                           <MyToolTip
                             Content={<p>Show less like this</p>}
@@ -153,7 +156,7 @@ export default function Home() {
           )}
         </section>
 
-        <div className="sidebar relative h-full w-full ps-8 pt-6">
+        <div className="md:sidebar relative h-full w-full pt-6 md:block md:ps-8">
           <StaffContainer />
         </div>
       </main>

@@ -1,9 +1,7 @@
 import { axiosInstence } from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
-import { usesetTopic } from "../store/useUser";
 
-export const useGetArticle = () => {
-  const { topic } = usesetTopic();
+export const useGetArticle = (topic) => {
   console.log(topic);
 
   return useQuery({
