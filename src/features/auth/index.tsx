@@ -26,14 +26,15 @@ const validationSchema = Yup.object({
 
 const FormCard = () => {
   const { mutate, data } = useSignWithEmail();
-  const { setUser, user } = useUser();
+  const { setUser } = useUser();
   const router = useRouter();
 
   const authGoogle = async () => {
     try {
       const user = await authgoogle();
-      console.log(user);
+      localStorage.setItem("user", JSON.stringify(user));
       setUser(user);
+      router.push("/");
     } catch (error) {
       console.error("Error during Google authentication:", error);
     }
@@ -52,8 +53,6 @@ const FormCard = () => {
       // mutate(values);
     },
   });
-
-  console.log(user);
 
   return (
     <Card className="mx-auto my-8 w-full max-w-md shadow-md">

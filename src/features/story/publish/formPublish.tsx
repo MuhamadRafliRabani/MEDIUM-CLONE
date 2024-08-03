@@ -7,24 +7,20 @@ import { InitialValue } from "..";
 import { usePublishStory } from "./usePublishStory";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useUser } from "@/hooks/store/useUser";
+import { getCurrentDate } from "@/lib/date";
+import { toastPromise } from "@/lib/toast";
 
 const FormPublish = ({ title, story }: InitialValue) => {
   const [file, setFile] = useState(null);
   const [image, setImage] = useState(null);
   const { mutate, data } = usePublishStory();
+  const { user } = useUser();
   const Route = useRouter();
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     setFile(selectedFile);
     setImage(URL.createObjectURL(selectedFile));
-  };
-
-  const getCurrentDate = () => {
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return ` ${year}-${month}-${day}`;
   };
 
   const currentDate = getCurrentDate();
@@ -46,8 +42,8 @@ const FormPublish = ({ title, story }: InitialValue) => {
       formData.append("description", values.description);
       formData.append("topic", values.topic);
       formData.append("article", story || "");
-      formData.append("author_name", "miyamura");
-      formData.append("img_user", "https://placehold.co/400x400");
+      formData.append("author_name", user.displayName);
+      formData.append("img_user", user.photoURL);
       formData.append("likes", 0);
       formData.append("comment", "");
       formData.append("date", currentDate);
@@ -56,15 +52,13 @@ const FormPublish = ({ title, story }: InitialValue) => {
         console.log(key, value);
       }
 
-      console.log(formData);
-
       mutate(formData);
+      if (!data) {
+        toastPromise(mutate, "story is created");
+        Route.push("/");
+      }
     },
   });
-  if (data?.status === 200) {
-    toast("story is created");
-    Route.push("/");
-  }
   console.log(data);
   console.log(data?.status);
 
@@ -94,7 +88,7 @@ const FormPublish = ({ title, story }: InitialValue) => {
                 <img
                   src={image}
                   alt="Selected"
-                  className="h-full w-full border border-gray-300 bg-cover"
+                  className="h-[200px] w-full border border-gray-300 bg-cover"
                 />
               ) : (
                 <span>Choose file</span>

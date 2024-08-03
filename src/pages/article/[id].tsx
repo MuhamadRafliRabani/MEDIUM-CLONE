@@ -158,12 +158,12 @@ const Article = () => {
               />
             </div>
           </div>
-          <div className="w-full p-4">
+          <div className="w-full">
             <AspectRatio ratio={4 / 3}>
               <Image
                 width={800}
                 height={600}
-                src={article?.img_url}
+                src={article?.img_content}
                 alt=""
                 className="h-full rounded-md object-cover"
               />

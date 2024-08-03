@@ -17,6 +17,7 @@ import Navbar from "@/MYCOMPONENT/navbar/navbar";
 import { usesetTopic, useUser } from "@/hooks/store/useUser";
 import SkeletonCard from "@/MYCOMPONENT/cardSeleton";
 import { Toaster } from "sonner";
+import { useEffect } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -39,15 +40,20 @@ export default function Home() {
   const { data: dataArticle, isLoading, isError } = useGetArticle(topic);
 
   if (isError) return <div>Error loading data</div>;
-  const { user } = useUser();
+  const { user, setUser } = useUser();
   console.log(user);
   console.log(dataArticle);
+
+  useEffect(() => {
+    const storage = localStorage.getItem("user");
+    if (!storage) return;
+    setUser(JSON.parse(storage));
+  }, []);
 
   return (
     <>
       <header>
         <Navbar />
-        <Toaster />
       </header>
       <main
         className={`flex w-svw flex-col items-center justify-between px-4 ${inter.className} main relative pt-4 md:container`}
@@ -57,7 +63,9 @@ export default function Home() {
         </div>
 
         <section className="content w-full space-y-4 border-e border-slate-100 pt-6 md:container">
-          {dataArticle ? (
+          {!dataArticle ? (
+            <SkeletonCard />
+          ) : (
             dataArticle?.map((article: article, i: number) => (
               <>
                 <div
@@ -66,13 +74,23 @@ export default function Home() {
                 >
                   <div className="profil flex w-full items-center justify-start gap-3 text-sm">
                     <MyToolTip
-                      Content={<Card_profil />}
+                      Content={
+                        <Card_profil
+                          img={article.img_user}
+                          author_name={article.author_name}
+                        />
+                      }
                       Trigger={
                         <MyAvatar size="size-6" img={article.img_user} />
                       }
                     />
                     <MyToolTip
-                      Content={<Card_profil />}
+                      Content={
+                        <Card_profil
+                          img={article.img_user}
+                          author_name={article.author_name}
+                        />
+                      }
                       Trigger={
                         <p className="hover:underline">{article.author_name}</p>
                       }
@@ -86,7 +104,7 @@ export default function Home() {
                           {article.title}
                         </h1>
                       </Link>
-                      <span className="text-base text-slate-500 md:text-lg">
+                      <span className="text-base text-slate-500">
                         {article.description}
                       </span>
                       <div className="flex items-center justify-between md:py-4">
@@ -151,8 +169,6 @@ export default function Home() {
                 </div>
               </>
             ))
-          ) : (
-            <SkeletonCard />
           )}
         </section>
 
