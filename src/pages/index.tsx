@@ -39,6 +39,8 @@ export default function Home() {
   const { topic } = usesetTopic();
   const { data: dataArticle, isLoading, isError } = useGetArticle(topic);
 
+  useEffect(() => { useGetArticle() ),[topic]}
+
   if (isError) return <div>Error loading data</div>;
   const { user, setUser } = useUser();
   console.log(user);
