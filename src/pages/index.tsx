@@ -109,6 +109,7 @@ export default function Home() {
                       </span>
                       <div className="flex items-center justify-between md:py-4">
                         <CardFeture
+                          id={article.id}
                           comments={article.comments}
                           date={article.date}
                           likes={article.likes}

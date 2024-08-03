@@ -12,8 +12,8 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { X } from "@phosphor-icons/react";
-import FormPublish from "./formPublish";
-import { InitialValue } from "..";
+import FormPublish from "@/features/story/publish/formPublish";
+import { InitialValue } from "@/features/story";
 
 const Publish = ({ title, story }: InitialValue) => {
   return (

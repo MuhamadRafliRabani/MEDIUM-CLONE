@@ -3,10 +3,10 @@ import { BookBookmark } from "@phosphor-icons/react";
 import MyAvatar from "./avatar/MyAvatar";
 import { useUser } from "@/hooks/store/useUser";
 import { getCurrentDate } from "@/lib/date";
-import { useSubscribe } from "@/features/subscribe/useSubscribe";
+import { useSubscribe } from "@/features/story/subscribe/useSubscribe";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { useCheckSubscription } from "@/features/subscribe/useCheckSubscibe";
+import { useCheckSubscription } from "@/features/story/subscribe/useCheckSubscibe";
 
 type Profil = {
   img: string;

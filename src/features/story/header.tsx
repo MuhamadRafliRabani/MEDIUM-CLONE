@@ -1,5 +1,5 @@
 import React from "react";
-import Publish from "./publish/publish";
+import Publish from "../../MYCOMPONENT/my_drawer/MyDrawer";
 import MyDropDownMenu from "@/MYCOMPONENT/MyDropDownMenu/MyDropDownMenu";
 import { InitialValue } from ".";
 
