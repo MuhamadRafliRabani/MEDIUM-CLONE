@@ -20,7 +20,10 @@ const CardArticle = ({ dataArticle }) => {
   }
 
   return dataArticle?.map((article: article, i: number) => (
-    <div className="w-full space-y-4 border-b-[0.1px] border-slate-200 pb-4 md:w-[1036px] md:pb-0">
+    <div
+      key={i}
+      className="w-full space-y-4 border-b-[0.1px] border-slate-200 pb-4 md:w-[1036px] md:pb-0"
+    >
       <div className="profil flex w-full items-center justify-start gap-3 text-sm">
         <MyToolTip
           Content={
