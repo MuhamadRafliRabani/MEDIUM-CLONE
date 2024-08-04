@@ -1,25 +1,12 @@
-import Image from "next/image";
 import { Inter } from "next/font/google";
-
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { BookmarkSimple } from "@phosphor-icons/react";
-import { MinusCircle } from "lucide-react";
 import MyCarousel from "@/MYCOMPONENT/Carousell";
-import Card_profil from "@/MYCOMPONENT/card profil";
 import StaffContainer from "@/MYCOMPONENT/sidemenu/Staff/StaffContainer";
-import MyAvatar from "@/MYCOMPONENT/avatar/MyAvatar";
-import MyToolTip from "@/MYCOMPONENT/MyToolTip/MyToolTip";
-import MyDropDownMenu from "@/MYCOMPONENT/MyDropDownMenu/MyDropDownMenu";
-import CardFeture from "@/MYCOMPONENT/CardFitur/CardFeture";
-import Link from "next/link";
 import { useGetArticle } from "@/hooks/article/useGetArticle";
 import Navbar from "@/MYCOMPONENT/navbar/navbar";
 import { usesetTopic, useUser } from "@/hooks/store/useUser";
 import SkeletonCard from "@/MYCOMPONENT/article/cardSeleton";
-import { Toaster } from "sonner";
 import { useEffect } from "react";
 import CardArticle from "@/MYCOMPONENT/article/article";
-import Hoc from "@/hoc/Hoc";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -40,17 +27,16 @@ export type article = {
 function Home() {
   const { topic } = usesetTopic();
   const { data: dataArticle, isLoading, isError } = useGetArticle(topic);
-
-  if (isError) return <div>Error loading data</div>;
-  const { user, setUser } = useUser();
-  console.log(user);
-  console.log(dataArticle);
+  const { setUser } = useUser();
 
   useEffect(() => {
     const storage = localStorage.getItem("user");
-    if (!storage) return;
-    setUser(JSON.parse(storage));
-  }, []);
+    if (storage) {
+      setUser(JSON.parse(storage));
+    }
+  }, [setUser]);
+
+  if (isError) return <div>Error loading data</div>;
 
   return (
     <>
