@@ -3,7 +3,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -11,28 +10,38 @@ import { Input } from "@/components/ui/input";
 import { GoogleLogo } from "@phosphor-icons/react";
 import { Github } from "lucide-react";
 import { useSignWithEmail } from "./useSignWithEmail";
-import { useFormik } from "formik";
+import { useFormik, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/hooks/store/useUser";
 import { authgoogle } from "./auth";
+import { setCookie } from "nookies";
 
-const validationSchema = Yup.object({
+interface FormValues {
+  email: string;
+  password: string;
+}
+
+const validationSchema = Yup.object<FormValues>({
   email: Yup.string().email("Invalid email address").required("Required"),
   password: Yup.string()
-    .min(8, "Password minimal 8 characters")
+    .min(8, "Password must be at least 8 characters")
     .required("Required"),
 });
 
-const FormCard = () => {
-  const { mutate, data } = useSignWithEmail();
+const FormCard: React.FC = () => {
+  const { mutate } = useSignWithEmail();
   const { setUser } = useUser();
   const router = useRouter();
 
-  const authGoogle = async () => {
+  const handleGoogleAuth = async () => {
     try {
       const user = await authgoogle();
       localStorage.setItem("user", JSON.stringify(user));
+      setCookie(null, "user", JSON.stringify(user), {
+        maxAge: 30 * 24 * 60 * 60,
+        path: "/",
+      });
       setUser(user);
       router.push("/");
     } catch (error) {
@@ -40,17 +49,21 @@ const FormCard = () => {
     }
   };
 
-  const formik = useFormik({
+  const formik = useFormik<FormValues>({
     initialValues: {
       email: "",
       password: "",
     },
     validationSchema,
-    onSubmit: (values) => {
+    onSubmit: (
+      values: FormValues,
+      { resetForm }: FormikHelpers<FormValues>,
+    ) => {
       console.log(values);
       setUser(values);
       router.back();
       // mutate(values);
+      resetForm();
     },
   });
 
@@ -63,7 +76,11 @@ const FormCard = () => {
           <Button className="w-full" variant="outline">
             <Github className="mr-2 size-4" /> Github
           </Button>
-          <Button className="w-full" variant="outline" onClick={authGoogle}>
+          <Button
+            className="w-full"
+            variant="outline"
+            onClick={handleGoogleAuth}
+          >
             <GoogleLogo className="mr-2 size-4" /> Google
           </Button>
         </div>
@@ -76,30 +93,40 @@ const FormCard = () => {
       <CardContent>
         <form onSubmit={formik.handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
               Email
             </label>
             <Input
+              id="email"
               type="email"
               placeholder="Masukkan email Anda"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              name="email"
+              {...formik.getFieldProps("email")}
               className="mt-1 block w-full"
             />
+            {formik.touched.email && formik.errors.email && (
+              <div className="text-red-500">{formik.errors.email}</div>
+            )}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
               Password
             </label>
             <Input
+              id="password"
               type="password"
               placeholder="Masukkan password Anda"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              name="password"
+              {...formik.getFieldProps("password")}
               className="mt-1 block w-full"
             />
+            {formik.touched.password && formik.errors.password && (
+              <div className="text-red-500">{formik.errors.password}</div>
+            )}
           </div>
           <Button type="submit" className="w-full">
             Submit

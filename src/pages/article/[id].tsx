@@ -19,7 +19,7 @@ import {
 } from "@phosphor-icons/react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import ArticleSkeleton from "@/MYCOMPONENT/articleSkeleton";
+import ArticleSkeleton from "@/MYCOMPONENT/article/articleSkeleton";
 import Navbar from "@/MYCOMPONENT/navbar/navbar";
 
 const Article = () => {

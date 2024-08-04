@@ -5,7 +5,7 @@ export const useGetArticle = (topic) => {
   console.log(topic);
 
   return useQuery({
-    queryKey: ["article"],
+    queryKey: ["article", "like", topic],
     queryFn: async () => {
       const { data } = await axiosInstence.get("/" + topic);
       return data;

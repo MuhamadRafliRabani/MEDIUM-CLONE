@@ -15,10 +15,7 @@ type AvatarType = {
 const MyAvatar = ({ size, img }: AvatarType) => {
   return (
     <Avatar className={size}>
-      <AvatarImage
-        className="object-fill"
-        src={"https://github.com/shadcn.png"}
-      />
+      <AvatarImage className="object-fill" src={img} />
       <AvatarFallback>CN</AvatarFallback>
     </Avatar>
   );

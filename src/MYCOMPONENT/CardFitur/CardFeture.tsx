@@ -1,8 +1,9 @@
 import { ChatCircle, HandsClapping, StarFour } from "@phosphor-icons/react";
 import MyToolTip from "../MyToolTip/MyToolTip";
-import { Button } from "@/components/ui/button";
-import { useLike } from "@/features/story/like/Like";
+import { useState } from "react";
 import { useFeatureRequest } from "@/lib/useFeatureRequest";
+import Link from "next/link";
+import { useUser } from "@/hooks/store/useUser";
 
 type CardFeture = {
   id?: number;
@@ -12,15 +13,16 @@ type CardFeture = {
 };
 
 const CardFeture = ({ id, date, likes, comments }: CardFeture) => {
-  const { mutate, data } = useFeatureRequest("patch", "/feature/like");
+  const [like, setLike] = useState(likes);
+  const [isLiked, setisLiked] = useState(false);
+  const { mutate: mutatelike } = useFeatureRequest("patch", "/feature/like");
+  const { user } = useUser();
 
   const handleLike = () => {
-    console.log("like");
-
-    mutate(id);
+    setLike(like + 1);
+    setisLiked(true);
+    mutatelike({ id });
   };
-
-  console.log(data);
 
   return (
     <div className="flex w-full items-center justify-start gap-4 pt-4 text-sm md:pt-0">
@@ -41,20 +43,34 @@ const CardFeture = ({ id, date, likes, comments }: CardFeture) => {
         {date}
       </div>
       <div className="flex items-center justify-center gap-1">
-        <MyToolTip
-          Content={<p className="bg-primary">{likes} claps</p>}
-          Trigger={
-            <Button onClick={handleLike}>
-              <HandsClapping
-                size={16}
-                weight="fill"
-                className="border-none text-icon outline-none"
-              />
-            </Button>
-          }
-          tag="p"
-        />
-        {likes}
+        {!user.photoURL ? (
+          <Link href="/auth">
+            <HandsClapping
+              size={16}
+              weight="fill"
+              className="border-none text-icon outline-none"
+            />
+          </Link>
+        ) : (
+          <MyToolTip
+            Content={<p className="bg-primary">{like} claps</p>}
+            Trigger={
+              <button
+                onClick={user.photoURL ? handleLike : null}
+                disabled={isLiked}
+              >
+                <HandsClapping
+                  size={16}
+                  weight="fill"
+                  className="border-none text-icon outline-none"
+                />
+              </button>
+            }
+            tag="p"
+          />
+        )}
+
+        {like}
       </div>
       <div className="flex items-center justify-center gap-1">
         <MyToolTip

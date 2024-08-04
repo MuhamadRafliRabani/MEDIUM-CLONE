@@ -1,18 +1,15 @@
 import { axiosInstence } from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
 
-export const useCheckSubscription = (
-  subscriber: string,
-  subscribed_to: string,
-) => {
+export const useCheckSubscription = (user: any, author_name: string) => {
   return useQuery({
-    queryKey: ["subscriptionStatus"],
+    queryKey: ["checkSubscription", user?.displayName, author_name],
     queryFn: async () => {
-      const { data } = await axiosInstence.post("/feature/check-subscription", {
-        subscriber,
-        subscribed_to,
-      });
+      const { data } = await axiosInstence.get(
+        `/feature/${user.displayName}/${author_name}`,
+      );
       return data;
     },
+    enabled: !!user?.displayName && !!author_name,
   });
 };

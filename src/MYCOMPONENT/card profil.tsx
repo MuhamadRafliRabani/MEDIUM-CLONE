@@ -1,11 +1,12 @@
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { BookBookmark } from "@phosphor-icons/react";
 import MyAvatar from "./avatar/MyAvatar";
 import { useUser } from "@/hooks/store/useUser";
 import { getCurrentDate } from "@/lib/date";
 import { useSubscribe } from "@/features/story/subscribe/useSubscribe";
-import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import Link from "next/link";
 import { useCheckSubscription } from "@/features/story/subscribe/useCheckSubscibe";
 
 type Profil = {
@@ -13,70 +14,68 @@ type Profil = {
   author_name: string;
 };
 
-type data = {
-  subscriber: string;
-  subscribed_to: string;
-  subscribe_at: string;
-};
-
-const Card_profil = ({ img, author_name }: Profil) => {
+const Card_profil: React.FC<Profil> = ({ img, author_name }) => {
   const { user } = useUser();
-  const { mutate, isError, data: response } = useSubscribe();
-  const { data: subscriptionStatus, isLoading } = useCheckSubscription(
-    user.displayName,
-    author_name,
-  );
   const date = getCurrentDate();
-  const [disabled, setDisable] = useState(false);
+  const { mutate, data: response } = useSubscribe();
+  const { data, isLoading, isError } = useCheckSubscription(user, author_name);
+
+  const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
 
   const handleFollow = () => {
-    const data = {
+    if (!user?.displayName) {
+      toast("You need to be logged in to subscribe");
+      return;
+    }
+
+    const Data = {
       subscriber: user.displayName,
       subscribed_to: author_name,
       subscribe_at: date,
     };
 
-    if (data.subscriber === data.subscribed_to) {
+    if (Data.subscriber === Data.subscribed_to) {
       toast("You cannot subscribe to yourself");
       return;
     }
 
-    mutate(data);
+    mutate(Data);
+    setIsSubscribed(true);
   };
 
   useEffect(() => {
     if (response) {
-      setDisable(true);
       toast.success("Successfully subscribed!");
     }
-  }, [response]);
+    if (data?.data) {
+      const issubscriber = data.data.some(
+        (item: any) => item.subscribed_to === author_name,
+      );
+      setIsSubscribed(issubscriber);
+    }
+  }, [response, data]);
 
-  console.log(subscriptionStatus);
-
-  if (isError) return console.log("Error");
-
-  const isSubscribe = subscriptionStatus?.data.subscribed_to === author_name;
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error loading data</div>;
 
   return (
     <div className="box-border grid w-[300px] grid-cols-[1fr_50px] grid-rows-[auto_auto_1fr_auto] gap-4 rounded-lg bg-white px-8 py-4">
       <div className="col-span-2 flex items-end justify-between">
         <MyAvatar size="size-20" img={img} />
-        <Button
-          variant={"outline"}
-          className={`rounded-3xl px-4 py-2 ${
-            isSubscribe ? "bg-secondary" : "bg-black text-white"
-          }`}
-          onClick={handleFollow}
-        >
-          {isSubscribe ? "Subscribe" : "Follow"}
-        </Button>
+        <Link href={!user?.photoURL ? "/auth" : "#"}>
+          <Button
+            variant={"outline"}
+            className={`rounded-3xl px-4 py-2 ${isSubscribed ? "bg-secondary" : "bg-black text-white"}`}
+            onClick={user?.photoURL ? handleFollow : undefined}
+          >
+            {isSubscribed ? "Unfollow" : "Follow"}
+          </Button>
+        </Link>
       </div>
       <div className="col-span-2 flex flex-col items-start justify-center">
-        <h1 className="font-bold text-black">
-          {author_name ? author_name : "user"}
-        </h1>
+        <h1 className="font-bold text-black">{author_name || "User"}</h1>
         <span className="text-sm text-slate-600">
-          <span>2.6k</span> Followers
+          <span>{data?.data.length || 0}</span> Followers
         </span>
       </div>
       <div className="col-span-2 text-start">

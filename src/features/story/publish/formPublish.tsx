@@ -1,3 +1,10 @@
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -6,10 +13,11 @@ import { Button } from "@/components/ui/button";
 import { InitialValue } from "..";
 import { usePublishStory } from "./usePublishStory";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { useUser } from "@/hooks/store/useUser";
 import { getCurrentDate } from "@/lib/date";
 import { toastPromise } from "@/lib/toast";
+import { Topic_list } from "@/data/Topic_list";
+import { toast } from "sonner";
 
 const FormPublish = ({ title, story }: InitialValue) => {
   const [file, setFile] = useState(null);
@@ -24,23 +32,24 @@ const FormPublish = ({ title, story }: InitialValue) => {
   };
 
   const currentDate = getCurrentDate();
+  console.log(user);
 
   const formik = useFormik({
     initialValues: {
       title: title || "",
       description: "",
-      topic: "",
+      type: "",
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Title is required"),
       description: Yup.string().required("Description is required"),
-      topic: Yup.string().required("Topic is required"),
+      type: Yup.string().required("Topic is required"),
     }),
     onSubmit: async (values) => {
       const formData = new FormData();
       formData.append("title", values.title);
       formData.append("description", values.description);
-      formData.append("topic", values.topic);
+      formData.append("type", values.type);
       formData.append("article", story || "");
       formData.append("author_name", user.displayName);
       formData.append("img_user", user.photoURL);
@@ -48,21 +57,16 @@ const FormPublish = ({ title, story }: InitialValue) => {
       formData.append("comment", "");
       formData.append("date", currentDate);
       formData.append("img_content", file);
-      for (let [key, value] of formData.entries()) {
-        console.log(key, value);
-      }
-
       mutate(formData);
-      if (!data) {
-        toastPromise(mutate, "story is created");
-        Route.push("/");
-      }
     },
   });
-  console.log(data);
-  console.log(data?.status);
 
-  console.log(file);
+  if (data) {
+    toast.success("story is created");
+    Route.push("/");
+  }
+
+  console.log(data);
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -136,18 +140,22 @@ const FormPublish = ({ title, story }: InitialValue) => {
             Add or change topics (up to 5) so readers know what your story is
             about
           </p>
-          <Input
-            type="text"
-            name="topic"
-            placeholder="Add a topic..."
-            className="bg-[#FAFAFA] focus:outline-none focus:ring-0"
-            value={formik.values.topic}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.topic && formik.errors.topic ? (
-            <div className="text-red-500">{formik.errors.topic}</div>
-          ) : null}
+          <Select
+            name="type"
+            value={formik.values.type}
+            onValueChange={(value) => formik.setFieldValue("type", value)}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Topic" />
+            </SelectTrigger>
+            <SelectContent>
+              {Topic_list.map((article, i) => (
+                <SelectItem key={i} value={article}>
+                  {article}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
           <p>
             <span className="underline">Learn more</span> about what happens to

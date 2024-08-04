@@ -9,4 +9,5 @@ export const Topic_list: string[] = [
   "Environment",
   "Travel",
   "Hobbies",
+  "others",
 ];
