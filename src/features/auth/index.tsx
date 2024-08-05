@@ -9,20 +9,19 @@ import {
 import { Input } from "@/components/ui/input";
 import { GoogleLogo } from "@phosphor-icons/react";
 import { Github } from "lucide-react";
-import { useSignWithEmail } from "./useSignWithEmail";
-import { useFormik, FormikHelpers } from "formik";
+import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/hooks/store/useUser";
-import { authgoogle } from "./auth";
-import { setCookie } from "nookies";
+import { authgoogle, signIn, signUp } from "./auth";
+import { useState } from "react";
 
-interface FormValues {
+export type FormValues = {
   email: string;
   password: string;
-}
+};
 
-const validationSchema = Yup.object<FormValues>({
+const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email address").required("Required"),
   password: Yup.string()
     .min(8, "Password must be at least 8 characters")
@@ -30,18 +29,25 @@ const validationSchema = Yup.object<FormValues>({
 });
 
 const FormCard: React.FC = () => {
-  const { mutate } = useSignWithEmail();
+  const [isSignUp, setIsSignUp] = useState(true);
   const { setUser } = useUser();
   const router = useRouter();
+
+  const handleAuth = async (values: FormValues) => {
+    try {
+      const user = isSignUp ? await signUp(values) : await signIn(values);
+      console.log(user);
+      setUser(user);
+      router.back();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleGoogleAuth = async () => {
     try {
       const user = await authgoogle();
       localStorage.setItem("user", JSON.stringify(user));
-      setCookie(null, "user", JSON.stringify(user), {
-        maxAge: 30 * 24 * 60 * 60,
-        path: "/",
-      });
       setUser(user);
       router.push("/");
     } catch (error) {
@@ -55,23 +61,14 @@ const FormCard: React.FC = () => {
       password: "",
     },
     validationSchema,
-    onSubmit: (
-      values: FormValues,
-      { resetForm }: FormikHelpers<FormValues>,
-    ) => {
-      console.log(values);
-      setUser(values);
-      router.back();
-      // mutate(values);
-      resetForm();
-    },
+    onSubmit: handleAuth,
   });
 
   return (
     <Card className="mx-auto my-8 w-full max-w-md shadow-md">
       <CardHeader>
-        <CardTitle>Form Card</CardTitle>
-        <CardDescription>Silakan isi form di bawah ini</CardDescription>
+        <CardTitle>{isSignUp ? "Sign Up" : "Sign In"}</CardTitle>
+        <CardDescription>Please fill in the form below</CardDescription>
         <div className="flex w-full items-center justify-center gap-2 pt-4">
           <Button className="w-full" variant="outline">
             <Github className="mr-2 size-4" /> Github
@@ -102,7 +99,7 @@ const FormCard: React.FC = () => {
             <Input
               id="email"
               type="email"
-              placeholder="Masukkan email Anda"
+              placeholder="Enter your email"
               {...formik.getFieldProps("email")}
               className="mt-1 block w-full"
             />
@@ -120,7 +117,7 @@ const FormCard: React.FC = () => {
             <Input
               id="password"
               type="password"
-              placeholder="Masukkan password Anda"
+              placeholder="Enter your password"
               {...formik.getFieldProps("password")}
               className="mt-1 block w-full"
             />
@@ -129,7 +126,7 @@ const FormCard: React.FC = () => {
             )}
           </div>
           <Button type="submit" className="w-full">
-            Submit
+            {isSignUp ? "Sign Up" : "Sign In"}
           </Button>
         </form>
       </CardContent>

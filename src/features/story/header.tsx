@@ -1,8 +1,10 @@
 import React from "react";
-import Publish from "../../MYCOMPONENT/my_drawer/MyDrawer";
 import MyDropDownMenu from "@/MYCOMPONENT/MyDropDownMenu/MyDropDownMenu";
 import { InitialValue } from ".";
 import Link from "next/link";
+import MyDrawer from "../../MYCOMPONENT/my_drawer/MyDrawer";
+import { Button } from "@/components/ui/button";
+import FormPublish from "./publish/formPublish";
 
 const HeaderStory = ({ title, story }: InitialValue) => {
   return (
@@ -14,7 +16,12 @@ const HeaderStory = ({ title, story }: InitialValue) => {
         <span className="text-sm text-gray-500">Draft in Noirr</span>
       </div>
       <div className="flex items-center space-x-4">
-        <Publish title={title} story={story} />
+        <MyDrawer
+          triger={
+            <Button className="bg-green-400 text-sm text-white">Publish</Button>
+          }
+          content={<FormPublish title={title} story={story} />}
+        />
         <MyDropDownMenu />
         <div className="h-8 w-8 rounded-full bg-red-500"></div>{" "}
         {/* User profile icon */}

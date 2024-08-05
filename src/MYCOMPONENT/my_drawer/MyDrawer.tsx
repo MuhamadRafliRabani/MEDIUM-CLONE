@@ -12,15 +12,15 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { X } from "@phosphor-icons/react";
-import FormPublish from "@/features/story/publish/formPublish";
-import { InitialValue } from "@/features/story";
+interface Drawer {
+  triger: React.ReactNode;
+  content: React.ReactNode;
+}
 
-const Publish = ({ title, story }: InitialValue) => {
+const MyDrawer: React.FC<Drawer> = ({ triger, content }) => {
   return (
     <Drawer>
-      <DrawerTrigger>
-        <Button className="bg-green-400 text-sm text-white">Publish</Button>
-      </DrawerTrigger>
+      <DrawerTrigger>{triger}</DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="flex items-center justify-between">
           <div>
@@ -33,9 +33,7 @@ const Publish = ({ title, story }: InitialValue) => {
             </Button>
           </DrawerClose>
         </DrawerHeader>
-
-        <FormPublish title={title} story={story} />
-
+        {content}
         <DrawerFooter>
           <DrawerClose>
             <Button variant="outline">Cancel</Button>
@@ -46,4 +44,4 @@ const Publish = ({ title, story }: InitialValue) => {
   );
 };
 
-export default Publish;
+export default MyDrawer;

@@ -6,6 +6,8 @@ import Image from "next/image";
 import { useUser } from "@/hooks/store/useUser";
 import { Button } from "@/components/ui/button";
 import MyToolTip from "../MyToolTip/MyToolTip";
+import MyDrawer from "../my_drawer/MyDrawer";
+import EditProfil from "@/features/profil/editProfil";
 
 const Navbar: React.FC = () => {
   const { user } = useUser();
@@ -21,7 +23,7 @@ const Navbar: React.FC = () => {
         </div>
         <div className="flex items-center justify-center space-x-4">
           <Link
-            href={!user.photoURL ? "/auth" : "/article/new-story"}
+            href={!user ? "/auth" : "/article/new-story"}
             className="text-gray-700 hover:text-black"
           >
             <MyToolTip
@@ -32,7 +34,7 @@ const Navbar: React.FC = () => {
           </Link>
           <MyDropDownMenu />
           <div>
-            {!user.photoURL ? (
+            {!user ? (
               <Link href="/auth">
                 <MyToolTip
                   Content={<p>signup</p>}
@@ -41,12 +43,17 @@ const Navbar: React.FC = () => {
                 />
               </Link>
             ) : (
-              <Image
-                src={user.photoURL}
-                alt=""
-                width={32}
-                height={32}
-                className="size-8 rounded-full bg-slate-200"
+              <MyDrawer
+                triger={
+                  <Image
+                    src={user.photoURL ? user.photoURL : "/profil.jpg"}
+                    alt=""
+                    width={32}
+                    height={32}
+                    className="size-8 rounded-full bg-slate-200"
+                  />
+                }
+                content={<EditProfil />}
               />
             )}
           </div>
