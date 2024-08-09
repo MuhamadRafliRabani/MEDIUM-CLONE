@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useHandleFileChange from "@/hooks/setImage";
-import { useUser } from "@/hooks/store/useUser";
+import { useUser, useUserCustom } from "@/hooks/store/useUser";
 import { ArrowBendRightUp } from "@phosphor-icons/react";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -31,6 +31,7 @@ const EditProfil: React.FC = () => {
   const { user } = useUser();
   const { mutate, data } = useSetProfil();
   const { file, image, handleFileChange } = useHandleFileChange();
+  const { user: user_custom } = useUserCustom();
 
   const formik = useFormik({
     initialValues: {
@@ -49,6 +50,7 @@ const EditProfil: React.FC = () => {
       formData.forEach((value, key) => {
         console.log(`${key}: ${value}`);
       });
+
       mutate(formData, {
         onSuccess: () => {
           toast.success("Profile updated successfully!");
@@ -59,19 +61,22 @@ const EditProfil: React.FC = () => {
       });
     },
   });
-  console.log(data);
+  console.log(user);
 
   return (
-    <form onSubmit={formik.handleSubmit} className="mx-auto w-2/5 space-y-4">
-      <div className="flex items-center gap-2">
+    <form
+      onSubmit={formik.handleSubmit}
+      className="mx-auto w-[90%] md:w-2/5 md:space-y-4"
+    >
+      <div className="flex items-center justify-center gap-2">
         <label
           htmlFor="file"
           className="flex h-[200px] w-full cursor-pointer items-center justify-center"
         >
           <img
-            src={image || user?.photoURL || "/profil.jpg"}
+            src={user_custom.profil_img || user?.photoURL || "/profil.jpg"}
             alt="Selected"
-            className="size-[150px] rounded-full object-cover shadow-sm"
+            className="size-32 rounded-full object-cover shadow-sm md:size-[150px]"
           />
         </label>
         <div className="flex flex-col justify-start gap-1">
@@ -103,7 +108,7 @@ const EditProfil: React.FC = () => {
         </div>
       </div>
 
-      <div className="w-full space-y-5 text-sm font-light">
+      <div className="w-full space-y-2 text-sm font-light md:space-y-5">
         <div>
           <label className="font-light">Name</label>
           <Input
@@ -152,17 +157,17 @@ const EditProfil: React.FC = () => {
 
       <div className="w-full">
         <div className="flex items-center justify-between">
-          <h1>About Page</h1>
+          <h1 className="font-semibold">About Page</h1>
           <ArrowBendRightUp size={20} weight="light" />
         </div>
-        <p>
+        <p className="pb-2 text-sm md:py-0 md:text-base">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam,
           quam soluta dicta accusantium sunt praesentium delectus blanditiis
           quod quisquam totam.
         </p>
       </div>
 
-      <div className="flex w-full items-center justify-between gap-4 text-green-400">
+      <div className="flex w-full items-center justify-end gap-4 text-green-400">
         <Button type="submit" variant="outline" className="border-green-400">
           Save
         </Button>

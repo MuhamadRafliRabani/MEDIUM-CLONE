@@ -1,33 +1,31 @@
-// import { useUser } from "@/hooks/store/useUser";
-// import { useRouter } from "next/router";
-// import { useEffect, useState } from "react";
+import { useSetUser } from "@/features/auth/useSetUser";
+import { useUser, useUserCustom } from "@/hooks/store/useUser";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
-// const Hoc = (WrappedComponent: React.ComponentType) => {
-//   return (props: any) => {
-//     const router = useRouter();
-//     const [user, setUser] = useState<string | null>(null);
+const Hoc = (WrappedComponent: React.ComponentType) => {
+  return (props: any) => {
+    const router = useRouter();
+    const { user, setUser } = useUser();
+    const { user: userCustom } = useUserCustom();
 
-//     useEffect(() => {
-//       if (typeof window !== "undefined") {
-//         const storedUser = localStorage.getItem("user");
-//         if (storedUser) {
-//           setUser(JSON.parse(storedUser));
-//         }
-//       }
-//     }, []);
+    useEffect(() => {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
+    }, []);
 
-//     useEffect(() => {
-//       if (!user) {
-//         router.replace("/auth");
-//       }
-//     }, [user]);
+    useEffect(() => {
+      if (!user.email) {
+        router.replace("/auth");
+      }
+    }, [user]);
 
-//     if (user === null) {
-//       return null;
-//     }
+    if (user.email || userCustom) {
+      return <WrappedComponent {...props} />;
+    }
+  };
+};
 
-//     return <WrappedComponent {...props} />;
-//   };
-// };
-
-// export default Hoc;
+export default Hoc;

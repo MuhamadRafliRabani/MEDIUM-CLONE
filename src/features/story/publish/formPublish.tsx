@@ -72,8 +72,8 @@ const FormPublish = ({ title, story }: InitialValue) => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <div className="container flex w-full items-center justify-center gap-8 text-sm text-icon">
-        <div className="flex h-fit w-[500px] flex-col justify-center gap-2">
+      <div className="container flex w-full flex-col items-center justify-center gap-6 px-4 text-sm text-icon md:flex-row md:gap-8 md:p-0">
+        <div className="flex h-fit w-full flex-col justify-center gap-2 md:w-[500px]">
           <label htmlFor="file" className="text-xl font-bold text-black">
             Story Preview
           </label>
@@ -138,7 +138,7 @@ const FormPublish = ({ title, story }: InitialValue) => {
           </p>
         </div>
 
-        <div className="flex h-fit w-[500px] flex-col justify-center gap-2">
+        <div className="flex h-fit w-full flex-col justify-center gap-2 md:w-[500px]">
           <h1>Publishing to: Noirrr</h1>
           <p>
             Add or change topics (up to 5) so readers know what your story is

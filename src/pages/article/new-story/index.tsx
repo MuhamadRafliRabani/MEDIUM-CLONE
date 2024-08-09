@@ -1,11 +1,12 @@
 import NewStory from "@/features/story";
+import Hoc from "@/hoc/Hoc";
 
 const MakeArticle = () => {
   return (
-    <div className="container">
+    <div className="md:container">
       <NewStory />
     </div>
   );
 };
 
-export default MakeArticle;
+export default Hoc(MakeArticle);

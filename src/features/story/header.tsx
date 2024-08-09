@@ -5,15 +5,20 @@ import Link from "next/link";
 import MyDrawer from "../../MYCOMPONENT/my_drawer/MyDrawer";
 import { Button } from "@/components/ui/button";
 import FormPublish from "./publish/formPublish";
+import Image from "next/image";
+import { useUserCustom } from "@/hooks/store/useUser";
 
 const HeaderStory = ({ title, story }: InitialValue) => {
+  const { user } = useUserCustom();
   return (
     <nav className="flex items-center justify-between border-b border-gray-200 bg-white p-4">
       <div className="flex items-center space-x-4">
         <Link href="/" className="text-2xl font-bold text-black">
           Medium
         </Link>
-        <span className="text-sm text-gray-500">Draft in Noirr</span>
+        <span className="hidden text-sm text-gray-500 md:inline-block">
+          Draft in Noirr
+        </span>
       </div>
       <div className="flex items-center space-x-4">
         <MyDrawer
@@ -23,7 +28,14 @@ const HeaderStory = ({ title, story }: InitialValue) => {
           content={<FormPublish title={title} story={story} />}
         />
         <MyDropDownMenu />
-        <div className="h-8 w-8 rounded-full bg-red-500"></div>{" "}
+        <div className="size-8 rounded-full bg-red-500">
+          <Image
+            src={user.profil_img || "/profil.jpg"}
+            width={100}
+            height={100}
+            alt=""
+          />
+        </div>{" "}
         {/* User profile icon */}
       </div>
     </nav>

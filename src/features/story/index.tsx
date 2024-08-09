@@ -5,6 +5,7 @@ import HeaderStory from "./header";
 import MyDrawer from "@/MYCOMPONENT/my_drawer/MyDrawer";
 import { Button } from "@/components/ui/button";
 import FormPublish from "./publish/formPublish";
+import { useUserCustom } from "@/hooks/store/useUser";
 
 export type InitialValue = {
   title: string;
@@ -48,7 +49,7 @@ const NewStory = () => {
   return (
     <div>
       <HeaderStory title={formik.values.title} story={formik.values.story} />
-      <div className="focus container mx-auto mt-20 flex w-1/2 flex-col items-start justify-center gap-2">
+      <div className="focus mx-auto mt-6 flex w-full flex-col items-start justify-center gap-2 md:container md:mt-20 md:w-1/2">
         <textarea
           name="title"
           rows={1}
@@ -56,7 +57,7 @@ const NewStory = () => {
           value={formik.values.title}
           onChange={formik.handleChange}
           ref={titleRef}
-          className="w-full border-icon ps-4 text-4xl placeholder:text-icon focus:border-s focus:outline-none focus:ring-0"
+          className="w-full border-icon px-4 text-xl font-medium placeholder:text-icon focus:border-s focus:outline-none focus:ring-0 md:ps-4 md:text-4xl md:font-normal"
         ></textarea>
         <textarea
           name="story"
@@ -65,7 +66,7 @@ const NewStory = () => {
           value={formik.values.story}
           ref={storyRef}
           onChange={formik.handleChange}
-          className="w-full ps-4 text-2xl placeholder:text-icon focus:border-s focus:border-none focus:outline-none focus:ring-0"
+          className="me:ps-4 w-full px-4 text-lg placeholder:text-icon focus:border-s focus:border-none focus:outline-none focus:ring-0 md:text-2xl"
         ></textarea>
       </div>
     </div>

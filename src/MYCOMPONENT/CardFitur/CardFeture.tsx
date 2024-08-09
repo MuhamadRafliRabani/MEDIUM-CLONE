@@ -43,29 +43,19 @@ const CardFeture = ({ id, date, likes, comments }: CardFeture) => {
         {date}
       </div>
       <div className="flex items-center justify-center gap-1">
-        {!user.photoURL ? (
-          <Link href="/auth">
-            <HandsClapping
-              size={16}
-              weight="fill"
-              className="border-none text-icon outline-none"
-            />
-          </Link>
-        ) : (
-          <MyToolTip
-            Content={<p className="bg-primary">{like} claps</p>}
-            Trigger={
-              <button onClick={user && handleLike} disabled={isLiked}>
-                <HandsClapping
-                  size={16}
-                  weight="fill"
-                  className="border-none text-icon outline-none"
-                />
-              </button>
-            }
-            tag="p"
-          />
-        )}
+        <MyToolTip
+          Content={<p className="bg-primary">{like} claps</p>}
+          Trigger={
+            <button onClick={user && handleLike} disabled={isLiked}>
+              <HandsClapping
+                size={16}
+                weight="fill"
+                className="border-none text-icon outline-none"
+              />
+            </button>
+          }
+          tag="p"
+        />
 
         {like}
       </div>

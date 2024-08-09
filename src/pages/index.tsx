@@ -3,11 +3,11 @@ import MyCarousel from "@/MYCOMPONENT/Carousell";
 import StaffContainer from "@/MYCOMPONENT/sidemenu/Staff/StaffContainer";
 import { useGetArticle } from "@/hooks/article/useGetArticle";
 import Navbar from "@/MYCOMPONENT/navbar/navbar";
-import { usesetTopic, useUser } from "@/hooks/store/useUser";
+import { usesetTopic, useUser, useUserCustom } from "@/hooks/store/useUser";
 import SkeletonCard from "@/MYCOMPONENT/article/cardSeleton";
 import { useEffect } from "react";
 import CardArticle from "@/MYCOMPONENT/article/article";
-import { useGetUser } from "@/hooks/article/useGetUser";
+import Hoc from "@/hoc/Hoc";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,19 +26,13 @@ export type article = {
 };
 
 function Home() {
-  const { setUser, user } = useUser();
   const { topic } = usesetTopic();
-
+  const { user } = useUserCustom();
   const { data: dataArticle, isLoading, isError } = useGetArticle(topic);
 
   if (isError) return <div>Error loading data</div>;
 
-  useEffect(() => {
-    const storage = localStorage.getItem("user");
-    if (storage) {
-      setUser(JSON.parse(storage));
-    }
-  }, []);
+  console.log(user);
 
   return (
     <>
@@ -52,7 +46,7 @@ function Home() {
           <MyCarousel />
         </div>
 
-        <section className="content w-full space-y-4 border-e border-slate-100 pt-6 md:container">
+        <section className="content w-full space-y-4 border-slate-100 pt-6 md:container md:border-e">
           {!dataArticle ? (
             <SkeletonCard />
           ) : (
@@ -68,4 +62,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Hoc(Home);
