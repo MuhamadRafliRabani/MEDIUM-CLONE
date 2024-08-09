@@ -1,10 +1,16 @@
 import { axiosInstence } from "@/lib/axios";
 import { useMutation } from "@tanstack/react-query";
 
-export const useSubscribe = () => {
+type SubscribeDataType = {
+  subscriber: string;
+  subscribed_to: string;
+  subscribe_at: string;
+};
+
+export const useSubscribe = (URL: string) => {
   return useMutation({
-    mutationFn: async (value) => {
-      const request = await axiosInstence.post("/feature/subcribe", value);
+    mutationFn: async (value: SubscribeDataType) => {
+      const request = await axiosInstence.post(URL, value);
       return request;
     },
   });

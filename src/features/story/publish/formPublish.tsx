@@ -1,10 +1,3 @@
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -18,21 +11,27 @@ import { getCurrentDate } from "@/lib/date";
 import { toastPromise } from "@/lib/toast";
 import { Topic_list } from "@/data/Topic_list";
 import { toast } from "sonner";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import usehandleFileChange from "@/hooks/setImage";
+import { useGetUser } from "@/hooks/article/useGetUser";
 
 const FormPublish = ({ title, story }: InitialValue) => {
-  const [file, setFile] = useState(null);
-  const [image, setImage] = useState(null);
-  const { mutate, data } = usePublishStory();
   const { user } = useUser();
-  const Route = useRouter();
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    setFile(selectedFile);
-    setImage(URL.createObjectURL(selectedFile));
-  };
+  const { mutate, data } = usePublishStory();
+  const { data: data_user } = useGetUser(user.email);
+  const router = useRouter();
+  console.log(user.email);
+
+  console.log(data_user);
 
   const currentDate = getCurrentDate();
-  console.log(user);
+  const { file, image, handleFileChange } = usehandleFileChange();
 
   const formik = useFormik({
     initialValues: {
@@ -51,22 +50,25 @@ const FormPublish = ({ title, story }: InitialValue) => {
       formData.append("description", values.description);
       formData.append("type", values.type);
       formData.append("article", story || "");
-      formData.append("author_name", user.displayName);
-      formData.append("img_user", user.photoURL);
-      formData.append("likes", 0);
+      formData.append("author_name", data_user?.user.name);
+      formData.append("img_user", data_user?.user.profil_img);
+      formData.append("likes", "0");
       formData.append("comment", "");
       formData.append("date", currentDate);
-      formData.append("img_content", file);
-      mutate(formData);
+      formData.append("image", file ? file : "");
+
+      mutate(formData, {
+        onSuccess: () => {
+          toast.success("story created");
+          router.back();
+        },
+        onError: () => {
+          toast.error("story uncreated");
+          router.push("/article/new-story");
+        },
+      });
     },
   });
-
-  if (data) {
-    toast.success("story is created");
-    Route.push("/");
-  }
-
-  console.log(data);
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -82,17 +84,19 @@ const FormPublish = ({ title, story }: InitialValue) => {
               id="file"
               className="hidden"
               accept="image/*"
-              onChange={handleFileChange}
+              onChange={(e) => handleFileChange(e)}
             />
             <label
               htmlFor="file"
-              className={`flex h-[200px] w-full cursor-pointer items-center justify-center bg-[#FAFAFA] text-gray-600 ${!image && "-dashed border"}`}
+              className={`flex h-[200px] w-full cursor-pointer items-center justify-center bg-[#FAFAFA] text-gray-600 ${
+                !image && "border border-dashed"
+              }`}
             >
               {image ? (
                 <img
                   src={image}
                   alt="Selected"
-                  className="h-[200px] w-full border border-gray-300 bg-cover"
+                  className="h-[200px] w-full border border-gray-300 object-cover"
                 />
               ) : (
                 <span>Choose file</span>
@@ -109,9 +113,9 @@ const FormPublish = ({ title, story }: InitialValue) => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          {formik.touched.title && formik.errors.title ? (
+          {formik.touched.title && formik.errors.title && (
             <div className="text-red-500">{formik.errors.title}</div>
-          ) : null}
+          )}
 
           <Input
             type="text"
@@ -123,9 +127,9 @@ const FormPublish = ({ title, story }: InitialValue) => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          {formik.touched.description && formik.errors.description ? (
+          {formik.touched.description && formik.errors.description && (
             <div className="text-red-500">{formik.errors.description}</div>
-          ) : null}
+          )}
 
           <p className="text-sm">
             <span className="font-bold">Note:</span> Changes here will affect

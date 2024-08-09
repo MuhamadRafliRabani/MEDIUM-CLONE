@@ -7,6 +7,7 @@ import { usesetTopic, useUser } from "@/hooks/store/useUser";
 import SkeletonCard from "@/MYCOMPONENT/article/cardSeleton";
 import { useEffect } from "react";
 import CardArticle from "@/MYCOMPONENT/article/article";
+import { useGetUser } from "@/hooks/article/useGetUser";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,18 +26,19 @@ export type article = {
 };
 
 function Home() {
+  const { setUser, user } = useUser();
   const { topic } = usesetTopic();
+
   const { data: dataArticle, isLoading, isError } = useGetArticle(topic);
-  const { setUser } = useUser();
+
+  if (isError) return <div>Error loading data</div>;
 
   useEffect(() => {
     const storage = localStorage.getItem("user");
     if (storage) {
       setUser(JSON.parse(storage));
     }
-  }, [setUser]);
-
-  if (isError) return <div>Error loading data</div>;
+  }, []);
 
   return (
     <>

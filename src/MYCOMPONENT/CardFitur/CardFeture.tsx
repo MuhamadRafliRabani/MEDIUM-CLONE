@@ -55,10 +55,7 @@ const CardFeture = ({ id, date, likes, comments }: CardFeture) => {
           <MyToolTip
             Content={<p className="bg-primary">{like} claps</p>}
             Trigger={
-              <button
-                onClick={user.photoURL ? handleLike : null}
-                disabled={isLiked}
-              >
+              <button onClick={user && handleLike} disabled={isLiked}>
                 <HandsClapping
                   size={16}
                   weight="fill"

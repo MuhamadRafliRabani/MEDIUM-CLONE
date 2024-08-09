@@ -15,6 +15,9 @@ import { useRouter } from "next/navigation";
 import { useUser } from "@/hooks/store/useUser";
 import { authgoogle, signIn, signUp } from "./auth";
 import { useState } from "react";
+import { useSetUser } from "./useSetUser";
+import Link from "next/link";
+import { useGetUser } from "@/hooks/article/useGetUser";
 
 export type FormValues = {
   email: string;
@@ -30,15 +33,27 @@ const validationSchema = Yup.object().shape({
 
 const FormCard: React.FC = () => {
   const [isSignUp, setIsSignUp] = useState(true);
-  const { setUser } = useUser();
+  const { mutate } = useSetUser();
+  const { setUser, user } = useUser();
+  const { data: data_user } = useGetUser(user.email);
   const router = useRouter();
 
   const handleAuth = async (values: FormValues) => {
     try {
       const user = isSignUp ? await signUp(values) : await signIn(values);
-      console.log(user);
-      setUser(user);
-      router.back();
+
+      const formData = new FormData();
+      formData.append("name", user.displayName ? user.displayName : "");
+      formData.append("profil_img", user.photoURL ? user.photoURL : "");
+      formData.append("pronouns", "writer");
+      formData.append("short_bio", "i`m a writer");
+      formData.append("email", user.email ? user.email : "");
+      mutate(formData);
+      setUser(data_user);
+      if (data_user) {
+        localStorage.setItem("user", JSON.stringify(data_user));
+        router.back();
+      }
     } catch (error) {
       console.error(error);
     }
@@ -47,9 +62,19 @@ const FormCard: React.FC = () => {
   const handleGoogleAuth = async () => {
     try {
       const user = await authgoogle();
-      localStorage.setItem("user", JSON.stringify(user));
-      setUser(user);
-      router.push("/");
+      const value = {
+        name: user.displayName,
+        profil_img: user.photoURL,
+        pronouns: "writer",
+        short_bio: "",
+        email: user.email,
+      };
+      mutate(value);
+      setUser(data_user);
+      if (data_user) {
+        localStorage.setItem("user", JSON.stringify(data_user));
+        router.back();
+      }
     } catch (error) {
       console.error("Error during Google authentication:", error);
     }
@@ -125,6 +150,15 @@ const FormCard: React.FC = () => {
               <div className="text-red-500">{formik.errors.password}</div>
             )}
           </div>
+          <p>
+            {isSignUp ? "sudah punya akun?" : "belum punya akun?"}{" "}
+            <span
+              className="text-blue-700"
+              onClick={() => setIsSignUp((prev) => !prev)}
+            >
+              {isSignUp ? "masuk" : "buat akun?"}
+            </span>
+          </p>
           <Button type="submit" className="w-full">
             {isSignUp ? "Sign Up" : "Sign In"}
           </Button>

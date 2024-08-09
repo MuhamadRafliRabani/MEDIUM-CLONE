@@ -17,7 +17,7 @@ type Profil = {
 const Card_profil: React.FC<Profil> = ({ img, author_name }) => {
   const { user } = useUser();
   const date = getCurrentDate();
-  const { mutate, data: response } = useSubscribe();
+  const { mutate, data: response } = useSubscribe("/feature/subscribe");
   const { data, isLoading, isError } = useCheckSubscription(user, author_name);
 
   const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
