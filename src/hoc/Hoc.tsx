@@ -8,22 +8,32 @@ const Hoc = (WrappedComponent: React.ComponentType) => {
     const router = useRouter();
     const { user, setUser } = useUser();
     const { user: userCustom } = useUserCustom();
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
       const storedUser = localStorage.getItem("user");
       if (storedUser) {
         setUser(JSON.parse(storedUser));
       }
-    }, []);
+      setLoading(false);
+    }, [setUser]);
 
     useEffect(() => {
-      if (!user.email) {
-        router.replace("/auth");
+      if (!loading) {
+        if (!user.email && !userCustom) {
+          router.replace("/auth");
+        }
       }
-    }, [user]);
+    }, [user, userCustom, loading, router]);
+
+    if (loading) {
+      return null;
+    }
 
     if (user.email || userCustom) {
       return <WrappedComponent {...props} />;
+    } else {
+      return null;
     }
   };
 };

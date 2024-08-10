@@ -66,7 +66,7 @@ const EditProfil: React.FC = () => {
   return (
     <form
       onSubmit={formik.handleSubmit}
-      className="mx-auto w-[90%] md:w-2/5 md:space-y-4"
+      className="mx-auto w-[90%] md:w-2/5 md:space-y-3"
     >
       <div className="flex items-center justify-center gap-2">
         <label
@@ -74,7 +74,7 @@ const EditProfil: React.FC = () => {
           className="flex h-[200px] w-full cursor-pointer items-center justify-center"
         >
           <img
-            src={user_custom.profil_img || user?.photoURL || "/profil.jpg"}
+            src={user_custom?.profil_img || user?.photoURL || "/profil.jpg"}
             alt="Selected"
             className="size-32 rounded-full object-cover shadow-sm md:size-[150px]"
           />
@@ -108,7 +108,7 @@ const EditProfil: React.FC = () => {
         </div>
       </div>
 
-      <div className="w-full space-y-2 text-sm font-light md:space-y-5">
+      <div className="w-full space-y-2 text-sm font-light md:space-y-4">
         <div>
           <label className="font-light">Name</label>
           <Input
@@ -160,7 +160,7 @@ const EditProfil: React.FC = () => {
           <h1 className="font-semibold">About Page</h1>
           <ArrowBendRightUp size={20} weight="light" />
         </div>
-        <p className="pb-2 text-sm md:py-0 md:text-base">
+        <p className="pb-2 text-sm md:py-0">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam,
           quam soluta dicta accusantium sunt praesentium delectus blanditiis
           quod quisquam totam.

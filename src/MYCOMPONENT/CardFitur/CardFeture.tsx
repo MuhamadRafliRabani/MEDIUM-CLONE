@@ -1,9 +1,17 @@
-import { ChatCircle, HandsClapping, StarFour } from "@phosphor-icons/react";
+import {
+  ChatCircle,
+  HandsClapping,
+  PaperPlaneRight,
+  StarFour,
+} from "@phosphor-icons/react";
 import MyToolTip from "../MyToolTip/MyToolTip";
 import { useState } from "react";
 import { useFeatureRequest } from "@/lib/useFeatureRequest";
 import Link from "next/link";
 import { useUser } from "@/hooks/store/useUser";
+import MyDrawer from "../my_drawer/MyDrawer";
+import Comment from "@/features/comment/commentInput";
+import { Button } from "@/components/ui/button";
 
 type CardFeture = {
   id?: number;
@@ -43,19 +51,13 @@ const CardFeture = ({ id, date, likes, comments }: CardFeture) => {
         {date}
       </div>
       <div className="flex items-center justify-center gap-1">
-        <MyToolTip
-          Content={<p className="bg-primary">{like} claps</p>}
-          Trigger={
-            <button onClick={user && handleLike} disabled={isLiked}>
-              <HandsClapping
-                size={16}
-                weight="fill"
-                className="border-none text-icon outline-none"
-              />
-            </button>
-          }
-          tag="p"
-        />
+        <button onClick={user && handleLike} disabled={isLiked}>
+          <HandsClapping
+            size={16}
+            weight="fill"
+            className="border-none text-icon outline-none"
+          />
+        </button>
 
         {like}
       </div>
@@ -63,10 +65,15 @@ const CardFeture = ({ id, date, likes, comments }: CardFeture) => {
         <MyToolTip
           Content={<p className="bg-primary">{comments} response</p>}
           Trigger={
-            <ChatCircle
-              size={16}
-              weight="fill"
-              className="border-none text-icon outline-none"
+            <MyDrawer
+              content={<Comment id={id} />}
+              triger={
+                <ChatCircle
+                  size={16}
+                  weight="fill"
+                  className="border-none text-icon outline-none"
+                />
+              }
             />
           }
           tag="p"

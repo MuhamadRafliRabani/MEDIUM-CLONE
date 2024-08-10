@@ -19,7 +19,7 @@ interface Drawer {
 
 const MyDrawer: React.FC<Drawer> = ({ triger, content }) => {
   return (
-    <div className="max-h-screen">
+    <div className="h-fit">
       <Drawer>
         <DrawerTrigger>{triger}</DrawerTrigger>
         <DrawerContent>
