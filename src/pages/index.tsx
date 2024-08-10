@@ -8,6 +8,10 @@ import SkeletonCard from "@/MYCOMPONENT/article/cardSeleton";
 import { useEffect } from "react";
 import CardArticle from "@/MYCOMPONENT/article/article";
 import Hoc from "@/hoc/Hoc";
+import { useSetUser } from "@/features/auth/useSetUser";
+import { toast } from "sonner";
+import Footer from "@/MYCOMPONENT/MyFooter";
+import { useGetUser } from "@/hooks/article/useGetUser";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,22 +33,40 @@ function Home() {
   const { topic } = usesetTopic();
   const { user } = useUser();
   const { user: usercustom } = useUserCustom();
+  const { mutate, isSuccess: isSuccessSetUser } = useSetUser();
   const { data: dataArticle, isLoading, isError } = useGetArticle(topic);
+  const { data } = useGetUser(user?.email);
+  const { setUserCustom } = useUserCustom();
+
+  useEffect(() => {
+    if (data) {
+      setUserCustom(data.user);
+    }
+  }, [isSuccessSetUser]);
 
   if (isError) return <div>Error loading data</div>;
 
-  // useEffect(() => {
-  //   if (user) {
-  //     const value = {
-  //       name: user.displayName || "",
-  //       pronouns: "writer",
-  //       short_bio: "",
-  //       email: user.email || "",
-  //       profil_img: user.photoURL || "",
-  //     };
-  //     mutate(value);
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (user.email) {
+      const value = {
+        name: user.displayName || "",
+        pronouns: "writer",
+        short_bio: "",
+        email: user.email || "",
+        profil_img: user.photoURL || "",
+      };
+      mutate(value, {
+        onSuccess: () => {
+          toast.success("your are login");
+        },
+        onError: () => {
+          toast.error("your are not login");
+        },
+      });
+    }
+  }, [user]);
+
+  console.log(usercustom);
 
   console.log(user);
 
@@ -72,6 +94,7 @@ function Home() {
           <StaffContainer />
         </div>
       </main>
+      <Footer />
     </>
   );
 }

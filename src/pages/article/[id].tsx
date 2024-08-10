@@ -15,18 +15,21 @@ import {
   Export,
   HandsClapping,
   MedalMilitary,
+  PaperPlaneRight,
   StarFour,
 } from "@phosphor-icons/react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import ArticleSkeleton from "@/MYCOMPONENT/article/articleSkeleton";
 import Navbar from "@/MYCOMPONENT/navbar/navbar";
-import { Input } from "@/components/ui/input";
 import { useFormik } from "formik";
 import { validationSchema } from "@/features/comment/comment";
 import { useComment } from "@/features/comment/useComment";
 import { toast } from "sonner";
 import { useUserCustom } from "@/hooks/store/useUser";
+import { comments } from "@/data/dummyComment";
+import Comment from "@/MYCOMPONENT/myComment/Mycomment";
+import { Button } from "@/components/ui/button";
 
 const Article = () => {
   const router = useRouter();
@@ -34,6 +37,9 @@ const Article = () => {
   const id = router.query?.id;
   const { user } = useUserCustom();
   const Ref = useRef<HTMLTextAreaElement | null>(null);
+
+  console.log(user);
+  
 
   const {
     data: dataArticle,
@@ -54,13 +60,14 @@ const Article = () => {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       const data = {
-        user: user.name,
+        user: user?.name,
         idArticle: id,
         comment: values.comment,
+        email: user?.email,
+        profil_img: user?.profil_img,
       };
       mutate(data, {
         onSuccess: () => {
-          router.push("/");
           toast.success("comment sended");
         },
         onError: () => {
@@ -78,7 +85,6 @@ const Article = () => {
   }, [formik.values.comment]);
 
   const article = dataArticle;
-  console.log(article);
 
   if (isLoading) return <ArticleSkeleton />;
 
@@ -87,8 +93,8 @@ const Article = () => {
   return (
     <>
       <Navbar />
-      <section className="px-4 md:container md:px-0">
-        <div className="space-y-4 pt-4 md:mx-auto md:w-1/2 md:space-y-8 md:pt-20">
+      <section className="space-y-4 px-4 md:container md:px-0">
+        <div className="space-y-4 border-b border-primary pt-4 md:mx-auto md:w-1/2 md:space-y-8 md:pb-10 md:pt-20">
           <div className="flex items-center gap-4">
             <MyToolTip
               Content={<p className="bg-primary">Member-only story</p>}
@@ -215,16 +221,34 @@ const Article = () => {
             {article?.article}
           </ReactMarkdown>
         </div>
-        <div className="md:container">
-          <Input
-            name="comment"
+        <form
+          onSubmit={formik.handleSubmit}
+          className="mx-auto my-4 w-full max-w-2xl space-y-1 rounded-lg p-4"
+        >
+          <label htmlFor="comment" className="font-semibold">
+            Type a Comment
+          </label>
+          <input
             type="text"
-            placeholder="your comment"
-            value={formik.values.comment}
-            onChange={formik.handleChange}
+            name="comment"
+            placeholder="your comment..."
+            className="max-h-20 w-full rounded-t-lg border-b border-slate-300 bg-white p-2 shadow-sm outline-none focus:ring-0"
             ref={Ref}
-            className="w-[500px]"
+            onChange={formik.handleChange}
           />
+          <Button type="submit" variant="default" className="ms-auto block">
+            <PaperPlaneRight size={20} weight="light" />
+          </Button>
+        </form>
+        <div className="mx-auto max-w-3xl">
+          {comments.map((comment, index) => (
+            <Comment
+              key={index}
+              username={comment.username}
+              comment={comment.comment}
+              timeAgo={comment.timeAgo}
+            />
+          ))}
         </div>
       </section>
     </>

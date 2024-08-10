@@ -11,15 +11,8 @@ import { useGetUser } from "@/hooks/article/useGetUser";
 
 const Navbar: React.FC = () => {
   const { user } = useUser();
-  const { user: userCustom } = useUserCustom();
-  const { data } = useGetUser(user?.email);
-  const { setUserCustom } = useUserCustom();
-
-  useEffect(() => {
-    if (data) {
-      setUserCustom(data.user);
-    }
-  }, [user]);
+  const { user: userCustom,setUserCustom } = useUserCustom();
+  
 
   return (
     <nav className="bg-white shadow-sm">
@@ -51,7 +44,7 @@ const Navbar: React.FC = () => {
                     triger={
                       <Image
                         src={
-                          data?.user?.profil_img ||
+                          userCustom.profil_img ||
                           user.photoURL ||
                           "/profil.jpg"
                         }
