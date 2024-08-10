@@ -1,15 +1,31 @@
 import { axiosInstence } from "@/lib/axios";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
-export const useCheckSubscription = (user: any, author_name: string) => {
-  return useQuery({
-    queryKey: ["checkSubscription", user?.displayName, author_name],
-    queryFn: async () => {
-      const { data } = await axiosInstence.get(
-        `/feature/${user.displayName}/${author_name}`,
+type CheckSubscription = {
+  userCustom: {
+    email: string;
+    id: number;
+    name: string;
+    profil_img: string;
+    pronouns: string;
+    short_bio: string;
+    subscribed_to: string;
+  };
+};
+
+export const useCheckSubscription = (author_name: string) => {
+  return useMutation({
+    mutationKey: ["checkSubscription", author_name],
+    mutationFn: async (value: CheckSubscription) => {
+      const values = {
+        subscriber: value.userCustom.email,
+        subscribed_to: value.userCustom.subscribed_to,
+      };
+      const { data } = await axiosInstence.post(
+        "/feature/checkisSubscribe",
+        values,
       );
       return data;
     },
-    enabled: !!user?.displayName && !!author_name,
   });
 };

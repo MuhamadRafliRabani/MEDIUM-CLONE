@@ -11,7 +11,7 @@ import { GoogleLogo } from "@phosphor-icons/react";
 import { Github } from "lucide-react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { useUser } from "@/hooks/store/useUser";
 import { authgoogle, signIn, signUp } from "./auth";
 import { useEffect, useState } from "react";
@@ -32,53 +32,29 @@ const validationSchema = Yup.object().shape({
 const FormCard: React.FC = () => {
   const { setUser, user } = useUser();
   const [isSignUp, setIsSignUp] = useState(true);
-  const { mutate } = useSetUser();
 
   const router = useRouter();
 
   const handleAuth = async (values: FormValues) => {
-    try {
-      const user = isSignUp ? await signUp(values) : await signIn(values);
+    const user = isSignUp
+      ? await signUp(values, router)
+      : await signIn(values, router);
 
-      const formData = new FormData();
-      formData.append("name", user.displayName ? user.displayName : "");
-      formData.append("profil_img", user.photoURL ? user.photoURL : "");
-      formData.append("pronouns", "writer");
-      formData.append("short_bio", "i`m a writer");
-      formData.append("email", user.email ? user.email : "");
-      localStorage.setItem("user", JSON.stringify(user));
-      setUser(user);
-      router.back();
-    } catch (error) {
-      console.error(error);
-    }
+    const formData = new FormData();
+    formData.append("name", user.displayName ? user.displayName : "");
+    formData.append("profil_img", user.photoURL ? user.photoURL : "");
+    formData.append("pronouns", "writer");
+    formData.append("short_bio", "i`m a writer");
+    formData.append("email", user.email ? user.email : "");
+    localStorage.setItem("user", JSON.stringify(user));
+    setUser(user);
   };
 
   const handleGoogleAuth = async () => {
-    try {
-      const user = await authgoogle();
-      localStorage.setItem("user", JSON.stringify(user));
-      setUser(user);
-      router.back();
-    } catch (error) {
-      console.error("Error during Google authentication:", error);
-    }
+    const user = await authgoogle(router);
+    localStorage.setItem("user", JSON.stringify(user));
+    setUser(user);
   };
-
-  useEffect(() => {
-    if (user) {
-      const value = {
-        name: user.displayName || "",
-        pronouns: "writer",
-        short_bio: "",
-        email: user.email || "",
-        profil_img: user.photoURL || "",
-      };
-      mutate(value);
-    }
-  }, [user]);
-
-  console.log(user);
 
   const formik = useFormik<FormValues>({
     initialValues: {

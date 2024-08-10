@@ -11,9 +11,9 @@ import { useGetUser } from "@/hooks/article/useGetUser";
 
 const Navbar: React.FC = () => {
   const { user } = useUser();
-  const { data } = useGetUser(user.email);
+  const { user: userCustom } = useUserCustom();
+  const { data } = useGetUser(user?.email);
   const { setUserCustom } = useUserCustom();
-  console.log(data);
 
   useEffect(() => {
     if (data) {
@@ -43,20 +43,28 @@ const Navbar: React.FC = () => {
           </Link>
           <MyDropDownMenu />
           <div>
-            {user && (
-              <MyDrawer
-                triger={
-                  <Image
-                    src={
-                      data?.user?.profil_img || user.photoURL || "/profil.jpg"
+            {user.email && (
+              <MyToolTip
+                Content={<p>{user.email}</p>}
+                Trigger={
+                  <MyDrawer
+                    triger={
+                      <Image
+                        src={
+                          data?.user?.profil_img ||
+                          user.photoURL ||
+                          "/profil.jpg"
+                        }
+                        alt=""
+                        width={32}
+                        height={32}
+                        className="size-8 rounded-full bg-slate-200"
+                      />
                     }
-                    alt=""
-                    width={32}
-                    height={32}
-                    className="size-8 rounded-full bg-slate-200"
+                    content={<EditProfil />}
                   />
                 }
-                content={<EditProfil />}
+                tag="p"
               />
             )}
           </div>

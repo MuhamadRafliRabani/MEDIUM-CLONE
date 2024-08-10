@@ -8,6 +8,7 @@ import * as yup from "yup";
 import { SignOut } from "../auth/auth";
 import { toast } from "sonner";
 import { useSetProfil } from "./useEditProfile";
+import { useRouter } from "next/router";
 
 const validationSchema = yup.object().shape({
   name: yup
@@ -30,8 +31,9 @@ const validationSchema = yup.object().shape({
 const EditProfil: React.FC = () => {
   const { user } = useUser();
   const { mutate, data } = useSetProfil();
-  const { file, image, handleFileChange } = useHandleFileChange();
+  const Router = useRouter();
   const { user: user_custom } = useUserCustom();
+  const { file, image, handleFileChange } = useHandleFileChange();
 
   const formik = useFormik({
     initialValues: {
@@ -46,7 +48,7 @@ const EditProfil: React.FC = () => {
       formData.append("pronouns", values.pronouns);
       formData.append("short_bio", values.short_bio);
       formData.append("image", file || "");
-      formData.append("email", user?.email || "");
+      formData.append("email", user?.email || user_custom.email);
       formData.forEach((value, key) => {
         console.log(`${key}: ${value}`);
       });
@@ -54,14 +56,16 @@ const EditProfil: React.FC = () => {
       mutate(formData, {
         onSuccess: () => {
           toast.success("Profile updated successfully!");
+
+          console.log("update succsse");
         },
         onError: (error) => {
           toast.error("Failed to update profile. Please try again.");
+          console.log("update error");
         },
       });
     },
   });
-  console.log(user);
 
   return (
     <form
@@ -71,17 +75,22 @@ const EditProfil: React.FC = () => {
       <div className="flex items-center justify-center gap-2">
         <label
           htmlFor="file"
-          className="flex h-[200px] w-full cursor-pointer items-center justify-center"
+          className="flex h-[200px] w-full cursor-pointer items-center justify-center md:w-fit"
         >
           <img
-            src={user_custom?.profil_img || user?.photoURL || "/profil.jpg"}
+            src={
+              image ||
+              user_custom?.profil_img ||
+              user?.photoURL ||
+              "/profil.jpg"
+            }
             alt="Selected"
             className="size-32 rounded-full object-cover shadow-sm md:size-[150px]"
           />
         </label>
-        <div className="flex flex-col justify-start gap-1">
+        <div className="flex flex-col justify-start gap-1 md:gap-0">
           <div className="flex items-center justify-start">
-            <div className="relative">
+            <div className="relative space-x-2">
               <Input
                 type="file"
                 name="file"
@@ -90,18 +99,15 @@ const EditProfil: React.FC = () => {
                 accept="image/*"
                 onChange={handleFileChange}
               />
-              <label
-                htmlFor="file"
-                className="ps-2 text-green-400 hover:underline"
-              >
+              <label htmlFor="file" className="text-green-400 hover:underline">
                 Update
               </label>
             </div>
-            <Button className="ps-2 text-red-500" variant="link">
+            <Button className="text-red-500" variant="link">
               Remove
             </Button>
           </div>
-          <p className="w-full text-sm">
+          <p className="w-full text-sm md:w-3/5 md:ps-2">
             Recommended: Square JPG, PNG, or GIF, at least 1,000 pixels per
             side.
           </p>

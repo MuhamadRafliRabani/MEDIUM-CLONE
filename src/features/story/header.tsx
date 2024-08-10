@@ -28,15 +28,15 @@ const HeaderStory = ({ title, story }: InitialValue) => {
           content={<FormPublish title={title} story={story} />}
         />
         <MyDropDownMenu />
-        <div className="size-8 rounded-full bg-red-500">
+        <div className="size-8">
           <Image
             src={user.profil_img || "/profil.jpg"}
             width={100}
             height={100}
             alt=""
+            className="rounded-full"
           />
-        </div>{" "}
-        {/* User profile icon */}
+        </div>
       </div>
     </nav>
   );

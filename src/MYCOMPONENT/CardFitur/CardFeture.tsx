@@ -1,17 +1,10 @@
-import {
-  ChatCircle,
-  HandsClapping,
-  PaperPlaneRight,
-  StarFour,
-} from "@phosphor-icons/react";
+import { ChatCircle, HandsClapping, StarFour } from "@phosphor-icons/react";
 import MyToolTip from "../MyToolTip/MyToolTip";
 import { useState } from "react";
 import { useFeatureRequest } from "@/lib/useFeatureRequest";
-import Link from "next/link";
 import { useUser } from "@/hooks/store/useUser";
 import MyDrawer from "../my_drawer/MyDrawer";
-import Comment from "@/features/comment/commentInput";
-import { Button } from "@/components/ui/button";
+import Comment from "@/features/comment/comment";
 
 type CardFeture = {
   id?: number;

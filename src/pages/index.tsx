@@ -27,10 +27,24 @@ export type article = {
 
 function Home() {
   const { topic } = usesetTopic();
-  const { user } = useUserCustom();
+  const { user } = useUser();
+  const { user: usercustom } = useUserCustom();
   const { data: dataArticle, isLoading, isError } = useGetArticle(topic);
 
   if (isError) return <div>Error loading data</div>;
+
+  // useEffect(() => {
+  //   if (user) {
+  //     const value = {
+  //       name: user.displayName || "",
+  //       pronouns: "writer",
+  //       short_bio: "",
+  //       email: user.email || "",
+  //       profil_img: user.photoURL || "",
+  //     };
+  //     mutate(value);
+  //   }
+  // }, []);
 
   console.log(user);
 

@@ -20,7 +20,7 @@ const Hoc = (WrappedComponent: React.ComponentType) => {
 
     useEffect(() => {
       if (!loading) {
-        if (!user.email && !userCustom) {
+        if (!user.email) {
           router.replace("/auth");
         }
       }

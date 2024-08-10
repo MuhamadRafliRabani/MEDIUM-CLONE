@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { PlayCircle } from "lucide-react";
@@ -21,10 +21,19 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import ArticleSkeleton from "@/MYCOMPONENT/article/articleSkeleton";
 import Navbar from "@/MYCOMPONENT/navbar/navbar";
+import { Input } from "@/components/ui/input";
+import { useFormik } from "formik";
+import { validationSchema } from "@/features/comment/comment";
+import { useComment } from "@/features/comment/useComment";
+import { toast } from "sonner";
+import { useUserCustom } from "@/hooks/store/useUser";
 
 const Article = () => {
   const router = useRouter();
+  const { mutate } = useComment();
   const id = router.query?.id;
+  const { user } = useUserCustom();
+  const Ref = useRef<HTMLTextAreaElement | null>(null);
 
   const {
     data: dataArticle,
@@ -37,6 +46,36 @@ const Article = () => {
       return data;
     },
   });
+
+  const formik = useFormik({
+    initialValues: {
+      comment: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      const data = {
+        user: user.name,
+        idArticle: id,
+        comment: values.comment,
+      };
+      mutate(data, {
+        onSuccess: () => {
+          router.push("/");
+          toast.success("comment sended");
+        },
+        onError: () => {
+          toast.error("comment not sended");
+        },
+      });
+    },
+  });
+
+  useEffect(() => {
+    if (Ref.current) {
+      Ref.current.style.height = "auto";
+      Ref.current.style.height = `${Ref.current?.scrollHeight}px`;
+    }
+  }, [formik.values.comment]);
 
   const article = dataArticle;
   console.log(article);
@@ -175,6 +214,17 @@ const Article = () => {
           >
             {article?.article}
           </ReactMarkdown>
+        </div>
+        <div className="md:container">
+          <Input
+            name="comment"
+            type="text"
+            placeholder="your comment"
+            value={formik.values.comment}
+            onChange={formik.handleChange}
+            ref={Ref}
+            className="w-[500px]"
+          />
         </div>
       </section>
     </>
