@@ -9,7 +9,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import Image from "next/image";
 import { article } from "@/pages";
 
-const CardArticle = ({ dataArticle }) => {
+const CardArticle = ({ dataArticle }:any) => {
   if (dataArticle.length === 0) {
     return (
       <div className="flex w-full flex-col items-center justify-center space-y-4 border-b-[0.1px] border-slate-200 pb-4 md:w-[1036px] md:pb-0">
