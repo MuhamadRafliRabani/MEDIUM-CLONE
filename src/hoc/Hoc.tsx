@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 const Hoc = (WrappedComponent: React.ComponentType) => {
-  return (props: any) => {
+  const HOCComponent = (props: any) => {
     const router = useRouter();
     const { user, setUser } = useUser();
     const { user: userCustom } = useUserCustom();
@@ -36,6 +36,15 @@ const Hoc = (WrappedComponent: React.ComponentType) => {
       return null;
     }
   };
+
+  HOCComponent.displayName = `HOC(${getDisplayName(WrappedComponent)})`;
+
+  return HOCComponent;
 };
+
+// Helper function to get display name
+function getDisplayName(WrappedComponent: React.ComponentType) {
+  return WrappedComponent.displayName || WrappedComponent.name || "Component";
+}
 
 export default Hoc;
