@@ -16,6 +16,7 @@ import { useUser } from "@/hooks/store/useUser";
 import { authgoogle, signIn, signUp } from "./auth";
 import { useEffect, useState } from "react";
 import { useSetUser } from "./useSetUser";
+import { toast } from "sonner";
 
 export type FormValues = {
   email: string;
@@ -32,7 +33,6 @@ const validationSchema = Yup.object().shape({
 const FormCard: React.FC = () => {
   const { setUser, user } = useUser();
   const [isSignUp, setIsSignUp] = useState(true);
-
   const router = useRouter();
 
   const handleAuth = async (values: FormValues) => {

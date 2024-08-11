@@ -13,7 +13,7 @@ export const useSetUser = () => {
   return useMutation({
     mutationFn: async (value: user) => {
       const res = await axiosInstence.post(
-        "/feature/profil-user/first-upload",
+        "/feature/upload/profil-user",
         value,
       );
       return res;
