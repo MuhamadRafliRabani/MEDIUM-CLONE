@@ -44,26 +44,25 @@ function Home() {
     }
   }, []);
 
-  useEffect(() => {
-    if (user.email) {
-      const value = {
-        name: user?.displayName || "",
-        pronouns: "writer",
-        short_bio: "",
-        email: user?.email,
-        profil_img: user?.photoURL,
-      };
-      console.log(value);
+  const value = {
+    name: user?.displayName || "",
+    pronouns: "writer",
+    short_bio: "",
+    email: user?.email,
+    profil_img: user?.photoURL,
+  };
 
-      mutate(value, {
-        onSuccess: () => {
-          toast.success("your are login");
-        },
-        onError: () => {
-          toast.error("your are not login");
-        },
-      });
-    }
+  useEffect(() => {
+    console.log(value);
+
+    mutate(value, {
+      onSuccess: () => {
+        toast.success("your are login");
+      },
+      onError: () => {
+        toast.error("your are not login");
+      },
+    });
   }, [user]);
 
   if (isError) return <div>Error loading data</div>;
@@ -73,18 +72,18 @@ function Home() {
   console.log(usercustom);
 
   return (
-    <>
+    <div className="relative">
       <header>
         <Navbar />
       </header>
       <main
-        className={`flex w-svw flex-col items-center justify-between px-4 ${inter.className} main relative pt-4 md:container`}
+        className={`flex w-svw flex-col items-center justify-between px-4 md:w-full ${inter.className} main mx-auto pt-4 lg:container`}
       >
-        <div className="md:nav mx-auto block w-full md:w-4/5">
+        <div className="md:nav mx-auto block w-full md:w-4/5 md:max-w-4xl">
           <MyCarousel />
         </div>
 
-        <section className="content w-full space-y-4 border-slate-100 pt-6 md:container md:border-e">
+        <section className="content w-full space-y-4 border-slate-100 pt-6 md:container md:max-w-4xl md:border-e">
           {!dataArticle ? (
             <SkeletonCard />
           ) : (
@@ -96,8 +95,8 @@ function Home() {
           <StaffContainer />
         </div>
       </main>
-      <Footer />
-    </>
+      {/* <Footer /> */}
+    </div>
   );
 }
 

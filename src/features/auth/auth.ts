@@ -79,15 +79,15 @@ export const signIn = async (value: FormValues, router: NextRouter) => {
   }
 };
 
-// export const SignOut = async (router) => {
-//   const auth = getAuth();
+export const SignOut = async (router: NextRouter) => {
+  const auth = getAuth();
 
-//   try {
-//     await signOut(auth);
-//     toast.success("berhasil logout");
-//     router.push("/");
-//   } catch (error) {
-//     console.error("Error during sign-out:", error);
-//     toast.success("gagal logout");
-//   }
-// };
+  try {
+    await signOut(auth);
+    toast.success("berhasil logout");
+    router.push("/");
+  } catch (error) {
+    console.error("Error during sign-out:", error);
+    toast.success("gagal logout");
+  }
+};

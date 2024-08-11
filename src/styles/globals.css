@@ -185,9 +185,9 @@ body {
     font-family: "Tinos", serif;
   }
 }
-@media (min-width: 1200px) {
+/* @media (min-width: 1200px) {
   .main {
     padding-left: 6rem;
     padding-right: 6rem;
   }
-}
+} */

@@ -9,29 +9,30 @@ import { SignOut } from "../auth/auth";
 import { toast } from "sonner";
 import { useSetProfil } from "./useEditProfile";
 import { useRouter } from "next/router";
+import { LogOut } from "lucide-react";
 
 const validationSchema = yup.object().shape({
   name: yup
     .string()
-    .min(6, "Minimum 6 characters")
+    .min(10, "Minimum 6 characters")
     .max(50, "Maximum 50 characters")
     .required("Name is required"),
   pronouns: yup
     .string()
-    .min(5, "Minimum 5 character")
-    .max(10, "Maximum 10 characters")
+    .min(10, "Minimum 5 character")
+    .max(20, "Maximum 10 characters")
     .required("Pronouns are required"),
   short_bio: yup
     .string()
-    .min(1, "Minimum 1 character")
+    .min(6, "Minimum 1 character")
     .max(160, "Maximum 160 characters")
     .required("Short bio is required"),
 });
 
 const EditProfil: React.FC = () => {
   const { user } = useUser();
-  const { mutate, data } = useSetProfil();
-  const Router = useRouter();
+  const router = useRouter();
+  const { mutate } = useSetProfil();
   const { user: user_custom } = useUserCustom();
   const { file, image, handleFileChange } = useHandleFileChange();
 
@@ -66,6 +67,11 @@ const EditProfil: React.FC = () => {
       });
     },
   });
+
+  const handleLogOut = async () => {
+    localStorage.removeItem("user");
+    await SignOut(router);
+  };
 
   return (
     <form
@@ -173,8 +179,15 @@ const EditProfil: React.FC = () => {
         </p>
       </div>
 
-      <div className="flex w-full items-center justify-end gap-4 text-green-400">
-        <Button type="submit" variant="outline" className="border-green-400">
+      <div className="flex w-full items-center justify-between gap-4">
+        <Button onClick={handleLogOut}>
+          <LogOut className="mr-2 size-4" /> Logout
+        </Button>
+        <Button
+          type="submit"
+          variant="outline"
+          className="border-green-400 text-green-400"
+        >
           Save
         </Button>
       </div>

@@ -12,7 +12,7 @@ export const validationSchema = yup.object({
   comment: yup.string().required("Comment is required"),
 });
 
-const Comment = ({ id }: number) => {
+const Comment = ({ id }: any) => {
   const Ref = useRef<HTMLTextAreaElement | null>(null);
   const { user } = useUserCustom();
   const { mutate } = useComment();
@@ -31,7 +31,7 @@ const Comment = ({ id }: number) => {
       };
       mutate(data, {
         onSuccess: () => {
-          router.push("/");
+          router.back();
           toast.success("comment sended");
         },
         onError: () => {
@@ -52,7 +52,7 @@ const Comment = ({ id }: number) => {
     <section className="flex w-svw items-center justify-center">
       <form
         onSubmit={formik.handleSubmit}
-        className="w-full space-y-4 md:w-[500px]"
+        className="w-full space-y-4 px-4 md:w-[500px] md:px-0"
       >
         <div className="space-y-2">
           <label htmlFor="comment" className="font-semibold">
