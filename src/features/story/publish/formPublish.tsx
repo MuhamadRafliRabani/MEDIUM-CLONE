@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { InitialValue } from "..";
 import { usePublishStory } from "./usePublishStory";
 import { useRouter } from "next/navigation";
-import { useUser } from "@/hooks/store/useUser";
+import { useUser, useUserCustom } from "@/hooks/store/useUser";
 import { getCurrentDate } from "@/lib/date";
 import { toastPromise } from "@/lib/toast";
 import { Topic_list } from "@/data/Topic_list";
@@ -24,11 +24,11 @@ import { useGetUser } from "@/hooks/article/useGetUser";
 const FormPublish = ({ title, story }: InitialValue) => {
   const { user } = useUser();
   const { mutate, data } = usePublishStory();
-  const { data: data_user } = useGetUser(user.email);
+  const { user: userCustom } = useUserCustom();
   const router = useRouter();
   console.log(user.email);
 
-  console.log(data_user);
+  console.log(userCustom);
 
   const currentDate = getCurrentDate();
   const { file, image, handleFileChange } = usehandleFileChange();
@@ -50,8 +50,8 @@ const FormPublish = ({ title, story }: InitialValue) => {
       formData.append("description", values.description);
       formData.append("type", values.type);
       formData.append("article", story || "");
-      formData.append("author_name", data_user?.user.name);
-      formData.append("img_user", data_user?.user.profil_img);
+      formData.append("author_name", userCustom?.user.name);
+      formData.append("img_user", userCustom?.user.profil_img);
       formData.append("likes", "0");
       formData.append("comment", "");
       formData.append("date", currentDate);

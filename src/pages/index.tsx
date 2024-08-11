@@ -35,7 +35,6 @@ function Home() {
   const { user: usercustom } = useUserCustom();
   const { mutate, isSuccess: isSuccessSetUser } = useSetUser();
   const { data: dataArticle, isLoading, isError } = useGetArticle(topic);
-  const { data } = useGetUser(user?.email);
   const { setUserCustom } = useUserCustom();
 
   useEffect(() => {

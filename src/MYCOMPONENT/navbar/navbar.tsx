@@ -44,8 +44,8 @@ const Navbar: React.FC = () => {
                     triger={
                       <Image
                         src={
-                          userCustom.profil_img ||
-                          user.photoURL ||
+                          userCustom?.profil_img ||
+                          user?.photoURL ||
                           "/profil.jpg"
                         }
                         alt=""
