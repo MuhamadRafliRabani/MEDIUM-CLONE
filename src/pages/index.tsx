@@ -55,17 +55,14 @@ function Home() {
   useEffect(() => {
     console.log(value);
 
-    mutate(value, {
-      onSuccess: () => {
-        toast.success("your are login");
-      },
-      onError: () => {
-        toast.error("your are not login");
-      },
-    });
+    if (user && value) {
+      mutate(value, {
+        onSuccess: () => {
+          toast.success("your are login");
+        },
+      });
+    }
   }, [user]);
-
-  if (isError) return <div>Error loading data</div>;
 
   console.log(resposneUser);
   console.log(data);
