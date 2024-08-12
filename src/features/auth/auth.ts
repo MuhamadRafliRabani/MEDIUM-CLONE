@@ -12,12 +12,12 @@ import { toast } from "sonner";
 import { NextRouter } from "next/router";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBG4mc149kHv_Gm4vpwvRkYYAGi5DN7Le4",
-  authDomain: "medium-clone-c7b71.firebaseapp.com",
-  projectId: "medium-clone-c7b71",
-  storageBucket: "medium-clone-c7b71.appspot.com",
-  messagingSenderId: "837344483684",
-  appId: "1:837344483684:web:37303a2d977b3a6aa48271",
+  apiKey: process.env.NEXT_PUBLIC_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_APP_ID,
 };
 
 if (!getApps().length) {
