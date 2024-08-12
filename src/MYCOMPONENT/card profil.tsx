@@ -43,9 +43,13 @@ const Card_profil: React.FC<Profil> = ({ img, author_name }) => {
     mutate(Data);
     setIsSubscribed(true);
   };
+  const customUserWithSubscription = {
+    ...userCustom,
+    subscribed_to: author_name,
+  };
 
   useEffect(() => {
-    checkIsSubscribe({ userCustom, author_name });
+    checkIsSubscribe({ userCustom: customUserWithSubscription });
   }, [isSuccess, []]);
 
   if (successCheck) {
