@@ -26,6 +26,8 @@ const HeaderStory = ({ title, story }: InitialValue) => {
             <Button className="bg-green-400 text-sm text-white">Publish</Button>
           }
           content={<FormPublish title={title} story={story} />}
+          Title="Pubslish your story"
+          Description="Share your story to the world"
         />
         <MyDropDownMenu />
         <div className="size-8">

@@ -26,30 +26,30 @@ const MyDropDownMenu = () => {
       <DropdownMenuTrigger>
         <MyToolTip
           Trigger={
-            <DotsThree size={22} className="size-6 text-icon mt-2 font-bold" />
+            <DotsThree size={22} className="mt-2 size-6 font-bold text-icon" />
           }
           Content={<p>More</p>}
           tag="p"
         />
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-[250px] bg-white shadow-lg border-none font-light">
-        <DropdownMenuLabel className="py-4 flex items-center gap-2 border-b-[0.3px] border-slate-100">
+      <DropdownMenuContent className="w-[250px] border-none bg-white font-light shadow-lg">
+        <DropdownMenuLabel className="flex items-center gap-2 py-4">
           <BookmarkSimple size={16} /> Save
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="flex flex-col gap-1">
-          <h1 className="flex items-center w-full gap-2">
+          <h1 className="flex w-full items-center gap-2">
             <PlusCircle size={16} /> Show more
           </h1>
-          <span className="text-sm text-slate-700 ps-6">
+          <span className="ps-6 text-sm text-slate-700">
             Recommend more stories like this to me.
           </span>
         </DropdownMenuItem>
         <DropdownMenuItem className="flex flex-col gap-1">
-          <h1 className="flex items-center w-full gap-2">
+          <h1 className="flex w-full items-center gap-2">
             <MinusCircle size={16} /> Show less
           </h1>
-          <span className="text-sm text-slate-700 ps-6">
+          <span className="ps-6 text-sm text-slate-700">
             Recommend fewer stories like this to me.
           </span>
         </DropdownMenuItem>

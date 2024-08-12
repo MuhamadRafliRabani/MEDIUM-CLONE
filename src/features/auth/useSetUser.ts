@@ -1,12 +1,12 @@
 import { axiosInstence } from "@/lib/axios";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
 type user = {
   name: string;
   pronouns: string;
   short_bio: string;
-  email: string;
-  profil_img: string;
+  email: string | null | undefined;
+  profil_img: string | null | undefined;
 };
 
 export const useSetUser = () => {

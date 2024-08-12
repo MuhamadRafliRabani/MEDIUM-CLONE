@@ -1,18 +1,15 @@
-import React, { useEffect } from "react";
 import Link from "next/link";
-import { PencilLine, SignIn } from "@phosphor-icons/react";
+import { PencilLine } from "@phosphor-icons/react";
 import MyDropDownMenu from "../MyDropDownMenu/MyDropDownMenu";
 import Image from "next/image";
 import { useUser, useUserCustom } from "@/hooks/store/useUser";
 import MyToolTip from "../MyToolTip/MyToolTip";
 import MyDrawer from "../my_drawer/MyDrawer";
 import EditProfil from "@/features/profil/editProfil";
-import { useGetUser } from "@/hooks/article/useGetUser";
 
 const Navbar: React.FC = () => {
   const { user } = useUser();
-  const { user: userCustom,setUserCustom } = useUserCustom();
-  
+  const { user: userCustom, setUserCustom } = useUserCustom();
 
   return (
     <nav className="bg-white shadow-sm">
@@ -54,6 +51,8 @@ const Navbar: React.FC = () => {
                         className="size-8 rounded-full bg-slate-200"
                       />
                     }
+                    Title="Update Profil"
+                    Description="Update your profil here"
                     content={<EditProfil />}
                   />
                 }

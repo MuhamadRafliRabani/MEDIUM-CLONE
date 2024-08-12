@@ -16,7 +16,7 @@ type StoryData = {
 
 export const usePublishStory = () => {
   return useMutation({
-    mutationFn: async (value: StoryData) => {
+    mutationFn: async (value: FormData) => {
       const request = await axiosInstence.post(
         "/feature/publish/new-story",
         value,

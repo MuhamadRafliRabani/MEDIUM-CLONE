@@ -36,10 +36,9 @@ const Article = () => {
   const { mutate } = useComment();
   const id = router.query?.id;
   const { user } = useUserCustom();
-  const Ref = useRef<HTMLTextAreaElement | null>(null);
+  const Ref = useRef<HTMLInputElement | null>(null);
 
   console.log(user);
-  
 
   const {
     data: dataArticle,

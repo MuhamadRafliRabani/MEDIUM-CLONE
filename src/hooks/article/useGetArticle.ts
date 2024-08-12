@@ -1,7 +1,7 @@
 import { axiosInstence } from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
 
-export const useGetArticle = (topic) => {
+export const useGetArticle = (topic: string) => {
   console.log(topic);
 
   return useQuery({

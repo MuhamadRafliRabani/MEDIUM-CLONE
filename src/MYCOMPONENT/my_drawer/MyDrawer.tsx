@@ -15,9 +15,16 @@ import { X } from "@phosphor-icons/react";
 interface Drawer {
   triger: React.ReactNode;
   content: React.ReactNode;
+  Description: string;
+  Title: string;
 }
 
-const MyDrawer: React.FC<Drawer> = ({ triger, content }) => {
+const MyDrawer: React.FC<Drawer> = ({
+  triger,
+  content,
+  Description,
+  Title,
+}) => {
   return (
     <div className="h-fit">
       <Drawer>
@@ -25,10 +32,8 @@ const MyDrawer: React.FC<Drawer> = ({ triger, content }) => {
         <DrawerContent>
           <DrawerHeader className="flex items-center justify-between">
             <div>
-              <DrawerTitle>Are you absolutely sure?</DrawerTitle>
-              <DrawerDescription>
-                This action cannot be undone.
-              </DrawerDescription>
+              <DrawerTitle>{Title}</DrawerTitle>
+              <DrawerDescription>{Description}</DrawerDescription>
             </div>
             <DrawerClose>
               <Button variant="outline">

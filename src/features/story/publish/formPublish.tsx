@@ -8,7 +8,6 @@ import { usePublishStory } from "./usePublishStory";
 import { useRouter } from "next/navigation";
 import { useUser, useUserCustom } from "@/hooks/store/useUser";
 import { getCurrentDate } from "@/lib/date";
-import { toastPromise } from "@/lib/toast";
 import { Topic_list } from "@/data/Topic_list";
 import { toast } from "sonner";
 import {
@@ -50,8 +49,8 @@ const FormPublish = ({ title, story }: InitialValue) => {
       formData.append("description", values.description);
       formData.append("type", values.type);
       formData.append("article", story || "");
-      formData.append("author_name", userCustom?.user.name);
-      formData.append("img_user", userCustom?.user.profil_img);
+      formData.append("author_name", userCustom?.name);
+      formData.append("img_user", userCustom?.profil_img);
       formData.append("likes", "0");
       formData.append("comment", "");
       formData.append("date", currentDate);

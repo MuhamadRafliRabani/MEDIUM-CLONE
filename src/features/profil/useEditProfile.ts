@@ -20,7 +20,7 @@ type editProfil = {
 
 export const useSetProfil = () => {
   return useMutation({
-    mutationFn: async (value) => {
+    mutationFn: async (value: FormData) => {
       const request = await axiosInstence.post(
         "/feature/update/profil-user",
         value,

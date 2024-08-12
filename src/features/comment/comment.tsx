@@ -28,6 +28,8 @@ const Comment = ({ id }: any) => {
         user: user.name,
         idArticle: id,
         comment: values.comment,
+        email: user.email,
+        profil_img: user.profil_img,
       };
       mutate(data, {
         onSuccess: () => {
@@ -60,7 +62,6 @@ const Comment = ({ id }: any) => {
           </label>
           <textarea
             name="comment"
-            type="text"
             placeholder="your comment"
             value={formik.values.comment}
             onChange={formik.handleChange}

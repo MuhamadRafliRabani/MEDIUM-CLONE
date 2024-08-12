@@ -1,5 +1,10 @@
 // components/Comment.js
-const Comment = ({ username, comment, timeAgo }: string | undefined | null) => {
+type Comment = {
+  username: string | undefined | null;
+  comment: string | undefined | null;
+  timeAgo: string | undefined | null;
+};
+const Comment = ({ username, comment, timeAgo }: Comment) => {
   return (
     <div className="mx-auto my-4 w-full max-w-2xl rounded-lg bg-white p-4 shadow-md">
       <div className="flex items-center justify-between">

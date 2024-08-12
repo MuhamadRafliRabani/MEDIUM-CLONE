@@ -10,7 +10,7 @@ type CardFeture = {
   id?: number;
   date: string;
   likes: number;
-  comments: string | null;
+  comments: string | number | null;
 };
 
 const CardFeture = ({ id, date, likes, comments }: CardFeture) => {
@@ -67,6 +67,8 @@ const CardFeture = ({ id, date, likes, comments }: CardFeture) => {
                   className="border-none text-icon outline-none"
                 />
               }
+              Title="Comment"
+              Description="comment with a good word"
             />
           }
           tag="p"

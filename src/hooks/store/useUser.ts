@@ -30,7 +30,9 @@ interface UserCustomState {
   user: {
     email: string;
     id: number;
+    number: string;
     name: string;
+    string: string;
     profil_img: string;
     pronouns: string;
     short_bio: string;
@@ -40,7 +42,16 @@ interface UserCustomState {
 
 // user custom
 export const useUserCustom = create<UserCustomState>((set) => ({
-  user: {},
+  user: {
+    email: "",
+    id: 0,
+    number: "",
+    name: "",
+    string: "",
+    profil_img: "",
+    pronouns: "",
+    short_bio: "",
+  },
   setUserCustom: (user) => set({ user }),
 }));
 
