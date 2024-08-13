@@ -251,6 +251,7 @@ const Article = () => {
         <div className="mx-auto max-w-3xl">
           {data?.data.map((comment: Comment, i: number) => (
             <CardComment
+              key={i}
               comment={comment.comment}
               idArticle={id}
               profil_img={comment.profil_img || "/profil.jpg"}
