@@ -1,7 +1,6 @@
 import { Inter } from "next/font/google";
 import MyCarousel from "@/MYCOMPONENT/Carousell";
 import StaffContainer from "@/MYCOMPONENT/sidemenu/Staff/StaffContainer";
-import { useGetArticle } from "@/hooks/article/useGetArticle";
 import Navbar from "@/MYCOMPONENT/navbar/navbar";
 import { usesetTopic, useUser, useUserCustom } from "@/hooks/store/useUser";
 import SkeletonCard from "@/MYCOMPONENT/article/cardSeleton";
@@ -9,9 +8,10 @@ import { useEffect } from "react";
 import CardArticle from "@/MYCOMPONENT/article/article";
 import Hoc from "@/hoc/Hoc";
 import Footer from "@/MYCOMPONENT/MyFooter";
-import { useGetUser } from "@/hooks/article/useGetUser";
-import { useSetUser } from "@/features/auth/useSetUser";
 import { toast } from "sonner";
+import { useHandleGet } from "@/lib/useGet";
+import { useHandlePost } from "@/lib/useHandlePost";
+import ArticleSkeleton from "@/MYCOMPONENT/article/articleSkeleton";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,14 +29,29 @@ export type article = {
   type: string;
 };
 
+type uploadUser = {
+  name: string | undefined | null;
+  pronouns: string;
+  short_bio: string;
+  email: string | undefined | null;
+  profil_img: string | undefined | null;
+};
+
 function Home() {
+  //store
   const { topic } = usesetTopic();
   const { user } = useUser();
-  const { user: usercustom } = useUserCustom();
-  const { data: dataArticle, isLoading, isError } = useGetArticle(topic);
   const { setUserCustom } = useUserCustom();
-  const { mutate, data: resposneUser } = useSetUser();
-  const { data } = useGetUser(user.email, resposneUser);
+  // feaching
+  const { mutate, isSuccess: success_upload_user } = useHandlePost<uploadUser>(
+    "/feature/profil-user/upload",
+  );
+  const { data: articles, isLoading, isError } = useHandleGet("/", topic);
+  const { data } = useHandleGet(
+    "/feature/getuser/",
+    user.email,
+    success_upload_user,
+  );
 
   useEffect(() => {
     if (data) {
@@ -45,11 +60,11 @@ function Home() {
   }, []);
 
   const value = {
-    name: user?.displayName || "",
+    name: user?.displayName || user.email,
     pronouns: "writer",
     short_bio: "",
     email: user?.email,
-    profil_img: user?.photoURL,
+    profil_img: user?.photoURL || "/profil.jpg",
   };
 
   useEffect(() => {
@@ -64,9 +79,9 @@ function Home() {
     }
   }, [user]);
 
-  console.log(resposneUser);
-  console.log(data);
-  console.log(usercustom);
+  console.log(user);
+
+  if (isError) toast.error("failed to load article");
 
   return (
     <div className="relative">
@@ -81,10 +96,10 @@ function Home() {
         </div>
 
         <section className="content w-full space-y-4 border-slate-100 pt-6 md:container md:max-w-4xl md:border-e">
-          {!dataArticle ? (
+          {!articles && isLoading ? (
             <SkeletonCard />
           ) : (
-            <CardArticle dataArticle={dataArticle} />
+            <CardArticle articles={articles} />
           )}
         </section>
 
@@ -93,6 +108,7 @@ function Home() {
         </div>
       </main>
       {/* <Footer /> */}
+      <ArticleSkeleton />
     </div>
   );
 }

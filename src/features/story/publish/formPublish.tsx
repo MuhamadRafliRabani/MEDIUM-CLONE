@@ -4,10 +4,9 @@ import * as Yup from "yup";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { InitialValue } from "..";
-import { usePublishStory } from "./usePublishStory";
 import { useRouter } from "next/navigation";
 import { useUser, useUserCustom } from "@/hooks/store/useUser";
-import { getCurrentDate } from "@/lib/date";
+import { getDate } from "@/lib/date";
 import { Topic_list } from "@/data/Topic_list";
 import { toast } from "sonner";
 import {
@@ -18,19 +17,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import usehandleFileChange from "@/hooks/setImage";
-import { useGetUser } from "@/hooks/article/useGetUser";
+import { useHandlePost } from "@/lib/useHandlePost";
 
 const FormPublish = ({ title, story }: InitialValue) => {
+  const Date = getDate();
   const { user } = useUser();
-  const { mutate, data } = usePublishStory();
-  const { user: userCustom } = useUserCustom();
   const router = useRouter();
-  console.log(user.email);
-
-  console.log(userCustom);
-
-  const currentDate = getCurrentDate();
+  const { user: userCustom } = useUserCustom();
+  const { mutate } = useHandlePost("/feature/story/publish");
   const { file, image, handleFileChange } = usehandleFileChange();
+  console.log(userCustom);
 
   const formik = useFormik({
     initialValues: {
@@ -49,11 +45,16 @@ const FormPublish = ({ title, story }: InitialValue) => {
       formData.append("description", values.description);
       formData.append("type", values.type);
       formData.append("article", story || "");
-      formData.append("author_name", userCustom?.name);
-      formData.append("img_user", userCustom?.profil_img);
+      formData.append(
+        "author_name",
+        user.email && userCustom?.name
+          ? userCustom?.name || user.email
+          : "user",
+      );
+      formData.append("img_user", userCustom?.profil_img || "/profil.img");
       formData.append("likes", "0");
       formData.append("comment", "");
-      formData.append("date", currentDate);
+      formData.append("date", Date);
       formData.append("image", file ? file : "");
 
       mutate(formData, {

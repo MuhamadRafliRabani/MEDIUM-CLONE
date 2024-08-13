@@ -1,10 +1,11 @@
 import { ChatCircle, HandsClapping, StarFour } from "@phosphor-icons/react";
 import MyToolTip from "../MyToolTip/MyToolTip";
 import { useState } from "react";
-import { useFeatureRequest } from "@/lib/useFeatureRequest";
 import { useUser } from "@/hooks/store/useUser";
 import MyDrawer from "../my_drawer/MyDrawer";
 import Comment from "@/features/comment/comment";
+import { useHandlePatch } from "@/lib/useHandlePatch";
+import { toast } from "sonner";
 
 type CardFeture = {
   id?: number;
@@ -14,16 +15,18 @@ type CardFeture = {
 };
 
 const CardFeture = ({ id, date, likes, comments }: CardFeture) => {
+  const { user } = useUser();
   const [like, setLike] = useState(likes);
   const [isLiked, setisLiked] = useState(false);
-  const { mutate: mutatelike } = useFeatureRequest("patch", "/feature/like");
-  const { user } = useUser();
 
   const handleLike = () => {
     setLike(like + 1);
     setisLiked(true);
-    mutatelike({ id });
   };
+
+  const { isError } = useHandlePatch("/feature/like/" + id, handleLike);
+
+  if (isError) toast.error("cannot like");
 
   return (
     <div className="flex w-full items-center justify-start gap-4 pt-4 text-sm md:pt-0">

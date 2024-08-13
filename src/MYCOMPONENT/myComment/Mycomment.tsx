@@ -1,18 +1,22 @@
-// components/Comment.js
-type Comment = {
-  username: string | undefined | null;
-  comment: string | undefined | null;
-  timeAgo: string | undefined | null;
-};
-const Comment = ({ username, comment, timeAgo }: Comment) => {
+import type { Comment } from "@/features/comment/comment";
+import MyToolTip from "../MyToolTip/MyToolTip";
+import Card_profil from "../card profil";
+import MyAvatar from "../avatar/MyAvatar";
+
+const CardComment = ({ user, comment, time, profil_img }: Comment) => {
   return (
     <div className="mx-auto my-4 w-full max-w-2xl rounded-lg bg-white p-4 shadow-md">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
-          <div className="h-10 w-10 rounded-full bg-gray-200"></div>
+          <div className="">
+            <MyToolTip
+              Content={<Card_profil img={profil_img} author_name={user} />}
+              Trigger={<MyAvatar size="size-6 rounded-full" img={profil_img} />}
+            />
+          </div>
           <div>
-            <h4 className="font-semibold">{username}</h4>
-            <p className="text-sm text-gray-500">{timeAgo}</p>
+            <h4 className="font-semibold">{user}</h4>
+            <p className="text-sm text-gray-500">{time}</p>
           </div>
         </div>
       </div>
@@ -25,4 +29,4 @@ const Comment = ({ username, comment, timeAgo }: Comment) => {
   );
 };
 
-export default Comment;
+export default CardComment;

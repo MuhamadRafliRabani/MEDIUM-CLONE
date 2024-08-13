@@ -24,21 +24,29 @@ import ArticleSkeleton from "@/MYCOMPONENT/article/articleSkeleton";
 import Navbar from "@/MYCOMPONENT/navbar/navbar";
 import { useFormik } from "formik";
 import { validationSchema } from "@/features/comment/comment";
-import { useComment } from "@/features/comment/useComment";
 import { toast } from "sonner";
-import { useUserCustom } from "@/hooks/store/useUser";
+import { useUser, useUserCustom } from "@/hooks/store/useUser";
 import { comments } from "@/data/dummyComment";
-import Comment from "@/MYCOMPONENT/myComment/Mycomment";
 import { Button } from "@/components/ui/button";
+import { useHandlePost } from "@/lib/useHandlePost";
+import type { Comment } from "@/features/comment/comment";
+import { getDate } from "@/lib/date";
+import CardComment from "@/MYCOMPONENT/myComment/Mycomment";
+import { useHandleGet } from "@/lib/useGet";
 
 const Article = () => {
   const router = useRouter();
-  const { mutate } = useComment();
   const id = router.query?.id;
-  const { user } = useUserCustom();
+  const { user } = useUser();
+  const { user: userCustom } = useUserCustom();
+  const date = getDate();
   const Ref = useRef<HTMLInputElement | null>(null);
+  const { mutate } = useHandlePost<Comment>("/feature/comment/upload");
+  console.log(id);
 
-  console.log(user);
+  const { data } = useHandleGet("/feature/comment/", id);
+
+  console.log(data);
 
   const {
     data: dataArticle,
@@ -59,11 +67,12 @@ const Article = () => {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       const data = {
-        user: user?.name,
+        user: userCustom.name || user?.displayName,
         idArticle: id,
         comment: values.comment,
-        email: user?.email,
-        profil_img: user?.profil_img,
+        email: userCustom.email || user?.email,
+        profil_img: userCustom.profil_img || user?.photoURL || "/profil.jpg",
+        time: date,
       };
       mutate(data, {
         onSuccess: () => {
@@ -240,12 +249,14 @@ const Article = () => {
           </Button>
         </form>
         <div className="mx-auto max-w-3xl">
-          {comments.map((comment, index) => (
-            <Comment
-              key={index}
-              username={comment.username}
+          {data?.data.map((comment: Comment, i: number) => (
+            <CardComment
               comment={comment.comment}
-              timeAgo={comment.timeAgo}
+              idArticle={id}
+              profil_img={comment.profil_img || "/profil.jpg"}
+              time={date}
+              email={comment.email}
+              user={comment.user}
             />
           ))}
         </div>

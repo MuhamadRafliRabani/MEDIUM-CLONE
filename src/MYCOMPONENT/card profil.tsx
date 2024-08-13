@@ -3,23 +3,34 @@ import { Button } from "@/components/ui/button";
 import { BookBookmark } from "@phosphor-icons/react";
 import MyAvatar from "./avatar/MyAvatar";
 import { useUserCustom } from "@/hooks/store/useUser";
-import { getCurrentDate } from "@/lib/date";
-import { useSubscribe } from "@/features/story/subscribe/useSubscribe";
+import { getDate } from "@/lib/date";
 import { toast } from "sonner";
 import Link from "next/link";
-import { useCheckSubscription } from "@/features/story/subscribe/useCheckSubscibe";
+import { useHandlePost } from "@/lib/useHandlePost";
 
 type Profil = {
-  img: string;
-  author_name: string;
+  img: any;
+  author_name: any;
+};
+
+type SubscribeDataType = {
+  subscriber: string;
+  subscribed_to: string;
+  subscribe_at: string;
+};
+
+type CheckSubscription = {
+  subscriber: string;
+  subscribed_to: string;
 };
 
 const Card_profil: React.FC<Profil> = ({ img, author_name }) => {
+  const date = getDate();
   const { user: userCustom } = useUserCustom();
-  const date = getCurrentDate();
-  const { mutate, isSuccess, data } = useSubscribe("/feature/subcribe");
   const { mutate: checkIsSubscribe, isSuccess: successCheck } =
-    useCheckSubscription(author_name);
+    useHandlePost<CheckSubscription>("/feature/checkIsSubscribe");
+  const { mutate, isSuccess, data } =
+    useHandlePost<SubscribeDataType>("/feature/subcribe");
 
   const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
 
@@ -43,13 +54,13 @@ const Card_profil: React.FC<Profil> = ({ img, author_name }) => {
     mutate(Data);
     setIsSubscribed(true);
   };
-  const customUserWithSubscription = {
-    ...userCustom,
+  const checkSubscribe = {
+    subscriber: userCustom.email,
     subscribed_to: author_name,
   };
 
   useEffect(() => {
-    checkIsSubscribe({ userCustom: customUserWithSubscription });
+    checkIsSubscribe(checkSubscribe);
   }, [isSuccess, []]);
 
   if (successCheck) {

@@ -8,25 +8,14 @@ import { BookmarkSimple, MinusCircle, Smiley } from "@phosphor-icons/react";
 import MyDropDownMenu from "../MyDropDownMenu/MyDropDownMenu";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import Image from "next/image";
-
-type Article = {
-  id: number;
-  title: string;
-  description: string;
-  img_content: string;
-  author_name: string;
-  img_user: string;
-  likes: number;
-  date: string;
-  comments: number;
-};
+import { article } from "@/pages";
 
 type CardArticleProps = {
-  dataArticle: Article[];
+  articles: article[];
 };
 
-const CardArticle: React.FC<CardArticleProps> = ({ dataArticle }) => {
-  if (dataArticle.length === 0) {
+const CardArticle: React.FC<CardArticleProps> = ({ articles }) => {
+  if (articles.length === 0) {
     return (
       <div className="flex w-full flex-col items-center justify-center space-y-4 border-b-[0.1px] border-slate-200 pb-4 md:w-[1036px] md:pb-0">
         <Smiley size={40} />
@@ -37,7 +26,7 @@ const CardArticle: React.FC<CardArticleProps> = ({ dataArticle }) => {
 
   return (
     <>
-      {dataArticle.map((article, i) => (
+      {articles.map((article, i) => (
         <div
           key={i}
           className="w-full space-y-4 border-b-[0.1px] border-slate-200 pb-4 md:pb-0"

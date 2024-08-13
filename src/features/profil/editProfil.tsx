@@ -7,9 +7,9 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { SignOut } from "../auth/auth";
 import { toast } from "sonner";
-import { useSetProfil } from "./useEditProfile";
 import { useRouter } from "next/router";
 import { LogOut } from "lucide-react";
+import { useHandlePost } from "@/lib/useHandlePost";
 
 const validationSchema = yup.object().shape({
   name: yup
@@ -29,11 +29,12 @@ const validationSchema = yup.object().shape({
     .required("Short bio is required"),
 });
 
+
 const EditProfil: React.FC = () => {
-  const { user } = useUser();
   const router = useRouter();
-  const { mutate } = useSetProfil();
+  const { user } = useUser();
   const { user: user_custom } = useUserCustom();
+  const { mutate } = useHandlePost("/profil-user/update");
   const { file, image, handleFileChange } = useHandleFileChange();
 
   const formik = useFormik({

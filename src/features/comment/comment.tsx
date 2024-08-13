@@ -3,20 +3,31 @@ import { PaperPlaneRight } from "@phosphor-icons/react";
 import { useFormik } from "formik";
 import { useEffect, useRef } from "react";
 import * as yup from "yup";
-import { useComment } from "./useComment";
 import { toast } from "sonner";
 import { useUserCustom } from "@/hooks/store/useUser";
 import { useRouter } from "next/navigation";
+import { useHandlePost } from "@/lib/useHandlePost";
+import { getDate } from "@/lib/date";
+
+export type Comment = {
+  user: string | undefined | null;
+  idArticle: string | string[] | undefined;
+  comment: string;
+  email: string | undefined | null;
+  profil_img: string | undefined | null;
+  time: string | undefined | null;
+};
 
 export const validationSchema = yup.object({
   comment: yup.string().required("Comment is required"),
 });
 
 const Comment = ({ id }: any) => {
-  const Ref = useRef<HTMLTextAreaElement | null>(null);
-  const { user } = useUserCustom();
-  const { mutate } = useComment();
+  const date = getDate();
   const router = useRouter();
+  const { user } = useUserCustom();
+  const Ref = useRef<HTMLTextAreaElement | null>(null);
+  const { mutate } = useHandlePost<Comment>("/feature/comment/upload");
 
   const formik = useFormik({
     initialValues: {
@@ -30,16 +41,20 @@ const Comment = ({ id }: any) => {
         comment: values.comment,
         email: user.email,
         profil_img: user.profil_img,
+        time: date,
       };
-      mutate(data, {
-        onSuccess: () => {
-          router.back();
-          toast.success("comment sended");
-        },
-        onError: () => {
-          toast.error("comment not sended");
-        },
-      });
+
+      if (values.comment && user.email) {
+        mutate(data, {
+          onSuccess: () => {
+            router.back();
+            toast.success("comment sended");
+          },
+          onError: () => {
+            toast.error("comment not sended");
+          },
+        });
+      }
     },
   });
 

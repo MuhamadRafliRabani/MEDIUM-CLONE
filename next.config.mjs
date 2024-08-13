@@ -16,7 +16,7 @@ const nextConfig = {
         hostname: "loading.io",
       },
       {
-        hostname: "medium-backend-mu.vercel.app/",
+        hostname: "cqhlafryyzzodifbdmia.supabase.co",
       },
     ],
   },

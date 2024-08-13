@@ -1,15 +1,9 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import Card_profil from "../card profil";
 
 type AvatarType = {
   size: string;
-  img?: string;
+  img?: any;
 };
 
 const MyAvatar = ({ size, img }: AvatarType) => {
