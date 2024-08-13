@@ -1,4 +1,3 @@
-import { useSetUser } from "@/features/auth/useSetUser";
 import { useUser, useUserCustom } from "@/hooks/store/useUser";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
