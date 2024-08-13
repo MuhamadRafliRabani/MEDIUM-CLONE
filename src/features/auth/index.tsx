@@ -14,9 +14,7 @@ import * as Yup from "yup";
 import { useRouter } from "next/router";
 import { useUser } from "@/hooks/store/useUser";
 import { authgoogle, signIn, signUp } from "./auth";
-import { useEffect, useState } from "react";
-import { useSetUser } from "./useSetUser";
-import { toast } from "sonner";
+import { useState } from "react";
 
 export type FormValues = {
   email: string;

@@ -108,7 +108,6 @@ function Home() {
         </div>
       </main>
       {/* <Footer /> */}
-      <ArticleSkeleton />
     </div>
   );
 }
