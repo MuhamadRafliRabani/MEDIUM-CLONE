@@ -21,7 +21,7 @@ const MyCarousel: React.FC = () => {
 
   return (
     <Carousel className="md:nav relative w-full border-b-2 border-slate-100 pb-2">
-      <CarouselContent className="overflow-ellipsis text-center md:container md:-ms-4">
+      <CarouselContent className="overflow-ellipsis text-center md:container">
         {Topic_list.map((topic, index) => (
           <CarouselItem
             key={index}

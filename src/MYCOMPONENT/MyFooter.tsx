@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-100 py-4 text-gray-700">
+    <footer className="fixed inset-x-0 bottom-0 z-[1] bg-gray-100 py-4 text-gray-700">
       <div className="container mx-auto px-4">
         <div className="flex justify-center space-x-6">
           <Link href="/help" className="hover:underline">
