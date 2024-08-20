@@ -84,31 +84,33 @@ function Home() {
   if (isError) toast.error("failed to load article");
 
   return (
-    <div className="relative">
-      <header>
-        <Navbar />
-      </header>
-      <main
-        className={`flex w-svw flex-col items-center justify-between px-4 md:w-full ${inter.className} main mx-auto pt-4 lg:container`}
-      >
-        <div className="md:nav mx-auto block w-full md:w-4/5 md:max-w-4xl">
-          <MyCarousel />
-        </div>
+    <>
+      <div className="relative h-full min-h-[87vh]">
+        <header>
+          <Navbar />
+        </header>
+        <main
+          className={`flex w-svw flex-col items-center justify-between px-4 md:w-full ${inter.className} main mx-auto pt-4 lg:container`}
+        >
+          <div className="md:nav mx-auto block w-full md:w-4/5 md:max-w-4xl">
+            <MyCarousel />
+          </div>
 
-        <section className="content w-full space-y-4 border-slate-100 pt-6 md:container md:max-w-4xl md:border-e">
-          {!articles && isLoading ? (
-            <SkeletonCard />
-          ) : (
-            <CardArticle articles={articles} />
-          )}
-        </section>
+          <section className="content w-full space-y-4 border-slate-100 pt-6 md:container md:max-w-4xl md:border-e">
+            {!articles && isLoading ? (
+              <SkeletonCard />
+            ) : (
+              <CardArticle articles={articles} />
+            )}
+          </section>
 
-        <div className="md:sidebar relative h-full w-full pt-6 md:block md:ps-8">
-          <StaffContainer />
-        </div>
-      </main>
-      {/* <Footer /> */}
-    </div>
+          <div className="md:sidebar relative h-full w-full pt-6 md:block md:ps-8">
+            <StaffContainer />
+          </div>
+        </main>
+      </div>
+      <Footer />
+    </>
   );
 }
 

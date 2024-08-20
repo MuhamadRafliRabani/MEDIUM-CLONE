@@ -18,6 +18,9 @@ const nextConfig = {
       {
         hostname: "cqhlafryyzzodifbdmia.supabase.co",
       },
+      {
+        hostname: "i.pinimg.com",
+      },
     ],
   },
 };

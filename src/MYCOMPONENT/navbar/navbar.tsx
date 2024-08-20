@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PencilLine } from "@phosphor-icons/react";
+import { Bell, PencilLine } from "@phosphor-icons/react";
 import MyDropDownMenu from "../MyDropDownMenu/MyDropDownMenu";
 import Image from "next/image";
 import { useUser, useUserCustom } from "@/hooks/store/useUser";
@@ -20,18 +20,34 @@ const Navbar: React.FC = () => {
           </Link>
         </div>
 
-        <div className="flex items-center justify-center space-x-4">
+        <div className="flex items-center justify-center space-x-4 md:space-x-6">
           <Link
             href="/article/new-story"
             className="text-gray-700 hover:text-black"
           >
             <MyToolTip
               Content={<p>make your story</p>}
-              Trigger={<PencilLine size={24} weight="thin" />}
+              Trigger={
+                <PencilLine
+                  className="mt-1 size-6 md:size-8"
+                  size={24}
+                  weight="thin"
+                />
+              }
               tag="p"
             />
           </Link>
-          <MyDropDownMenu />
+          <MyToolTip
+            Content={<p>No notifications</p>}
+            Trigger={
+              <Bell
+                className="-mt-1 size-6 md:size-7"
+                size={24}
+                weight="thin"
+              />
+            }
+            tag="p"
+          />
           <div>
             {user.email && (
               <MyToolTip
