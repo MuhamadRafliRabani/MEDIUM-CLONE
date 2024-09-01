@@ -27,31 +27,35 @@ export const useUser = create<UserState>((set) => ({
 
 // Type untuk custom user
 interface UserCustomState {
-  user: {
-    email: string;
-    id: number;
-    number: string;
-    name: string;
-    string: string;
-    profil_img: string;
-    pronouns: string;
-    short_bio: string;
-  };
+  user: [
+    {
+      email: string | undefined | null | Blob;
+      id: number | undefined | null | Blob;
+      number: string | undefined | null | Blob;
+      name: string | undefined | null | Blob;
+      string: string | undefined | null | Blob;
+      profil_img: string | undefined | null | Blob;
+      pronouns: string | undefined | null | Blob;
+      short_bio: string | undefined | null | Blob;
+    },
+  ];
   setUserCustom: (user: UserCustomState["user"]) => void;
 }
 
 // user custom
 export const useUserCustom = create<UserCustomState>((set) => ({
-  user: {
-    email: "",
-    id: 0,
-    number: "",
-    name: "",
-    string: "",
-    profil_img: "",
-    pronouns: "",
-    short_bio: "",
-  },
+  user: [
+    {
+      email: "",
+      id: 0,
+      number: "",
+      name: "",
+      string: "",
+      profil_img: "",
+      pronouns: "",
+      short_bio: "",
+    },
+  ],
   setUserCustom: (user) => set({ user }),
 }));
 

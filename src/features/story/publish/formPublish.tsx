@@ -20,13 +20,11 @@ import usehandleFileChange from "@/hooks/setImage";
 import { useHandlePost } from "@/lib/useHandlePost";
 
 const FormPublish = ({ title, story }: InitialValue) => {
-  const Date = getDate();
   const { user } = useUser();
   const router = useRouter();
   const { user: userCustom } = useUserCustom();
   const { mutate } = useHandlePost("/feature/story/publish");
   const { file, image, handleFileChange } = usehandleFileChange();
-  console.log(userCustom);
 
   const formik = useFormik({
     initialValues: {
@@ -47,15 +45,25 @@ const FormPublish = ({ title, story }: InitialValue) => {
       formData.append("article", story || "");
       formData.append(
         "author_name",
-        user.email && userCustom?.name
-          ? userCustom?.name || user.email
-          : "user",
+        userCustom ? userCustom[0].name : user.email,
       );
-      formData.append("img_user", userCustom?.profil_img || "/profil.img");
+      formData.append(
+        "img_user",
+        userCustom ? userCustom[0].name : user.photoURL,
+      );
       formData.append("likes", "0");
       formData.append("comment", "");
-      formData.append("date", Date);
       formData.append("image", file ? file : "");
+
+      console.log({
+        title: values.title,
+        description: values.description,
+        type: values.type,
+        story,
+        author_name: userCustom[0]?.name,
+        profil_img: userCustom[0]?.profil_img,
+        file,
+      });
 
       mutate(formData, {
         onSuccess: () => {
@@ -69,6 +77,8 @@ const FormPublish = ({ title, story }: InitialValue) => {
       });
     },
   });
+
+  console.log(userCustom[0]);
 
   return (
     <form onSubmit={formik.handleSubmit}>
