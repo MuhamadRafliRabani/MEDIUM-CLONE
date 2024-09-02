@@ -17,7 +17,7 @@ export default function App({ Component, pageProps }: AppProps) {
             error: "bg-red-400",
             success: "text-green-400",
             warning: "text-yellow-400",
-            info: "bg-blue-400",
+            info: "text-green-400",
           },
         }}
       />

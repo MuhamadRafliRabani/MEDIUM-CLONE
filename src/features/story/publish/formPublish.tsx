@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { InitialValue } from "..";
 import { useRouter } from "next/navigation";
 import { useUser, useUserCustom } from "@/hooks/store/useUser";
-import { getDate } from "@/lib/date";
 import { Topic_list } from "@/data/Topic_list";
 import { toast } from "sonner";
 import {
@@ -43,14 +42,8 @@ const FormPublish = ({ title, story }: InitialValue) => {
       formData.append("description", values.description);
       formData.append("type", values.type);
       formData.append("article", story || "");
-      formData.append(
-        "author_name",
-        userCustom ? userCustom[0].name : user.email,
-      );
-      formData.append(
-        "img_user",
-        userCustom ? userCustom[0].name : user.photoURL,
-      );
+      formData.append("author_name", userCustom[0].name || user.email || "");
+      formData.append("img_user", userCustom[0].name || user.photoURL || "");
       formData.append("likes", "0");
       formData.append("comment", "");
       formData.append("image", file ? file : "");

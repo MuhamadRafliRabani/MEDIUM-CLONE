@@ -26,30 +26,25 @@ import { useFormik } from "formik";
 import { validationSchema } from "@/features/comment/comment";
 import { toast } from "sonner";
 import { useUser, useUserCustom } from "@/hooks/store/useUser";
-import { comments } from "@/data/dummyComment";
 import { Button } from "@/components/ui/button";
 import { useHandlePost } from "@/lib/useHandlePost";
 import type { Comment } from "@/features/comment/comment";
-import { getDate } from "@/lib/date";
 import CardComment from "@/MYCOMPONENT/myComment/Mycomment";
 import { useHandleGet } from "@/lib/useGet";
+import { formatDate } from "@/lib/date";
+import Link from "next/link";
 
 const Article = () => {
   const router = useRouter();
   const id = router.query?.id;
   const { user } = useUser();
   const { user: userCustom } = useUserCustom();
-  const date = getDate();
   const Ref = useRef<HTMLInputElement | null>(null);
   const { mutate } = useHandlePost<Comment>("/feature/comment/upload");
-  console.log(id);
-
   const { data } = useHandleGet("/feature/comment/", id);
 
-  console.log(data);
-
   const {
-    data: dataArticle,
+    data: article,
     isLoading,
     isError,
   } = useQuery({
@@ -60,6 +55,8 @@ const Article = () => {
     },
   });
 
+  const Date = formatDate(article?.date);
+
   const formik = useFormik({
     initialValues: {
       comment: "",
@@ -67,12 +64,14 @@ const Article = () => {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       const data = {
-        user: userCustom.name || user?.displayName,
+        user: (userCustom[0].name as string) || user?.displayName,
         idArticle: id,
         comment: values.comment,
-        email: userCustom.email || user?.email,
-        profil_img: userCustom.profil_img || user?.photoURL || "/profil.jpg",
-        time: date,
+        email: (userCustom[0].email as string) || user?.email,
+        profil_img:
+          (userCustom[0].profil_img as string) ||
+          user?.photoURL ||
+          "/profil.jpg",
       };
       mutate(data, {
         onSuccess: () => {
@@ -92,24 +91,15 @@ const Article = () => {
     }
   }, [formik.values.comment]);
 
-  const article = dataArticle;
-
   if (isLoading) return <ArticleSkeleton />;
 
-  if (isError) return <div>Error loading data</div>;
+  if (isError) return toast.error("something error!");
 
   return (
     <>
       <Navbar />
       <section className="space-y-4 px-4 md:container md:px-0">
         <div className="space-y-4 border-b border-primary pt-4 md:mx-auto md:w-1/2 md:space-y-8 md:pb-10 md:pt-20">
-          <div className="flex items-center gap-4">
-            <MyToolTip
-              Content={<p className="bg-primary">Member-only story</p>}
-              Trigger={<StarFour size={16} className="text-yellow-400" />}
-            />
-            <p>Member-only story</p>
-          </div>
           <h1 className="text-2xl font-extrabold leading-7 md:text-4xl md:leading-[3rem]">
             {article?.title}
           </h1>
@@ -142,7 +132,7 @@ const Article = () => {
                 <Dot size={24} />
                 <span>8 min read</span>
                 <Dot size={24} />
-                {article?.date}
+                {Date}
               </div>
             </div>
           </div>
@@ -155,7 +145,7 @@ const Article = () => {
                     <HandsClapping size={16} className="size-5 border-none" />
                   }
                 />
-                {article?.likes}K
+                {article?.likes}
               </div>
               <div className="flex items-center gap-1">
                 <MyToolTip
@@ -163,7 +153,9 @@ const Article = () => {
                     <p className="bg-primary">{article?.comments} response</p>
                   }
                   Trigger={
-                    <ChatCircle size={16} className="size-5 border-none" />
+                    <Link href="#comment">
+                      <ChatCircle size={16} className="size-5 border-none" />
+                    </Link>
                   }
                 />
                 {article?.comments}
@@ -248,14 +240,14 @@ const Article = () => {
             <PaperPlaneRight size={20} weight="light" />
           </Button>
         </form>
-        <div className="mx-auto max-w-3xl">
+        <div className="mx-auto max-w-3xl" id="comment">
           {data?.data.map((comment: Comment, i: number) => (
             <CardComment
               key={i}
               comment={comment.comment}
               idArticle={id}
               profil_img={comment.profil_img || "/profil.jpg"}
-              time={date}
+              time={comment.time}
               email={comment.email}
               user={comment.user}
             />

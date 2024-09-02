@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { BookBookmark } from "@phosphor-icons/react";
 import MyAvatar from "./avatar/MyAvatar";
 import { useUserCustom } from "@/hooks/store/useUser";
-import { getDate } from "@/lib/date";
 import { toast } from "sonner";
 import Link from "next/link";
 import { useHandlePost } from "@/lib/useHandlePost";
@@ -16,7 +15,6 @@ type Profil = {
 type SubscribeDataType = {
   subscriber: string;
   subscribed_to: string;
-  subscribe_at: string;
 };
 
 type CheckSubscription = {
@@ -25,7 +23,6 @@ type CheckSubscription = {
 };
 
 const Card_profil: React.FC<Profil> = ({ img, author_name }) => {
-  const date = getDate();
   const { user: userCustom } = useUserCustom();
   const { mutate: checkIsSubscribe, isSuccess: successCheck } =
     useHandlePost<CheckSubscription>("/feature/checkIsSubscribe");
@@ -35,27 +32,11 @@ const Card_profil: React.FC<Profil> = ({ img, author_name }) => {
   const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
 
   const handleFollow = () => {
-    if (!userCustom?.email) {
-      toast("You need to be logged in to subscribe");
-      return;
-    }
-
-    const Data = {
-      subscriber: userCustom?.email,
-      subscribed_to: author_name,
-      subscribe_at: date,
-    };
-
-    if (Data.subscriber === Data.subscribed_to) {
-      toast("You cannot subscribe to yourself");
-      return;
-    }
-
-    mutate(Data);
-    setIsSubscribed(true);
+    toast.info("sedang dalam perbaikan");
   };
+
   const checkSubscribe = {
-    subscriber: userCustom.email,
+    subscriber: userCustom[0].email as string,
     subscribed_to: author_name,
   };
 
@@ -77,7 +58,7 @@ const Card_profil: React.FC<Profil> = ({ img, author_name }) => {
     <div className="box-border grid w-[300px] grid-cols-[1fr_50px] grid-rows-[auto_auto_1fr_auto] gap-4 rounded-lg bg-white px-8 py-4">
       <div className="col-span-2 flex items-end justify-between">
         <MyAvatar size="size-20" img={img} />
-        <Link href={!userCustom?.profil_img ? "/auth" : "#"}>
+        <Link href={!userCustom[0]?.profil_img ? "/auth" : "#"}>
           <Button
             variant={"outline"}
             className={`rounded-3xl px-4 py-2 ${isSubscribed ? "bg-secondary" : "bg-black text-white"}`}

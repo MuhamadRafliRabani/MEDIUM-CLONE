@@ -7,15 +7,14 @@ import { toast } from "sonner";
 import { useUserCustom } from "@/hooks/store/useUser";
 import { useRouter } from "next/navigation";
 import { useHandlePost } from "@/lib/useHandlePost";
-import { getDate } from "@/lib/date";
 
 export type Comment = {
-  user: string | undefined | null;
-  idArticle: string | string[] | undefined;
+  user: string | null | undefined;
+  idArticle: any;
   comment: string;
-  email: string | undefined | null;
-  profil_img: string | undefined | null;
-  time: string | undefined | null;
+  email: string | null | undefined;
+  profil_img: string | null | undefined;
+  time?: string | null | undefined;
 };
 
 export const validationSchema = yup.object({
@@ -23,7 +22,6 @@ export const validationSchema = yup.object({
 });
 
 const Comment = ({ id }: any) => {
-  const date = getDate();
   const router = useRouter();
   const { user } = useUserCustom();
   const Ref = useRef<HTMLTextAreaElement | null>(null);
@@ -36,15 +34,14 @@ const Comment = ({ id }: any) => {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       const data = {
-        user: user.name,
+        user: user[0].name as string,
         idArticle: id,
         comment: values.comment,
-        email: user.email,
-        profil_img: user.profil_img,
-        time: date,
+        email: user[0].email as string,
+        profil_img: user[0].profil_img as string,
       };
 
-      if (values.comment && user.email) {
+      if (values.comment && user[0].email) {
         mutate(data, {
           onSuccess: () => {
             router.back();

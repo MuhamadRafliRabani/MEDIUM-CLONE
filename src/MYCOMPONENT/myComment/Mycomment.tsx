@@ -2,8 +2,10 @@ import type { Comment } from "@/features/comment/comment";
 import MyToolTip from "../MyToolTip/MyToolTip";
 import Card_profil from "../card profil";
 import MyAvatar from "../avatar/MyAvatar";
+import { formatDate } from "@/lib/date";
 
 const CardComment = ({ user, comment, time, profil_img }: Comment) => {
+  const date = formatDate(time);
   return (
     <div className="mx-auto my-4 w-full max-w-2xl rounded-lg bg-white p-4 shadow-md">
       <div className="flex items-center justify-between">
@@ -16,7 +18,7 @@ const CardComment = ({ user, comment, time, profil_img }: Comment) => {
           </div>
           <div>
             <h4 className="font-semibold">{user}</h4>
-            <p className="text-sm text-gray-500">{time}</p>
+            <p className="text-sm text-gray-500">{date}</p>
           </div>
         </div>
       </div>

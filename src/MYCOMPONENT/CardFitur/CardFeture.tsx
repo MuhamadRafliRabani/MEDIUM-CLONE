@@ -6,6 +6,7 @@ import MyDrawer from "../my_drawer/MyDrawer";
 import Comment from "@/features/comment/comment";
 import { useHandlePatch } from "@/lib/useHandlePatch";
 import { toast } from "sonner";
+import { formatDate } from "@/lib/date";
 
 type CardFeture = {
   id?: number;
@@ -18,6 +19,7 @@ const CardFeture = ({ id, date, likes, comments }: CardFeture) => {
   const { user } = useUser();
   const [like, setLike] = useState(likes);
   const [isLiked, setisLiked] = useState(false);
+  const Date = formatDate(date);
 
   const handleLike = () => {
     setLike(like + 1);
@@ -44,7 +46,7 @@ const CardFeture = ({ id, date, likes, comments }: CardFeture) => {
         />
       </div>
       <div className="flex items-center justify-center gap-2 text-xs font-medium">
-        {date}
+        {Date}
       </div>
       <div className="flex items-center justify-center gap-1">
         <button onClick={user && handleLike} disabled={isLiked}>

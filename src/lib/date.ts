@@ -1,8 +1,8 @@
-export const getDate = () => {
-  const date = new Date();
-  const year = date.getFullYear();
-  const monthNumber = date.getMonth() + 1;
-  const day = String(date.getDate()).padStart(2, "0");
+export const formatDate = (date: string | null | undefined) => {
+  if (!date) return;
+  const TIME = new Date(date);
+
+  const day = String(TIME.getDate()).padStart(2, "0");
   const monthNames = [
     "Januari",
     "Februari",
@@ -17,8 +17,8 @@ export const getDate = () => {
     "November",
     "Desember",
   ];
-  const month = monthNames[monthNumber];
+  const month = monthNames[TIME.getMonth()];
+  const year = String(TIME.getFullYear()).slice(-2);
 
-  const tgl = `${month}-${day}`;
-  return tgl;
+  return `${day} ${month} ${year}`;
 };
