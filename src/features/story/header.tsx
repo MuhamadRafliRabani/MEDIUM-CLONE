@@ -32,7 +32,7 @@ const HeaderStory = ({ title, story }: InitialValue) => {
         <MyDropDownMenu />
         <div className="size-8">
           <Image
-            src={user.profil_img || "/profil.jpg"}
+            src={(user[0].profil_img as string) || "/profil.jpg"}
             width={100}
             height={100}
             alt=""
