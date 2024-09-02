@@ -29,7 +29,6 @@ const validationSchema = yup.object().shape({
     .required("Short bio is required"),
 });
 
-
 const EditProfil: React.FC = () => {
   const router = useRouter();
   const { user } = useUser();
@@ -50,7 +49,7 @@ const EditProfil: React.FC = () => {
       formData.append("pronouns", values.pronouns);
       formData.append("short_bio", values.short_bio);
       formData.append("image", file || "");
-      formData.append("email", user?.email || user_custom.email);
+      formData.append("email", user?.email || user_custom[0].email || "");
       formData.forEach((value, key) => {
         console.log(`${key}: ${value}`);
       });
@@ -85,12 +84,7 @@ const EditProfil: React.FC = () => {
           className="flex h-[200px] w-full cursor-pointer items-center justify-center md:w-fit"
         >
           <img
-            src={
-              image ||
-              user_custom?.profil_img ||
-              user?.photoURL ||
-              "/profil.jpg"
-            }
+            src={image || user?.photoURL || "/profil.jpg"}
             alt="Selected"
             className="size-32 rounded-full object-cover shadow-sm md:size-[150px]"
           />
