@@ -181,6 +181,10 @@ body {
     font-family: "PT Serif", serif;
   }
 
+  .input > div .tiptap ul {
+    list-style-type: disc;
+  }
+
   textarea {
     font-family: "Tinos", serif;
   }

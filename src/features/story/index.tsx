@@ -1,3 +1,4 @@
+import ToolTipsText from "@/MYCOMPONENT/RichTextEditor/toolTipsTeks";
 import { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -35,12 +36,7 @@ const NewStory = () => {
     }
   }, [formik.values.title, formik.initialValues.title]);
 
-  useEffect(() => {
-    if (storyRef.current) {
-      storyRef.current.style.height = "auto";
-      storyRef.current.style.height = `${storyRef.current.scrollHeight}px`;
-    }
-  }, [formik.values.story]);
+  console.log(formik.values.story);
 
   return (
     <div>
@@ -55,15 +51,8 @@ const NewStory = () => {
           ref={titleRef}
           className="w-full border-icon px-4 text-xl font-medium placeholder:text-icon focus:border-s focus:outline-none focus:ring-0 md:ps-4 md:text-4xl md:font-normal"
         ></textarea>
-        <textarea
-          name="story"
-          rows={1}
-          placeholder="New story"
-          value={formik.values.story}
-          ref={storyRef}
-          onChange={formik.handleChange}
-          className="me:ps-4 w-full px-4 text-lg placeholder:text-icon focus:border-s focus:border-none focus:outline-none focus:ring-0 md:text-2xl"
-        ></textarea>
+
+        <ToolTipsText formik={formik} />
       </div>
     </div>
   );
