@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Input } from "@/components/ui/input";
@@ -21,6 +21,7 @@ import { useHandlePost } from "@/lib/useHandlePost";
 const FormPublish = ({ title, story }: InitialValue) => {
   const { user } = useUser();
   const router = useRouter();
+  const [disable, setDisable] = useState<boolean>(true);
   const { user: userCustom } = useUserCustom();
   const { mutate } = useHandlePost("/feature/story/publish");
   const { file, image, handleFileChange } = usehandleFileChange();
@@ -70,6 +71,20 @@ const FormPublish = ({ title, story }: InitialValue) => {
       });
     },
   });
+
+  // handle disable button upload
+  const handleDisable = () => {
+    formik.values.title === "" ||
+    formik.values.description === "" ||
+    formik.values.type === "" ||
+    file === null
+      ? setDisable(true)
+      : setDisable(false);
+  };
+
+  useEffect(() => {
+    handleDisable();
+  }, [formik.values.description, formik.values.type, file]);
 
   console.log(userCustom[0]);
 
@@ -172,6 +187,7 @@ const FormPublish = ({ title, story }: InitialValue) => {
             <Button
               type="submit"
               className="rounded-lg bg-green-400 text-sm text-white hover:bg-none"
+              disabled={disable}
             >
               Publish
             </Button>

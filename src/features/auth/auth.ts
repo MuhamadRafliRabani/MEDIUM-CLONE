@@ -56,7 +56,7 @@ export const signUp = async (value: FormValues, router: NextRouter) => {
     return user;
   } catch (error: any) {
     console.error("Error sign-up:", error.message);
-    toast.error("email sudah digunakan silahkan sign in");
+    toast.error("email sudah digunakan silahkan sign In!");
     return error;
   }
 };
@@ -74,7 +74,7 @@ export const signIn = async (value: FormValues, router: NextRouter) => {
     return user;
   } catch (error) {
     console.log("Error during sign-in:", error);
-    toast.error("email sudah digunakan silahkan sign in");
+    toast.error("email atau password salah!");
     return error;
   }
 };
