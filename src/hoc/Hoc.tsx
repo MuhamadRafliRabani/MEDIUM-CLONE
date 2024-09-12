@@ -5,31 +5,15 @@ import { useEffect, useState } from "react";
 const Hoc = (WrappedComponent: React.ComponentType) => {
   const HOCComponent = (props: any) => {
     const router = useRouter();
-    const { user, setUser } = useUser();
-    const { user: userCustom } = useUserCustom();
-    const [loading, setLoading] = useState(true);
+    const { user } = useUser();
 
     useEffect(() => {
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) {
-        setUser(JSON.parse(storedUser));
+      if (!user.email) {
+        router.replace("/auth");
       }
-      setLoading(false);
-    }, [setUser]);
+    }, [user, router]);
 
-    useEffect(() => {
-      if (!loading) {
-        if (!user.email) {
-          router.replace("/auth");
-        }
-      }
-    }, [user, userCustom, loading, router]);
-
-    if (loading) {
-      return null;
-    }
-
-    if (user.email || userCustom) {
+    if (user.email) {
       return <WrappedComponent {...props} />;
     } else {
       return null;

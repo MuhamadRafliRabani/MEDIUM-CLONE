@@ -9,7 +9,6 @@ import EditProfil from "@/features/profil/editProfil";
 
 const Navbar: React.FC = () => {
   const { user } = useUser();
-  const { user: userCustom, setUserCustom } = useUserCustom();
 
   return (
     <nav className="bg-white shadow-sm">
@@ -56,11 +55,7 @@ const Navbar: React.FC = () => {
                   <MyDrawer
                     triger={
                       <Image
-                        src={
-                          userCustom[0]?.profil_img instanceof Blob
-                            ? URL.createObjectURL(userCustom[0].profil_img)
-                            : user?.photoURL || ""
-                        }
+                        src={user.photoURL as string}
                         alt=""
                         width={32}
                         height={32}

@@ -40,8 +40,7 @@ type uploadUser = {
 function Home() {
   //store
   const { topic } = usesetTopic();
-  const { user } = useUser();
-  const { setUserCustom } = useUserCustom();
+  const { user, setUser } = useUser();
   // feaching
   const { mutate, isSuccess: success_upload_user } = useHandlePost<uploadUser>(
     "/feature/profil-user/upload",
@@ -55,21 +54,19 @@ function Home() {
 
   useEffect(() => {
     if (data) {
-      setUserCustom(data.user);
+      setUser(data?.user[0]);
     }
   }, []);
 
   const value = {
-    name: user?.displayName || user.email,
+    name: user?.displayName,
     pronouns: "writer",
     short_bio: "",
     email: user?.email,
-    profil_img: user?.photoURL || "/profil.jpg",
+    profil_img: user?.photoURL,
   };
 
   useEffect(() => {
-    console.log(value);
-
     if (user && value) {
       mutate(value, {
         onSuccess: () => {
