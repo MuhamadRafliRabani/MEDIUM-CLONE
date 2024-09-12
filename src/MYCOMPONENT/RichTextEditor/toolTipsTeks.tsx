@@ -16,7 +16,6 @@ import ListItem from "@tiptap/extension-list-item";
 import OrderedList from "@tiptap/extension-ordered-list";
 import { ListOrdered, Redo, Undo } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 import { debounce } from "lodash";
 
 const ToolTipsText = ({ formik }: any) => {
@@ -87,126 +86,125 @@ const ToolTipsText = ({ formik }: any) => {
         {/* Jika state open true, tampilkan tombol-tombol Tiptap */}
         <div className={`space-x-2 ${open ? "animate-open" : "animate-close"}`}>
           {/* Tombol Bold */}
-          <Button
+          <button
             onClick={(e) => {
               e.preventDefault();
               editor.chain().focus().toggleBold().run();
             }}
             className={
               editor.isActive("bold")
-                ? "bg-primary text-white"
-                : "bg-transparent text-primary"
+                ? "btn-rich bg-primary text-white"
+                : "btn-rich bg-transparent text-primary"
             }
-            variant={"link"}
           >
             <TextB size={16} />
-          </Button>
+          </button>
 
           {/* Tombol Italic */}
-          <Button
+          <button
             onClick={(e) => {
               e.preventDefault();
               editor.chain().focus().toggleItalic().run();
             }}
             className={
               editor.isActive("italic")
-                ? "bg-primary text-white"
-                : "bg-transparent text-primary"
+                ? "btn-rich bg-primary text-white"
+                : "btn-rich bg-transparent text-primary"
             }
           >
             <TextItalic size={16} />
-          </Button>
+          </button>
 
           {/* Tombol Underline */}
-          <Button
+          <button
             onClick={(e) => {
               e.preventDefault();
               editor.chain().focus().toggleUnderline().run();
             }}
             className={
               editor.isActive("underline")
-                ? "bg-primary text-white"
-                : "bg-transparent text-primary"
+                ? "btn-rich bg-primary text-white"
+                : "btn-rich bg-transparent text-primary"
             }
           >
             <TextUnderline size={16} />
-          </Button>
+          </button>
 
           {/* Tombol StrikeThrough */}
-          <Button
+          <button
             onClick={(e) => {
               e.preventDefault();
               editor.chain().focus().toggleStrike().run();
             }}
             className={
               editor.isActive("strike")
-                ? "bg-primary text-white"
-                : "bg-transparent text-primary"
+                ? "btn-rich bg-primary text-white"
+                : "btn-rich bg-transparent text-primary"
             }
           >
             <TextStrikethrough size={16} />
-          </Button>
+          </button>
 
           {/* Tombol BulletList */}
-          <Button
+          <button
             onClick={(e) => {
               e.preventDefault();
               editor.chain().toggleBulletList().run();
             }}
             className={
               editor.isActive("bulletList")
-                ? "bg-primary text-white"
-                : "bg-transparent text-primary"
+                ? "btn-rich bg-primary text-white"
+                : "btn-rich bg-transparent text-primary"
             }
           >
             <ListBullets size={16} />
-          </Button>
+          </button>
 
           {/* Tombol OrderedList */}
-          <Button
+          <button
             onClick={(e) => {
               e.preventDefault();
               editor.chain().toggleOrderedList().run();
             }}
             className={
               editor.isActive("orderedList")
-                ? "bg-primary text-white"
-                : "bg-transparent text-primary"
+                ? "btn-rich bg-primary text-white"
+                : "btn-rich bg-transparent text-primary"
             }
           >
             <ListOrdered size={16} />
-          </Button>
+          </button>
         </div>
 
         {/* Tombol Undo dan Redo */}
         <div className="ms-auto space-x-4">
-          <Button
+          <button
             onClick={(e) => {
               e.preventDefault();
               editor.chain().undo().run();
             }}
             className={
               editor.isActive("undo")
-                ? "bg-primary text-white"
-                : "bg-transparent text-primary"
+                ? "btn-rich bg-primary text-white"
+                : "btn-rich bg-transparent text-primary"
             }
           >
             <Undo size={16} />
-          </Button>
+          </button>
 
-          <Button
+          <button
             onClick={(e) => {
               e.preventDefault();
               editor.chain().redo().run();
             }}
             className={
               editor.isActive("redo")
-                ? "bg-primary text-white"
-                : "bg-transparent text-primary"
+                ? "btn-rich bg-primary text-white"
+                : "btn-rich bg-transparent text-primary"
             }
           >
             <Redo size={16} />
-          </Button>
+          </button>
         </div>
       </div>
 

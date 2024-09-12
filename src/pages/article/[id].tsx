@@ -16,10 +16,7 @@ import {
   HandsClapping,
   MedalMilitary,
   PaperPlaneRight,
-  StarFour,
 } from "@phosphor-icons/react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import ArticleSkeleton from "@/MYCOMPONENT/article/articleSkeleton";
 import Navbar from "@/MYCOMPONENT/navbar/navbar";
 import { useFormik } from "formik";
@@ -33,6 +30,9 @@ import CardComment from "@/MYCOMPONENT/myComment/Mycomment";
 import { useHandleGet } from "@/lib/useGet";
 import { formatDate } from "@/lib/date";
 import Link from "next/link";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
 
 const Article = () => {
   const router = useRouter();
@@ -128,7 +128,7 @@ const Article = () => {
               </h3>
               <div className="flex items-center text-xs text-icon md:text-sm">
                 <span> Published by </span>
-                <span className="text-black"> {article?.author_name}</span>
+                <span className="text-black"> { article?.author_name}</span>
                 <Dot size={24} />
                 <span>8 min read</span>
                 <Dot size={24} />
@@ -217,6 +217,7 @@ const Article = () => {
           <ReactMarkdown
             className="prose lg:prose-xl"
             remarkPlugins={[remarkGfm]}
+            rehypePlugins={[rehypeRaw]}
           >
             {article?.article}
           </ReactMarkdown>

@@ -82,6 +82,9 @@
   body {
     @apply bg-background text-foreground;
   }
+  .btn-rich {
+    @apply rounded-lg p-4 text-primary hover:bg-primary hover:text-white;
+  }
 }
 
 body {
