@@ -14,7 +14,10 @@ import Underline from "@tiptap/extension-underline";
 import BulletList from "@tiptap/extension-bullet-list";
 import ListItem from "@tiptap/extension-list-item";
 import OrderedList from "@tiptap/extension-ordered-list";
-import { ListOrdered, Redo, Undo } from "lucide-react";
+import Document from "@tiptap/extension-document";
+import Paragraph from "@tiptap/extension-paragraph";
+import Text from "@tiptap/extension-text";
+import { ListOrdered, Pilcrow, Redo, Undo } from "lucide-react";
 import { useEffect, useState } from "react";
 import { debounce } from "lodash";
 
@@ -28,22 +31,20 @@ const ToolTipsText = ({ formik }: any) => {
       HistoryArticleUser === null
         ? "<p>Write your story here 😉</p>"
         : HistoryArticleUser,
-    extensions: [StarterKit, Underline, BulletList, ListItem, OrderedList],
+    extensions: [
+      Document,
+      StarterKit,
+      Paragraph,
+      Text,
+      Underline,
+      BulletList,
+      ListItem,
+      OrderedList,
+    ],
     editorProps: {
       attributes: {
         class:
           "me:ps-4 w-full px-4 text-lg placeholder:text-icon focus:border-s focus:border-none focus:outline-none focus:ring-0 md:text-2xl",
-      },
-      handleKeyDown(view, event) {
-        if (event.key === "Enter") {
-          event.preventDefault();
-          if (editor) {
-            editor.commands.insertContent("<br>");
-            return true;
-          }
-          return true;
-        }
-        return false;
       },
     },
 
@@ -74,17 +75,19 @@ const ToolTipsText = ({ formik }: any) => {
 
   return (
     <div className="tl flex w-full flex-col items-start text-primary">
-      <div className="flex w-full items-center overflow-x-hidden">
+      <div className="flex w-full items-center justify-start">
         {/* Tombol Plus */}
         <PlusCircle
           size={24}
           weight="thin"
-          className={`${open ? "ms-6 -translate-x-4 rotate-180" : ""} ms-3 duration-500`}
+          className={`ms-4 ${open ? "rotate-180" : ""} duration-500`}
           onClick={handleOpen}
         />
 
         {/* Jika state open true, tampilkan tombol-tombol Tiptap */}
-        <div className={`space-x-2 ${open ? "animate-open" : "animate-close"}`}>
+        <div
+          className={`ms-3 flex items-center justify-start space-x-2 ${open ? "animate-open" : "animate-close"}`}
+        >
           {/* Tombol Bold */}
           <button
             onClick={(e) => {
@@ -93,8 +96,8 @@ const ToolTipsText = ({ formik }: any) => {
             }}
             className={
               editor.isActive("bold")
-                ? "btn-rich bg-primary text-white"
-                : "btn-rich bg-transparent text-primary"
+                ? "btn-rich bg-primary text-white duration-500"
+                : "btn-rich bg-transparent text-primary duration-500"
             }
           >
             <TextB size={16} />
@@ -108,8 +111,8 @@ const ToolTipsText = ({ formik }: any) => {
             }}
             className={
               editor.isActive("italic")
-                ? "btn-rich bg-primary text-white"
-                : "btn-rich bg-transparent text-primary"
+                ? "btn-rich bg-primary text-white duration-500"
+                : "btn-rich bg-transparent text-primary duration-500"
             }
           >
             <TextItalic size={16} />
@@ -123,8 +126,8 @@ const ToolTipsText = ({ formik }: any) => {
             }}
             className={
               editor.isActive("underline")
-                ? "btn-rich bg-primary text-white"
-                : "btn-rich bg-transparent text-primary"
+                ? "btn-rich bg-primary text-white duration-500"
+                : "btn-rich bg-transparent text-primary duration-500"
             }
           >
             <TextUnderline size={16} />
@@ -138,8 +141,8 @@ const ToolTipsText = ({ formik }: any) => {
             }}
             className={
               editor.isActive("strike")
-                ? "btn-rich bg-primary text-white"
-                : "btn-rich bg-transparent text-primary"
+                ? "btn-rich bg-primary text-white duration-500"
+                : "btn-rich bg-transparent text-primary duration-500"
             }
           >
             <TextStrikethrough size={16} />
@@ -153,8 +156,8 @@ const ToolTipsText = ({ formik }: any) => {
             }}
             className={
               editor.isActive("bulletList")
-                ? "btn-rich bg-primary text-white"
-                : "btn-rich bg-transparent text-primary"
+                ? "btn-rich bg-primary text-white duration-500"
+                : "btn-rich bg-transparent text-primary duration-500"
             }
           >
             <ListBullets size={16} />
@@ -168,11 +171,26 @@ const ToolTipsText = ({ formik }: any) => {
             }}
             className={
               editor.isActive("orderedList")
-                ? "btn-rich bg-primary text-white"
-                : "btn-rich bg-transparent text-primary"
+                ? "btn-rich bg-primary text-white duration-500"
+                : "btn-rich bg-transparent text-primary duration-500"
             }
           >
-            <ListOrdered size={16} />
+            <ListNumbers size={16} />
+          </button>
+
+          {/* Tombol Paragraft */}
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              editor.commands.setParagraph();
+            }}
+            className={
+              editor.isActive("paragraft")
+                ? "btn-rich bg-primary text-white duration-500"
+                : "btn-rich bg-transparent text-primary duration-500"
+            }
+          >
+            <Pilcrow strokeWidth={1.3} size={16} />
           </button>
         </div>
 
@@ -185,8 +203,8 @@ const ToolTipsText = ({ formik }: any) => {
             }}
             className={
               editor.isActive("undo")
-                ? "btn-rich bg-primary text-white"
-                : "btn-rich bg-transparent text-primary"
+                ? "btn-rich bg-primary text-white duration-500"
+                : "btn-rich bg-transparent text-primary duration-500"
             }
           >
             <Undo size={16} />
@@ -199,8 +217,8 @@ const ToolTipsText = ({ formik }: any) => {
             }}
             className={
               editor.isActive("redo")
-                ? "btn-rich bg-primary text-white"
-                : "btn-rich bg-transparent text-primary"
+                ? "btn-rich bg-primary text-white duration-500"
+                : "btn-rich bg-transparent text-primary duration-500"
             }
           >
             <Redo size={16} />
@@ -210,7 +228,7 @@ const ToolTipsText = ({ formik }: any) => {
 
       {/* EditorContent */}
       <div className="mt-4 w-full">
-        <EditorContent editor={editor} className="md:min-h-96" />
+        <EditorContent editor={editor} className="editor-props shadow-2xl" />
       </div>
     </div>
   );

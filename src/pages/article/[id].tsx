@@ -95,6 +95,8 @@ const Article = () => {
 
   if (isError) return toast.error("something error!");
 
+  console.log(article.img_user);
+
   return (
     <>
       <Navbar />
@@ -128,7 +130,7 @@ const Article = () => {
               </h3>
               <div className="flex items-center text-xs text-icon md:text-sm">
                 <span> Published by </span>
-                <span className="text-black"> { article?.author_name}</span>
+                <span className="text-black"> {article?.author_name}</span>
                 <Dot size={24} />
                 <span>8 min read</span>
                 <Dot size={24} />
