@@ -3,7 +3,7 @@ import { create } from "zustand";
 // Store untuk user firebase
 export interface UserState {
   user: {
-    id: number | null | undefined;
+    id: number | string | null | undefined;
     displayName?: string | null | undefined;
     pronouns: string | null | undefined;
     short_bio?: string | null | undefined;

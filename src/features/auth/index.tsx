@@ -51,7 +51,15 @@ const FormCard: React.FC = () => {
   const handleGoogleAuth = async () => {
     const user = await authgoogle(router);
     localStorage.setItem("user", JSON.stringify(user));
-    setUser(user);
+    const dataUser = {
+      id: user.uid,
+      displayName: user.displayName,
+      pronouns: "",
+      short_bio: "",
+      email: user.email,
+      photoURL: user.photoURL,
+    };
+    setUser(dataUser);
   };
 
   const formik = useFormik<FormValues>({
