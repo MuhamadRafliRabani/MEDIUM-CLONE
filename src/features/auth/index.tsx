@@ -12,7 +12,7 @@ import { Github } from "lucide-react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/router";
-import { useUser } from "@/hooks/store/useUser";
+import { UserState, useUser } from "@/hooks/store/useUser";
 import { authgoogle, signIn, signUp } from "./auth";
 import { useState } from "react";
 

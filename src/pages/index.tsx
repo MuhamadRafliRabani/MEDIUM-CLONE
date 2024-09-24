@@ -2,7 +2,7 @@ import { Inter } from "next/font/google";
 import MyCarousel from "@/MYCOMPONENT/Carousell";
 import StaffContainer from "@/MYCOMPONENT/sidemenu/Staff/StaffContainer";
 import Navbar from "@/MYCOMPONENT/navbar/navbar";
-import { usesetTopic, useUser, useUserCustom } from "@/hooks/store/useUser";
+import { usesetTopic, useUser } from "@/hooks/store/useUser";
 import SkeletonCard from "@/MYCOMPONENT/article/cardSeleton";
 import { useEffect } from "react";
 import CardArticle from "@/MYCOMPONENT/article/article";

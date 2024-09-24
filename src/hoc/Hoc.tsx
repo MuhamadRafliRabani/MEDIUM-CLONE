@@ -1,6 +1,6 @@
-import { useUser, useUserCustom } from "@/hooks/store/useUser";
+import { useUser } from "@/hooks/store/useUser";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const Hoc = (WrappedComponent: React.ComponentType) => {
   const HOCComponent = (props: any) => {

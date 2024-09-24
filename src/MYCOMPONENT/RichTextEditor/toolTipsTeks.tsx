@@ -6,7 +6,6 @@ import {
   ListBullets,
   ListNumbers,
   PlusCircle,
-  Plus,
 } from "@phosphor-icons/react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -17,7 +16,7 @@ import OrderedList from "@tiptap/extension-ordered-list";
 import Document from "@tiptap/extension-document";
 import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
-import { ListOrdered, Pilcrow, Redo, Undo } from "lucide-react";
+import { Pilcrow, Redo, Undo } from "lucide-react";
 import { useEffect, useState } from "react";
 import { debounce } from "lodash";
 
@@ -228,7 +227,7 @@ const ToolTipsText = ({ formik }: any) => {
 
       {/* EditorContent */}
       <div className="mt-4 w-full">
-        <EditorContent editor={editor} className="editor-props shadow-2xl" />
+        <EditorContent editor={editor} className="editor-props" />
       </div>
     </div>
   );

@@ -1,14 +1,15 @@
 import Link from "next/link";
 import { Bell, PencilLine } from "@phosphor-icons/react";
-import MyDropDownMenu from "../MyDropDownMenu/MyDropDownMenu";
 import Image from "next/image";
-import { useUser, useUserCustom } from "@/hooks/store/useUser";
+import { useUser } from "@/hooks/store/useUser";
 import MyToolTip from "../MyToolTip/MyToolTip";
 import MyDrawer from "../my_drawer/MyDrawer";
 import EditProfil from "@/features/profil/editProfil";
 
 const Navbar: React.FC = () => {
   const { user } = useUser();
+
+  console.log(user);
 
   return (
     <nav className="bg-white shadow-sm">
@@ -55,8 +56,8 @@ const Navbar: React.FC = () => {
                   <MyDrawer
                     triger={
                       <Image
-                        src={user.photoURL as string}
                         alt=""
+                        src={user.photoURL as string}
                         width={32}
                         height={32}
                         className="size-8 rounded-full bg-slate-200"

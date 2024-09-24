@@ -22,7 +22,7 @@ import Navbar from "@/MYCOMPONENT/navbar/navbar";
 import { useFormik } from "formik";
 import { validationSchema } from "@/features/comment/comment";
 import { toast } from "sonner";
-import { useUser, useUserCustom } from "@/hooks/store/useUser";
+import { useUser } from "@/hooks/store/useUser";
 import { Button } from "@/components/ui/button";
 import { useHandlePost } from "@/lib/useHandlePost";
 import type { Comment } from "@/features/comment/comment";
@@ -38,7 +38,6 @@ const Article = () => {
   const router = useRouter();
   const id = router.query?.id;
   const { user } = useUser();
-  const { user: userCustom } = useUserCustom();
   const Ref = useRef<HTMLInputElement | null>(null);
   const { mutate } = useHandlePost<Comment>("/feature/comment/upload");
   const { data } = useHandleGet("/feature/comment/", id);
@@ -64,14 +63,11 @@ const Article = () => {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       const data = {
-        user: (userCustom[0].name as string) || user?.displayName,
+        user: user?.displayName,
         idArticle: id,
         comment: values.comment,
-        email: (userCustom[0].email as string) || user?.email,
-        profil_img:
-          (userCustom[0].profil_img as string) ||
-          user?.photoURL ||
-          "/profil.jpg",
+        email: user?.email,
+        profil_img: user?.photoURL || "/profil.jpg",
       };
       mutate(data, {
         onSuccess: () => {

@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useHandleFileChange from "@/hooks/setImage";
-import { useUser, useUserCustom } from "@/hooks/store/useUser";
+import { useUser } from "@/hooks/store/useUser";
 import { ArrowBendRightUp } from "@phosphor-icons/react";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -32,7 +32,6 @@ const validationSchema = yup.object().shape({
 const EditProfil: React.FC = () => {
   const router = useRouter();
   const { user } = useUser();
-  const { user: user_custom } = useUserCustom();
   const { mutate } = useHandlePost("/profil-user/update");
   const { file, image, handleFileChange } = useHandleFileChange();
 
@@ -49,7 +48,7 @@ const EditProfil: React.FC = () => {
       formData.append("pronouns", values.pronouns);
       formData.append("short_bio", values.short_bio);
       formData.append("image", file || "");
-      formData.append("email", user?.email || user_custom[0].email || "");
+      formData.append("email", user?.email || "");
       formData.forEach((value, key) => {
         console.log(`${key}: ${value}`);
       });

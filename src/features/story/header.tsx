@@ -6,10 +6,10 @@ import MyDrawer from "../../MYCOMPONENT/my_drawer/MyDrawer";
 import { Button } from "@/components/ui/button";
 import FormPublish from "./publish/formPublish";
 import Image from "next/image";
-import { useUserCustom } from "@/hooks/store/useUser";
+import { useUser } from "@/hooks/store/useUser";
 
 const HeaderStory = ({ title, story }: InitialValue) => {
-  const { user } = useUserCustom();
+  const { user } = useUser();
   return (
     <nav className="flex items-center justify-between border-b border-gray-200 bg-white p-4">
       <div className="flex items-center space-x-4">
@@ -32,7 +32,7 @@ const HeaderStory = ({ title, story }: InitialValue) => {
         <MyDropDownMenu />
         <div className="size-8">
           <Image
-            src={(user[0].profil_img as string) || "/profil.jpg"}
+            src={(user.photoURL as string) || "/profil.jpg"}
             width={100}
             height={100}
             alt=""

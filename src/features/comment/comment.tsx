@@ -4,9 +4,9 @@ import { useFormik } from "formik";
 import { useEffect, useRef } from "react";
 import * as yup from "yup";
 import { toast } from "sonner";
-import { useUserCustom } from "@/hooks/store/useUser";
 import { useRouter } from "next/navigation";
 import { useHandlePost } from "@/lib/useHandlePost";
+import { useUser } from "@/hooks/store/useUser";
 
 export type Comment = {
   user: string | null | undefined;
@@ -23,7 +23,7 @@ export const validationSchema = yup.object({
 
 const Comment = ({ id }: any) => {
   const router = useRouter();
-  const { user } = useUserCustom();
+  const { user } = useUser();
   const Ref = useRef<HTMLTextAreaElement | null>(null);
   const { mutate } = useHandlePost<Comment>("/feature/comment/upload");
 
@@ -34,14 +34,14 @@ const Comment = ({ id }: any) => {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       const data = {
-        user: user[0].name as string,
+        user: user.displayName as string,
         idArticle: id,
         comment: values.comment,
-        email: user[0].email as string,
-        profil_img: user[0].profil_img as string,
+        email: user.email as string,
+        profil_img: user.photoURL as string,
       };
 
-      if (values.comment && user[0].email) {
+      if (values.comment && user.email) {
         mutate(data, {
           onSuccess: () => {
             router.back();

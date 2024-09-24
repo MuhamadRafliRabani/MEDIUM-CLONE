@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { BookBookmark } from "@phosphor-icons/react";
 import MyAvatar from "./avatar/MyAvatar";
-import { useUserCustom } from "@/hooks/store/useUser";
 import { toast } from "sonner";
 import Link from "next/link";
 import { useHandlePost } from "@/lib/useHandlePost";
+import { useUser } from "@/hooks/store/useUser";
 
 type Profil = {
   img: any;
@@ -23,7 +23,7 @@ type CheckSubscription = {
 };
 
 const Card_profil: React.FC<Profil> = ({ img, author_name }) => {
-  const { user: userCustom } = useUserCustom();
+  const { user } = useUser();
   const { mutate: checkIsSubscribe, isSuccess: successCheck } =
     useHandlePost<CheckSubscription>("/feature/checkIsSubscribe");
   const { mutate, isSuccess, data } =
@@ -36,7 +36,7 @@ const Card_profil: React.FC<Profil> = ({ img, author_name }) => {
   };
 
   const checkSubscribe = {
-    subscriber: userCustom[0].email as string,
+    subscriber: user.email as string,
     subscribed_to: author_name,
   };
 
@@ -58,7 +58,7 @@ const Card_profil: React.FC<Profil> = ({ img, author_name }) => {
     <div className="box-border grid w-[300px] grid-cols-[1fr_50px] grid-rows-[auto_auto_1fr_auto] gap-4 rounded-lg bg-white px-8 py-4">
       <div className="col-span-2 flex items-end justify-between">
         <MyAvatar size="size-20" img={img} />
-        <Link href={!userCustom[0]?.profil_img ? "/auth" : "#"}>
+        <Link href={!user?.photoURL ? "/auth" : "#"}>
           <Button
             variant={"outline"}
             className={`rounded-3xl px-4 py-2 ${isSubscribed ? "bg-secondary" : "bg-black text-white"}`}

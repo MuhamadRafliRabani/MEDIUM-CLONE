@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import HeaderStory from "./header";
-import { PlusCircle } from "@phosphor-icons/react";
 
 export type InitialValue = {
   title: string;

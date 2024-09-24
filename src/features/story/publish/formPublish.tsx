@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { InitialValue } from "..";
 import { useRouter } from "next/navigation";
-import { useUser, useUserCustom } from "@/hooks/store/useUser";
+import { useUser } from "@/hooks/store/useUser";
 import { Topic_list } from "@/data/Topic_list";
 import { toast } from "sonner";
 import {
@@ -22,7 +22,6 @@ const FormPublish = ({ title, story }: InitialValue) => {
   const { user } = useUser();
   const router = useRouter();
   const [disable, setDisable] = useState<boolean>(true);
-  const { user: userCustom } = useUserCustom();
   const { mutate } = useHandlePost("/feature/story/publish");
   const { file, image, handleFileChange } = usehandleFileChange();
 
@@ -43,8 +42,8 @@ const FormPublish = ({ title, story }: InitialValue) => {
       formData.append("description", values.description);
       formData.append("type", values.type);
       formData.append("article", story || "");
-      formData.append("author_name", userCustom[0].name || user.email || "");
-      formData.append("img_user", userCustom[0].name || user.photoURL || "");
+      formData.append("author_name", user.displayName || user.email || "");
+      formData.append("img_user", user.photoURL || "");
       formData.append("likes", "0");
       formData.append("comment", "");
       formData.append("image", file ? file : "");
@@ -54,8 +53,8 @@ const FormPublish = ({ title, story }: InitialValue) => {
         description: values.description,
         type: values.type,
         story,
-        author_name: userCustom[0]?.name,
-        profil_img: userCustom[0]?.profil_img,
+        author_name: user.displayName,
+        profil_img: user.photoURL,
         file,
       });
 
@@ -85,8 +84,6 @@ const FormPublish = ({ title, story }: InitialValue) => {
   useEffect(() => {
     handleDisable();
   }, [formik.values.description, formik.values.type, file]);
-
-  console.log(userCustom[0]);
 
   return (
     <form onSubmit={formik.handleSubmit}>
