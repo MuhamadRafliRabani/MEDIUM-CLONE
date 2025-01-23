@@ -14,7 +14,7 @@ import { useUser } from "@/hooks/store/useUser";
 import { useState } from "react";
 import { useHandlePost } from "@/lib/useHandlePost";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 export type FormValues = {
   email: string;
@@ -30,7 +30,7 @@ const validationSchema = Yup.object().shape({
 
 const FormCard: React.FC = () => {
   const { setUser, user } = useUser();
-  const [isSignUp, setIsSignUp] = useState(true);
+  const [isSignUp, setIsSignUp] = useState<boolean>(true);
   const route = useRouter();
   const { mutate: auth, isIdle } = useHandlePost(
     `/auth/email/${isSignUp ? "signUp" : "signIn"}`,
@@ -70,13 +70,25 @@ const FormCard: React.FC = () => {
     },
   });
 
+  async function hitOauthProvider(provider: string) {
+    try {
+      window.location.href = `http://localhost:2000/Oauth/${provider}`;
+    } catch (error: any) {
+      console.error("Failed to fetch:", error.message);
+    }
+  }
+
   return (
     <Card className="mx-auto mt-24 w-11/12 max-w-sm shadow-md md:mt-20 md:w-full md:max-w-md">
       <CardHeader>
         <CardTitle>{isSignUp ? "Sign Up" : "Sign In"}</CardTitle>
         <CardDescription>Please fill in the form below</CardDescription>
         <div className="flex w-full items-center justify-center gap-2 pt-4">
-          <Button className="w-full cursor-pointer" variant="outline">
+          <Button
+            onClick={() => hitOauthProvider("github")}
+            className="w-full cursor-pointer"
+            variant="outline"
+          >
             <GithubLogo className="mr-2 size-4" /> Github
           </Button>
           <Button className="w-full cursor-pointer" variant="outline">

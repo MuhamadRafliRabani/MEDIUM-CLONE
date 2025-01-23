@@ -1,32 +1,26 @@
-import React, { useEffect, useRef } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useRef } from "react";
 import { useRouter } from "next/router";
-import { PlayCircle } from "lucide-react";
+import {
+  Ellipsis,
+  MessageCircle,
+  PlayCircle,
+  Dot,
+  Share,
+  ThumbsUp,
+  Bookmark,
+  SendHorizontal,
+} from "lucide-react";
 import MyAvatar from "@/MYCOMPONENT/avatar/MyAvatar";
 import MyToolTip from "@/MYCOMPONENT/MyToolTip/MyToolTip";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import Image from "next/image";
-import { axiosInstence } from "@/lib/axios";
 import Card_profil from "@/MYCOMPONENT/card profil";
-import {
-  ChatCircle,
-  Dot,
-  DotsThree,
-  Export,
-  HandsClapping,
-  MedalMilitary,
-  PaperPlaneRight,
-} from "@phosphor-icons/react";
 import ArticleSkeleton from "@/MYCOMPONENT/article/articleSkeleton";
 import Navbar from "@/MYCOMPONENT/navbar/navbar";
-import { useFormik } from "formik";
-import { validationSchema } from "@/features/comment/comment";
 import { toast } from "sonner";
 import { useUser } from "@/hooks/store/useUser";
 import { Button } from "@/components/ui/button";
-import { useHandlePost } from "@/lib/useHandlePost";
 import type { Comment } from "@/features/comment/comment";
-import CardComment from "@/MYCOMPONENT/myComment/Mycomment";
 import { useHandleGet } from "@/lib/useGet";
 import { formatDate } from "@/lib/date";
 import Link from "next/link";
@@ -34,64 +28,21 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 
-const Article = () => {
+const Article = ({ parems }: any) => {
   const router = useRouter();
-  const id = router.query?.id;
+  const { id } = router.query;
   const { user } = useUser();
   const Ref = useRef<HTMLInputElement | null>(null);
-  const { mutate } = useHandlePost<Comment>("/feature/comment/upload");
-  const { data } = useHandleGet("/feature/comment/", id);
+  const { data: comments } = useHandleGet(`/feature/comment/${id && id}`);
 
-  const {
-    data: article,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["article"],
-    queryFn: async () => {
-      const { data } = await axiosInstence.get("/article/" + id);
-      return data;
-    },
-  });
-
-  const Date = formatDate(article?.date);
-
-  const formik = useFormik({
-    initialValues: {
-      comment: "",
-    },
-    validationSchema: validationSchema,
-    onSubmit: (values) => {
-      const data = {
-        user: user?.displayName,
-        idArticle: id,
-        comment: values.comment,
-        email: user?.email,
-        profil_img: user?.photoURL || "/profil.jpg",
-      };
-      mutate(data, {
-        onSuccess: () => {
-          toast.success("comment sended");
-        },
-        onError: () => {
-          toast.error("comment not sended");
-        },
-      });
-    },
-  });
-
-  useEffect(() => {
-    if (Ref.current) {
-      Ref.current.style.height = "auto";
-      Ref.current.style.height = `${Ref.current?.scrollHeight}px`;
-    }
-  }, [formik.values.comment]);
+  console.log("🚀 ~ Article ~ comments:", comments);
+  const { data, isLoading, isError } = useHandleGet(`/article/${id}`);
 
   if (isLoading) return <ArticleSkeleton />;
 
   if (isError) return toast.error("something error!");
 
-  console.log(article.img_user);
+  const article = data?.data;
 
   return (
     <>
@@ -105,32 +56,32 @@ const Article = () => {
             <MyToolTip
               Content={
                 <Card_profil
-                  img={article?.img_user}
-                  author_name={article?.author_name}
+                  img={article?.user_image}
+                  user_name={article?.user_name}
                 />
               }
-              Trigger={<MyAvatar size="size-6" img={article?.img_user} />}
+              Trigger={<MyAvatar size="size-6" img={article?.user_image} />}
             />
             <div className="flex flex-col">
               <h3 className="flex items-center">
                 <MyToolTip
                   Content={
                     <Card_profil
-                      img={article?.img_user}
-                      author_name={article?.author_name}
+                      img={article?.user_image}
+                      user_name={article?.user_name}
                     />
                   }
-                  Trigger={<p>{article?.author_name}</p>}
+                  Trigger={<p>{article?.user_name}</p>}
                 />
-                <Dot size={24} /> <span>Follow</span>
+                <Dot size={16} strokeWidth={0.5} /> <span>Follow</span>
               </h3>
               <div className="flex items-center text-xs text-icon md:text-sm">
                 <span> Published by </span>
-                <span className="text-black"> {article?.author_name}</span>
-                <Dot size={24} />
+                <span className="text-black"> {article?.user_name}</span>
+                <Dot size={16} strokeWidth={0.5} />
                 <span>8 min read</span>
-                <Dot size={24} />
-                {Date}
+                <Dot size={16} strokeWidth={0.5} />
+                {formatDate(article?.date)}
               </div>
             </div>
           </div>
@@ -140,7 +91,7 @@ const Article = () => {
                 <MyToolTip
                   Content={<p className="bg-primary">{article?.likes} claps</p>}
                   Trigger={
-                    <HandsClapping size={16} className="size-5 border-none" />
+                    <ThumbsUp className="size-5" size={16} strokeWidth={0.5} />
                   }
                 />
                 {article?.likes}
@@ -152,7 +103,7 @@ const Article = () => {
                   }
                   Trigger={
                     <Link href="#comment">
-                      <ChatCircle size={16} className="size-5 border-none" />
+                      <MessageCircle className="size-5" strokeWidth={0.5} />
                     </Link>
                   }
                 />
@@ -163,11 +114,7 @@ const Article = () => {
               <MyToolTip
                 Content={<p className="bg-primary">Save</p>}
                 Trigger={
-                  <MedalMilitary
-                    size={24}
-                    weight="thin"
-                    className="size-5 border-none md:size-6"
-                  />
+                  <Bookmark className="size-5" size={16} strokeWidth={0.5} />
                 }
               />
               <MyToolTip
@@ -182,21 +129,13 @@ const Article = () => {
               <MyToolTip
                 Content={<p className="bg-primary">Share</p>}
                 Trigger={
-                  <Export
-                    size={24}
-                    weight="thin"
-                    className="size-5 md:size-6"
-                  />
+                  <Share className="size-5" size={16} strokeWidth={0.5} />
                 }
               />
               <MyToolTip
                 Content={<p className="bg-primary">Menu</p>}
                 Trigger={
-                  <DotsThree
-                    size={24}
-                    weight="thin"
-                    className="size-5 md:size-6"
-                  />
+                  <Ellipsis className="size-5" size={16} strokeWidth={0.5} />
                 }
               />
             </div>
@@ -206,7 +145,7 @@ const Article = () => {
               <Image
                 width={800}
                 height={600}
-                src={article?.img_content}
+                src={article?.content_image}
                 alt=""
                 className="h-full rounded-md object-cover"
               />
@@ -221,7 +160,7 @@ const Article = () => {
           </ReactMarkdown>
         </div>
         <form
-          onSubmit={formik.handleSubmit}
+          onSubmit={() => {}}
           className="mx-auto my-4 w-full max-w-2xl space-y-1 rounded-lg p-4"
         >
           <label htmlFor="comment" className="font-semibold">
@@ -233,14 +172,14 @@ const Article = () => {
             placeholder="your comment..."
             className="max-h-20 w-full rounded-t-lg border-b border-slate-300 bg-white p-2 shadow-sm outline-none focus:ring-0"
             ref={Ref}
-            onChange={formik.handleChange}
+            onChange={() => {}}
           />
           <Button type="submit" variant="default" className="ms-auto block">
-            <PaperPlaneRight size={20} weight="light" />
+            <SendHorizontal size={16} strokeWidth={0.5} />
           </Button>
         </form>
         <div className="mx-auto max-w-3xl" id="comment">
-          {data?.data.map((comment: Comment, i: number) => (
+          {/* {comments?.data.map((comment: Comment, i: number) => (
             <CardComment
               key={i}
               comment={comment.comment}
@@ -250,7 +189,7 @@ const Article = () => {
               email={comment.email}
               user={comment.user}
             />
-          ))}
+          ))} */}
         </div>
       </section>
     </>

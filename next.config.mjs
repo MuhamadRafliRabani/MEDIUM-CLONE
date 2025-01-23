@@ -4,9 +4,6 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        hostname: "images.unsplash.com",
-      },
-      {
         hostname: "localhost",
       },
       {
@@ -16,10 +13,10 @@ const nextConfig = {
         hostname: "loading.io",
       },
       {
-        hostname: "cqhlafryyzzodifbdmia.supabase.co",
+        hostname: "placehold.co",
       },
       {
-        hostname: "i.pinimg.com",
+        hostname: "cqhlafryyzzodifbdmia.supabase.co",
       },
       {
         hostname: "/",

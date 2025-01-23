@@ -13,7 +13,7 @@ const MyCarousel: React.FC = () => {
 
   const handlesetTopic = (
     topic: string,
-    e: React.MouseEvent<HTMLButtonElement>,
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
   ) => {
     e.preventDefault();
     setTopic(topic);
@@ -25,7 +25,7 @@ const MyCarousel: React.FC = () => {
         {Topic_list.map((topic, index) => (
           <CarouselItem
             key={index}
-            className="w-fit max-w-fit truncate overflow-ellipsis bg-yellow-400 px-4 text-[0.9rem]"
+            className="w-fit max-w-fit truncate overflow-ellipsis px-4 text-[0.9rem]"
             onClick={(e) => handlesetTopic(topic, e)}
           >
             {topic}

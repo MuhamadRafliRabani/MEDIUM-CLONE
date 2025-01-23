@@ -11,29 +11,26 @@ import { useHandleGet } from "@/lib/useGet";
 const inter = Inter({ subsets: ["latin"] });
 
 export type article = {
-  id: number;
+  article_id: number;
   title: string;
   article: string;
   description: string;
-  author_name: string;
-  img_user: string;
-  likes: number;
+  user_name: string;
+  user_image: string;
   comments: string | null;
   date: string;
-  img_content: string;
-  type: string;
+  content_image: string;
+  category: string;
 };
 
 function Home() {
-  //store
   const { topic } = usesetTopic();
   const { user, setUser } = useUser();
   const {
     data: articles,
     isLoading,
     isError,
-  } = useHandleGet(`/article/${topic}`);
-  console.log("🚀 ~ Home ~ articles:", articles);
+  } = useHandleGet(`/articles/${topic}`);
 
   return (
     <>

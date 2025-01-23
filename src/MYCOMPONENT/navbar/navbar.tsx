@@ -41,7 +41,7 @@ const Navbar: React.FC = () => {
             tag="p"
           />
           <div>
-            {user.email && (
+            {user && (
               <MyToolTip
                 Content={<p>{user.email}</p>}
                 Trigger={

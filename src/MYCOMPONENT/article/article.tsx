@@ -15,6 +15,7 @@ type CardArticleProps = {
 };
 
 const CardArticle: React.FC<CardArticleProps> = ({ articles }) => {
+  console.log("🚀 ~ articles:", articles);
   if (articles.length === 0) {
     return (
       <div className="flex w-full flex-col items-center justify-center space-y-4 border-b-[0.1px] border-slate-200 pb-4 md:w-[1036px] md:pb-0">
@@ -35,27 +36,27 @@ const CardArticle: React.FC<CardArticleProps> = ({ articles }) => {
             <MyToolTip
               Content={
                 <Card_profil
-                  img={article.img_user}
-                  author_name={article.author_name}
+                  img={article.user_image}
+                  user_name={article.user_name}
                 />
               }
-              Trigger={<MyAvatar size="size-6" img={article.img_user} />}
+              Trigger={<MyAvatar size="size-6" img={article.user_image} />}
             />
             <MyToolTip
               Content={
                 <Card_profil
-                  img={article.img_user}
-                  author_name={article.author_name}
+                  img={article.user_image}
+                  user_name={article.user_name}
                 />
               }
-              Trigger={<p className="hover:underline">{article.author_name}</p>}
+              Trigger={<p className="hover:underline">{article.user_name}</p>}
             />
           </div>
 
           <div className="grid grid-cols-[1fr_120px] grid-rows-[1fr] md:grid-cols-[1fr_250px]">
-            <div className="flex flex-col gap-2 pe-[0.7rem] md:pe-8">
-              <Link href={"/article/" + article.id}>
-                <h1 className="text-lg font-extrabold leading-6 md:text-pretty md:text-2xl md:font-extrabold md:leading-8">
+            <div className="flex flex-col gap-2 pe-[0.7rem] md:pe-0">
+              <Link href={"/article/" + article.article_id}>
+                <h1 className="text-balance text-lg font-extrabold leading-6 md:text-[1.45rem] md:leading-[1.8rem]">
                   {article.title}
                 </h1>
               </Link>
@@ -64,7 +65,7 @@ const CardArticle: React.FC<CardArticleProps> = ({ articles }) => {
               </span>
               <div className="flex items-center justify-between md:py-4">
                 <CardFeture
-                  id={article.id}
+                  id={article.article_id}
                   comments={article.comments}
                   date={article.date}
                 />
@@ -96,7 +97,7 @@ const CardArticle: React.FC<CardArticleProps> = ({ articles }) => {
             <div className="flex flex-col justify-between">
               <AspectRatio ratio={16 / 9}>
                 <Image
-                  src={article.img_content}
+                  src={article.content_image}
                   alt="Image"
                   width={180}
                   height={100}

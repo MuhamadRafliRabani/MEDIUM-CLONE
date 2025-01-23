@@ -9,7 +9,7 @@ import { useUser } from "@/hooks/store/useUser";
 
 type Profil = {
   img: any;
-  author_name: any;
+  user_name: any;
 };
 
 type SubscribeDataType = {
@@ -22,7 +22,7 @@ type CheckSubscription = {
   subscribed_to: string;
 };
 
-const Card_profil: React.FC<Profil> = ({ img, author_name }) => {
+const Card_profil: React.FC<Profil> = ({ img, user_name }) => {
   const { user } = useUser();
   const { mutate: checkIsSubscribe, isSuccess: successCheck } =
     useHandlePost<CheckSubscription>("/feature/checkIsSubscribe");
@@ -37,7 +37,7 @@ const Card_profil: React.FC<Profil> = ({ img, author_name }) => {
 
   const checkSubscribe = {
     subscriber: user.email as string,
-    subscribed_to: author_name,
+    subscribed_to: user_name,
   };
 
   useEffect(() => {
@@ -46,7 +46,7 @@ const Card_profil: React.FC<Profil> = ({ img, author_name }) => {
 
   if (successCheck) {
     // const issubscriber = data.data.some(
-    //   (item: any) => item.subscribed_to === author_name,
+    //   (item: any) => item.subscribed_to === user_name,
     // );
     // setIsSubscribed(issubscriber);
     console.log(data);
@@ -69,7 +69,7 @@ const Card_profil: React.FC<Profil> = ({ img, author_name }) => {
         </Link>
       </div>
       <div className="col-span-2 flex flex-col items-start justify-center">
-        <h1 className="font-bold text-black">{author_name || "User"}</h1>
+        <h1 className="font-bold text-black">{user_name || "User"}</h1>
         <span className="text-sm text-slate-600">
           {/* <span>{data?.data.length || 0}</span> Followers */}
         </span>
