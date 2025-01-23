@@ -20,16 +20,15 @@ const MyCarousel: React.FC = () => {
   };
 
   return (
-    <Carousel className="md:nav relative w-full border-b-2 border-slate-100 pb-2">
-      <CarouselContent className="overflow-ellipsis text-center md:container">
+    <Carousel className="relative w-4/5 max-w-screen-md border-b-2 border-slate-100 pb-2">
+      <CarouselContent>
         {Topic_list.map((topic, index) => (
           <CarouselItem
             key={index}
-            className="w-fit basis-1/4 truncate md:basis-1/5"
+            className="w-fit max-w-fit truncate overflow-ellipsis bg-yellow-400 px-4 text-[0.9rem]"
+            onClick={(e) => handlesetTopic(topic, e)}
           >
-            <button className="w-fit" onClick={(e) => handlesetTopic(topic, e)}>
-              {topic}
-            </button>
+            {topic}
           </CarouselItem>
         ))}
       </CarouselContent>

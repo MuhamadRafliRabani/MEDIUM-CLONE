@@ -1,89 +1,20 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import useHandleFileChange from "@/hooks/setImage";
-import { useUser } from "@/hooks/store/useUser";
-import { ArrowBendRightUp } from "@phosphor-icons/react";
-import { useFormik } from "formik";
-import * as yup from "yup";
-import { SignOut } from "../auth/auth";
-import { toast } from "sonner";
-import { useRouter } from "next/router";
-import { LogOut } from "lucide-react";
-import { useHandlePost } from "@/lib/useHandlePost";
-
-const validationSchema = yup.object().shape({
-  name: yup
-    .string()
-    .min(10, "Minimum 6 characters")
-    .max(50, "Maximum 50 characters")
-    .required("Name is required"),
-  pronouns: yup
-    .string()
-    .min(10, "Minimum 5 character")
-    .max(20, "Maximum 10 characters")
-    .required("Pronouns are required"),
-  short_bio: yup
-    .string()
-    .min(6, "Minimum 1 character")
-    .max(160, "Maximum 160 characters")
-    .required("Short bio is required"),
-});
+import { ArrowBendRightUp, SignOut } from "@phosphor-icons/react";
+import Image from "next/image";
 
 const EditProfil: React.FC = () => {
-  const router = useRouter();
-  const { user } = useUser();
-  const { mutate } = useHandlePost("/profil-user/update");
-  const { file, image, handleFileChange } = useHandleFileChange();
-
-  const formik = useFormik({
-    initialValues: {
-      name: "",
-      pronouns: "",
-      short_bio: "",
-    },
-    validationSchema,
-    onSubmit: (values) => {
-      const formData = new FormData();
-      formData.append("name", values.name);
-      formData.append("pronouns", values.pronouns);
-      formData.append("short_bio", values.short_bio);
-      formData.append("image", file || "");
-      formData.append("email", user?.email || "");
-      formData.forEach((value, key) => {
-        console.log(`${key}: ${value}`);
-      });
-
-      mutate(formData, {
-        onSuccess: () => {
-          toast.success("Profile updated successfully!");
-
-          console.log("update succsse");
-        },
-        onError: (error) => {
-          toast.error("Failed to update profile. Please try again.");
-          console.log("update error");
-        },
-      });
-    },
-  });
-
-  const handleLogOut = async () => {
-    localStorage.removeItem("user");
-    await SignOut(router);
-  };
-
   return (
-    <form
-      onSubmit={formik.handleSubmit}
-      className="mx-auto w-[90%] md:w-2/5 md:space-y-3"
-    >
+    <form onSubmit={() => {}} className="mx-auto w-[90%] md:w-2/5 md:space-y-3">
       <div className="flex items-center justify-center gap-2">
         <label
           htmlFor="file"
           className="flex h-[200px] w-full cursor-pointer items-center justify-center md:w-fit"
         >
-          <img
-            src={image || user?.photoURL || "/profil.jpg"}
+          <Image
+            src={"/profil.jpg"}
+            height={150}
+            width={150}
             alt="Selected"
             className="size-32 rounded-full object-cover shadow-sm md:size-[150px]"
           />
@@ -97,7 +28,6 @@ const EditProfil: React.FC = () => {
                 id="file"
                 className="hidden"
                 accept="image/*"
-                onChange={handleFileChange}
               />
               <label htmlFor="file" className="text-green-400 hover:underline">
                 Update
@@ -117,46 +47,17 @@ const EditProfil: React.FC = () => {
       <div className="w-full space-y-2 text-sm font-light md:space-y-4">
         <div>
           <label className="font-light">Name</label>
-          <Input
-            className="mb-1 bg-slate-100"
-            name="name"
-            value={formik.values.name}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.name && formik.errors.name ? (
-            <div className="text-sm text-red-500">{formik.errors.name}</div>
-          ) : null}
+          <Input className="mb-1 bg-slate-100" name="name" />
           <p className="text-end text-sm">6/50</p>
         </div>
         <div>
           <label className="">Pronouns</label>
-          <Input
-            className="mb-1 bg-slate-100"
-            name="pronouns"
-            value={formik.values.pronouns}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.pronouns && formik.errors.pronouns ? (
-            <div className="text-sm text-red-500">{formik.errors.pronouns}</div>
-          ) : null}
+          <Input className="mb-1 bg-slate-100" name="pronouns" />
           <p className="text-end text-sm">0/4</p>
         </div>
         <div>
           <label className="">Short bio</label>
-          <Input
-            className="mb-1 bg-slate-100"
-            name="short_bio"
-            value={formik.values.short_bio}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.short_bio && formik.errors.short_bio ? (
-            <div className="text-sm text-red-500">
-              {formik.errors.short_bio}
-            </div>
-          ) : null}
+          <Input className="mb-1 bg-slate-100" name="short_bio" />
           <p className="text-end text-sm">0/160</p>
         </div>
       </div>
@@ -174,8 +75,8 @@ const EditProfil: React.FC = () => {
       </div>
 
       <div className="flex w-full items-center justify-between gap-4">
-        <Button onClick={handleLogOut}>
-          <LogOut className="mr-2 size-4" /> Logout
+        <Button>
+          <SignOut className="mr-2 size-4" /> Logout
         </Button>
         <Button
           type="submit"

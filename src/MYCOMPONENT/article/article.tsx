@@ -67,7 +67,6 @@ const CardArticle: React.FC<CardArticleProps> = ({ articles }) => {
                   id={article.id}
                   comments={article.comments}
                   date={article.date}
-                  likes={article.likes}
                 />
 
                 <div className="hidden items-center justify-center gap-2 text-slate-500 md:flex">

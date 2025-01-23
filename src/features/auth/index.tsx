@@ -7,14 +7,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { GoogleLogo } from "@phosphor-icons/react";
-import { Github } from "lucide-react";
+import { GoogleLogo, GithubLogo } from "@phosphor-icons/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useRouter } from "next/router";
-import { UserState, useUser } from "@/hooks/store/useUser";
-import { authgoogle, signIn, signUp } from "./auth";
+import { useUser } from "@/hooks/store/useUser";
 import { useState } from "react";
+import { useHandlePost } from "@/lib/useHandlePost";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export type FormValues = {
   email: string;
@@ -31,36 +31,10 @@ const validationSchema = Yup.object().shape({
 const FormCard: React.FC = () => {
   const { setUser, user } = useUser();
   const [isSignUp, setIsSignUp] = useState(true);
-  const router = useRouter();
-
-  const handleAuth = async (values: FormValues) => {
-    const user = isSignUp
-      ? await signUp(values, router)
-      : await signIn(values, router);
-
-    const formData = new FormData();
-    formData.append("name", user.displayName ? user.displayName : "");
-    formData.append("profil_img", user.photoURL ? user.photoURL : "");
-    formData.append("pronouns", "writer");
-    formData.append("short_bio", "i`m a writer");
-    formData.append("email", user.email ? user.email : "");
-    localStorage.setItem("user", JSON.stringify(user));
-    setUser(user);
-  };
-
-  const handleGoogleAuth = async () => {
-    const user = await authgoogle(router);
-    localStorage.setItem("user", JSON.stringify(user));
-    const dataUser = {
-      id: user.uid,
-      displayName: user.displayName,
-      pronouns: "",
-      short_bio: "",
-      email: user.email,
-      photoURL: user.photoURL,
-    };
-    setUser(dataUser);
-  };
+  const route = useRouter();
+  const { mutate: auth, isIdle } = useHandlePost(
+    `/auth/email/${isSignUp ? "signUp" : "signIn"}`,
+  );
 
   const formik = useFormik<FormValues>({
     initialValues: {
@@ -68,30 +42,53 @@ const FormCard: React.FC = () => {
       password: "",
     },
     validationSchema,
-    onSubmit: handleAuth,
+    onSubmit: () => {
+      auth(
+        {
+          email: formik.values.email,
+          password: formik.values.password,
+        },
+        {
+          onSuccess: (data: any) => {
+            if (isSignUp) {
+              toast.success("Sign Up Success");
+
+              setUser(data.data.user.user);
+
+              toast.info("please check your email to verify your account");
+
+              route.push("/");
+            }
+
+            toast.success("Sign In Success");
+
+            setUser(data.data.user.user);
+            route.push("/");
+          },
+        },
+      );
+    },
   });
 
   return (
-    <Card className="mx-auto my-8 w-full max-w-md shadow-md">
+    <Card className="mx-auto mt-24 w-11/12 max-w-sm shadow-md md:mt-20 md:w-full md:max-w-md">
       <CardHeader>
         <CardTitle>{isSignUp ? "Sign Up" : "Sign In"}</CardTitle>
         <CardDescription>Please fill in the form below</CardDescription>
         <div className="flex w-full items-center justify-center gap-2 pt-4">
-          <Button className="w-full" variant="outline">
-            <Github className="mr-2 size-4" /> Github
+          <Button className="w-full cursor-pointer" variant="outline">
+            <GithubLogo className="mr-2 size-4" /> Github
           </Button>
-          <Button
-            className="w-full"
-            variant="outline"
-            onClick={handleGoogleAuth}
-          >
+          <Button className="w-full cursor-pointer" variant="outline">
             <GoogleLogo className="mr-2 size-4" /> Google
           </Button>
         </div>
       </CardHeader>
       <div className="-mt-2 mb-2 flex w-full items-center justify-center gap-2 text-sm">
         <hr className="w-full" />
-        <p className="w-fit whitespace-nowrap">OR CONTINUE WITH</p>
+        <p className="w-fit whitespace-nowrap text-[0.83rem] md:text-base">
+          OR CONTINUE WITH
+        </p>
         <hr className="w-full" />
       </div>
       <CardContent>
@@ -99,7 +96,7 @@ const FormCard: React.FC = () => {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
+              className="pb-1 text-sm font-medium text-gray-700"
             >
               Email
             </label>
@@ -108,7 +105,7 @@ const FormCard: React.FC = () => {
               type="email"
               placeholder="Enter your email"
               {...formik.getFieldProps("email")}
-              className="mt-1 block w-full"
+              className="w-full"
             />
             {formik.touched.email && formik.errors.email && (
               <div className="text-red-500">{formik.errors.email}</div>
@@ -117,7 +114,7 @@ const FormCard: React.FC = () => {
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
+              className="pb-1 text-sm font-medium text-gray-700"
             >
               Password
             </label>
@@ -126,23 +123,23 @@ const FormCard: React.FC = () => {
               type="password"
               placeholder="Enter your password"
               {...formik.getFieldProps("password")}
-              className="mt-1 block w-full"
+              className="w-full"
             />
             {formik.touched.password && formik.errors.password && (
               <div className="text-red-500">{formik.errors.password}</div>
             )}
           </div>
           <p>
-            {isSignUp ? "sudah punya akun?" : "belum punya akun?"}{" "}
+            {isSignUp ? "allready have account?" : "does`t have account?"}{" "}
             <span
-              className="text-blue-700"
+              className="cursor-pointer text-blue-700 hover:underline"
               onClick={() => setIsSignUp((prev) => !prev)}
             >
-              {isSignUp ? "masuk" : "buat akun?"}
+              {isSignUp ? "login" : "signUp"}
             </span>
           </p>
           <Button type="submit" className="w-full">
-            {isSignUp ? "Sign Up" : "Sign In"}
+            {isSignUp ? "sign Up" : "sign In"}
           </Button>
         </form>
       </CardContent>

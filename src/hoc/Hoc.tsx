@@ -8,16 +8,12 @@ const Hoc = (WrappedComponent: React.ComponentType) => {
     const { user } = useUser();
 
     useEffect(() => {
-      if (!user.email) {
+      if (!user) {
         router.replace("/auth");
       }
     }, [user, router]);
 
-    if (user.email) {
-      return <WrappedComponent {...props} />;
-    } else {
-      return null;
-    }
+    return <WrappedComponent {...props} />;
   };
 
   HOCComponent.displayName = `HOC(${getDisplayName(WrappedComponent)})`;
