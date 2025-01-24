@@ -1,23 +1,24 @@
-import type { Comment } from "@/features/comment/comment";
+import type { Comment } from "@/features/comment/commentFilde";
 import MyToolTip from "../MyToolTip/MyToolTip";
 import Card_profil from "../card profil";
 import MyAvatar from "../avatar/MyAvatar";
 import { formatDate } from "@/lib/date";
 
-const CardComment = ({ user, comment, time, profil_img }: Comment) => {
-  const date = formatDate(time);
+const CardComment = ({ user_name, comment, create_at, image }: Comment) => {
+  const date = formatDate(create_at);
+
   return (
     <div className="mx-auto my-4 w-full max-w-2xl rounded-lg bg-white p-4 shadow-md">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <div className="">
             <MyToolTip
-              Content={<Card_profil img={profil_img} author_name={user} />}
-              Trigger={<MyAvatar size="size-6 rounded-full" img={profil_img} />}
+              Content={<Card_profil img={image} user_name={user_name} />}
+              Trigger={<MyAvatar size="size-6 rounded-full" img={image} />}
             />
           </div>
           <div>
-            <h4 className="font-semibold">{user}</h4>
+            <h4 className="font-semibold">{user_name}</h4>
             <p className="text-sm text-gray-500">{date}</p>
           </div>
         </div>

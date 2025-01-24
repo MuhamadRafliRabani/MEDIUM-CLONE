@@ -1,6 +1,6 @@
 import MyToolTip from "../MyToolTip/MyToolTip";
 import MyDrawer from "../my_drawer/MyDrawer";
-import Comment from "@/features/comment/comment";
+import Comment from "@/features/comment/commentFilde";
 import { formatDate } from "@/lib/date";
 import { MessageCircle, Star, ThumbsUp } from "lucide-react";
 

@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { BookBookmark } from "@phosphor-icons/react";
 import MyAvatar from "./avatar/MyAvatar";
-import { toast } from "sonner";
 import Link from "next/link";
-import { useHandlePost } from "@/lib/useHandlePost";
 import { useUser } from "@/hooks/store/useUser";
 
 type Profil = {
@@ -12,47 +9,8 @@ type Profil = {
   user_name: any;
 };
 
-type SubscribeDataType = {
-  subscriber: string;
-  subscribed_to: string;
-};
-
-type CheckSubscription = {
-  subscriber: string;
-  subscribed_to: string;
-};
-
 const Card_profil: React.FC<Profil> = ({ img, user_name }) => {
   const { user } = useUser();
-  const { mutate: checkIsSubscribe, isSuccess: successCheck } =
-    useHandlePost<CheckSubscription>("/feature/checkIsSubscribe");
-  const { mutate, isSuccess, data } =
-    useHandlePost<SubscribeDataType>("/feature/subcribe");
-
-  const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
-
-  const handleFollow = () => {
-    toast.info("sedang dalam perbaikan");
-  };
-
-  const checkSubscribe = {
-    subscriber: user.email as string,
-    subscribed_to: user_name,
-  };
-
-  useEffect(() => {
-    checkIsSubscribe(checkSubscribe);
-  }, [isSuccess, []]);
-
-  if (successCheck) {
-    // const issubscriber = data.data.some(
-    //   (item: any) => item.subscribed_to === user_name,
-    // );
-    // setIsSubscribed(issubscriber);
-    console.log(data);
-  }
-
-  if (isSuccess) return toast.success("subscribed");
 
   return (
     <div className="box-border grid w-[300px] grid-cols-[1fr_50px] grid-rows-[auto_auto_1fr_auto] gap-4 rounded-lg bg-white px-8 py-4">
@@ -61,10 +19,9 @@ const Card_profil: React.FC<Profil> = ({ img, user_name }) => {
         <Link href={!user?.photoURL ? "/auth" : "#"}>
           <Button
             variant={"outline"}
-            className={`rounded-3xl px-4 py-2 ${isSubscribed ? "bg-secondary" : "bg-black text-white"}`}
-            onClick={handleFollow}
+            className={`"bg-secondary" "bg-black text-white" rounded-3xl px-4 py-2`}
           >
-            {isSubscribed ? "Unfollow" : "Follow"}
+            {"Unfollow"}
           </Button>
         </Link>
       </div>
