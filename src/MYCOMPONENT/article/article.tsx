@@ -6,21 +6,19 @@ import MyToolTip from "../MyToolTip/MyToolTip";
 import CardFeture from "../CardFitur/CardFeture";
 import { BookmarkSimple, MinusCircle, Smiley } from "@phosphor-icons/react";
 import MyDropDownMenu from "../MyDropDownMenu/MyDropDownMenu";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import Image from "next/image";
-import { article } from "@/pages";
+import { Article } from "@/pages";
 
 type CardArticleProps = {
-  articles: article[];
+  articles: Article[];
 };
 
 const CardArticle: React.FC<CardArticleProps> = ({ articles }) => {
-  console.log("🚀 ~ articles:", articles);
-  if (articles.length === 0) {
+  if (articles?.length === 0) {
     return (
-      <div className="flex w-full flex-col items-center justify-center space-y-4 border-b-[0.1px] border-slate-200 pb-4 md:w-[1036px] md:pb-0">
+      <div className="flex w-full flex-col items-center justify-center space-y-4 border-b border-slate-200 pb-4 md:w-[1036px] md:pb-0">
         <Smiley size={40} />
-        <h1 className="text-2xl text-primary">no article in this topic</h1>
+        <h1 className="text-2xl text-primary">No articles in this topic</h1>
       </div>
     );
   }
@@ -28,11 +26,9 @@ const CardArticle: React.FC<CardArticleProps> = ({ articles }) => {
   return (
     <>
       {articles.map((article, i) => (
-        <div
-          key={i}
-          className="w-full space-y-4 border-b-[0.1px] border-slate-200 pb-4 md:pb-0"
-        >
-          <div className="profil flex w-full items-center justify-start gap-3 text-sm">
+        <article key={i} className="w-full space-y-4 pb-4 md:w-article md:pb-0">
+          {/* Profil Section */}
+          <div className="flex items-center gap-3 text-sm">
             <MyToolTip
               Content={
                 <Card_profil
@@ -53,71 +49,63 @@ const CardArticle: React.FC<CardArticleProps> = ({ articles }) => {
             />
           </div>
 
-          <div className="grid grid-cols-[1fr_120px] grid-rows-[1fr] md:grid-cols-[1fr_250px]">
-            <div className="flex flex-col gap-2 pe-[0.7rem] md:pe-0">
-              <Link href={"/article/" + article.article_id}>
-                <h1 className="text-balance text-lg font-extrabold leading-6 md:text-[1.45rem] md:leading-[1.8rem]">
+          {/* Article Content */}
+          <div className="grid grid-cols-[1fr_120px] border-b border-slate-200 md:grid-cols-[1fr_170px]">
+            {/* Text Content */}
+            <div className="flex flex-col gap-2 pr-2 md:pr-0">
+              <Link href={`/article/${article.article_id}`}>
+                <h1 className="w-[95%] text-pretty text-lg font-extrabold leading-6 md:text-2xl md:leading-7">
                   {article.title}
                 </h1>
               </Link>
-              <span className="w-4/5 whitespace-break-spaces text-base text-slate-500">
+              <p className="w-4/5 whitespace-break-spaces text-base text-slate-500">
                 {article.description}
-              </span>
-              <div className="flex items-center justify-between md:py-4">
-                <CardFeture
-                  id={article.article_id}
-                  comments={article.comments}
-                  date={article.date}
-                />
-
-                <div className="hidden items-center justify-center gap-2 text-slate-500 md:flex">
+              </p>
+              <div className="flex w-11/12 items-center justify-evenly py-2 md:py-4">
+                <CardFeture id={article.article_id} date={article.date} />
+                {/* Desktop Actions */}
+                <div className="hidden items-center gap-2 text-slate-500 md:flex">
                   <MyToolTip
-                    Content={<p>Show less like this</p>}
+                    Content="Show less like this"
                     Trigger={
                       <MinusCircle size={16} className="text-outLineIcon" />
                     }
-                    tag="p"
                   />
                   <MyToolTip
-                    Content={<p>Save</p>}
+                    Content="Save"
                     Trigger={
                       <BookmarkSimple
                         size={16}
-                        className="size-6 text-icon"
+                        className="text-icon"
                         weight="thin"
                       />
                     }
-                    tag="p"
                   />
                   <MyDropDownMenu />
                 </div>
               </div>
             </div>
 
-            <div className="flex flex-col justify-between">
-              <AspectRatio ratio={16 / 9}>
-                <Image
-                  src={article.content_image}
-                  alt="Image"
-                  width={180}
-                  height={100}
-                  className="mx-auto block h-[120px] rounded-md object-cover"
+            {/* Image Content */}
+            <div className="flex flex-col justify-between py-2">
+              <Image
+                src={article.content_image}
+                alt="Article Image"
+                width={180}
+                height={100}
+                className="h-[120px] rounded-sm object-cover"
+              />
+              {/* Mobile Actions */}
+              <div className="-mb-3 flex items-center justify-between md:hidden">
+                <MyToolTip
+                  Content="Show less like this"
+                  Trigger={<MinusCircle size={16} className="text-icon" />}
                 />
-              </AspectRatio>
-              <div className="-mb-[13px] flex w-full items-center justify-between md:-mb-[4.5px] md:hidden">
-                <div className="font-light text-slate-800">
-                  <MyToolTip
-                    Content={<p>Show less like this</p>}
-                    Trigger={<MinusCircle size={16} className="text-icon" />}
-                  />
-                </div>
-                <div>
-                  <MyDropDownMenu />
-                </div>
+                <MyDropDownMenu />
               </div>
             </div>
           </div>
-        </div>
+        </article>
       ))}
     </>
   );

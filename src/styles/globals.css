@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap");
 
 @layer base {
   :root {
@@ -99,13 +98,142 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "Sohne";
+  src: url("/font/sohne-1.otf") format("truetype");
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Segoe";
+  src: url("/font/Segoe-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+:root {
+  interpolate-size: allow-keywords; /* 👈 */
+}
+
 body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  scroll-behavior: smooth;
+}
+
+.article-paragraft p {
+  display: block;
+}
+
+/* fonts start */
+.Segoe-font {
+  font-family: "Segoe", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.shone {
+  font-family: "Sohne", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .noto-font {
   font-family: "source-serif-pro", Georgia, Cambria, "Times New Roman", Times,
     serif;
+}
+
+.oswald {
+  font-family: "Oswald", serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+/* fonts end */
+
+.textarea {
+  min-height: 3.5rem;
+  max-height: 11.5rem;
+  overflow-y: auto;
+  resize: none;
+  transition: max-height 0.3s ease;
+}
+
+.textarea:placeholder-shown {
+  max-height: 5rem;
+}
+
+.editor-props h1 {
+  font-size: 1.8rem;
+}
+
+/* sticy animate start */
+.sticky-animate {
+  animation: sticky both;
+  animation-timeline: view();
+  animation-range: entry 0% cover 90%;
+}
+
+@keyframes sticky {
+  90% {
+    background: #ffffff;
+  }
+  100% {
+    position: sticky;
+    z-index: 99999;
+    top: 0;
+    opacity: 1;
+  }
+}
+/* sticy animate end */
+
+/* border animate start */
+.peer:checked + .target::before {
+  content: "";
+  position: absolute;
+  bottom: -0.8px;
+  left: 0;
+  height: 0.5px;
+  width: 100%;
+  background-color: black;
+  opacity: 1;
+  transition: all 0.3s ease-in-out;
+}
+/* border animate end */
+
+/* open style conditons start */
+.animate-open {
+  width: fit-content;
+  animation: open-rich-text 0.25s ease-in-out;
+  overflow: hidden;
+}
+
+.animate-close {
+  width: 0%;
+  animation: close-rich-text 0.25s ease-in-out;
+  overflow: hidden;
+}
+
+@keyframes open-rich-text {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: fit-content;
+  }
+}
+
+@keyframes close-rich-text {
+  0% {
+    width: fit-content;
+  }
+  100% {
+    width: 0%;
+  }
+}
+/* open style conditons end */
+
+form {
+  textarea {
+    padding: 1rem 0.5rem;
+    field-sizing: content;
+    min-block-size: 1rem;
+    min-inline-size: 80ch;
+    max-inline-size: 80ch;
+  }
 }
 
 @media (min-width: 1028px) {
@@ -132,28 +260,6 @@ body {
       20% 10%
     );
   }
-  .tooltipContent {
-    position: relative;
-  }
-  .tooltipContent::after {
-    content: "";
-    position: absolute;
-    background-color: var(--primary);
-    top: 100%;
-    clip-path: polygon(47% 100%, 0 0, 100% 0);
-    width: 10rem;
-    height: 10rem;
-    z-index: 4;
-  }
-
-  .sohne {
-    font-family: "Poppins", sans-serif;
-    font-weight: 400;
-  }
-
-  .input {
-    font-family: "PT Serif", serif;
-  }
 
   .input > div .tiptap ul {
     list-style-type: disc;
@@ -163,11 +269,6 @@ body {
     list-style-type: decimal;
   }
 
-  textarea,
-  .tl {
-    font-family: "Tinos", serif;
-  }
-
   .editor-props ul li {
     list-style-type: disc;
   }
@@ -175,43 +276,4 @@ body {
   .editor-props ol li {
     list-style-type: decimal;
   }
-
-  .animate-open {
-    width: fit-content;
-    animation: open-rich-text 0.5s ease-in-out;
-  }
-
-  @keyframes open-rich-text {
-    0% {
-      width: 0%;
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-      width: fit-content;
-    }
-  }
-
-  .animate-close {
-    width: 0%;
-    opacity: 0;
-    animation: close-rich-text 0.5s ease-in-out;
-  }
-
-  @keyframes close-rich-text {
-    0% {
-      opacity: 1;
-      width: fit-content;
-    }
-    100% {
-      opacity: 0;
-      width: 0%;
-    }
-  }
 }
-/* @media (min-width: 1200px) {
-  .main {
-    padding-left: 6rem;
-    padding-right: 6rem;
-  }
-} */

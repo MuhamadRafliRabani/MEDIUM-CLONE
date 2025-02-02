@@ -1,7 +1,7 @@
 import { Inter } from "next/font/google";
 import MyCarousel from "@/MYCOMPONENT/Carousell";
 import StaffContainer from "@/MYCOMPONENT/sidemenu/Staff/StaffContainer";
-import { usesetTopic, useUser } from "@/hooks/store/useUser";
+import { usesetTopic } from "@/hooks/store/useUser";
 import SkeletonCard from "@/MYCOMPONENT/article/cardSeleton";
 import CardArticle from "@/MYCOMPONENT/article/article";
 import Hoc from "@/hoc/Hoc";
@@ -10,7 +10,7 @@ import { useHandleGet } from "@/lib/useGet";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export type article = {
+export type Article = {
   article_id: number;
   title: string;
   article: string;
@@ -25,33 +25,37 @@ export type article = {
 
 function Home() {
   const { topic } = usesetTopic();
-  const { user, setUser } = useUser();
-  const {
-    data: articles,
-    isLoading,
-    isError,
-  } = useHandleGet(`/articles/${topic}`);
+  const { data: articles, isLoading } = useHandleGet(
+    `/articles/${topic}`,
+    topic,
+  );
 
   return (
     <>
-      <div className="relative mt-11 flex h-full min-h-[87vh] items-center justify-center">
+      <div className="sohne flex h-full min-h-[87vh] flex-wrap md:flex-nowrap md:justify-center">
+        {/* Main Content */}
         <main
-          className={`flex w-full max-w-[900px] flex-col items-center px-4 ${inter.className} border-slate-100 pt-4 md:border-e`}
+          className={`flex w-full flex-col md:max-w-[52rem] md:ps-8 ${inter.className} relative border-slate-100 px-4 pt-4 md:border-e md:pt-8`}
         >
           <MyCarousel />
 
-          <section className="w-full max-w-screen-md space-y-4 pt-6">
-            {!articles && isLoading ? (
+          {/* Article Section */}
+          <section className="mt-10 space-y-4 md:w-article">
+            {isLoading ? (
               <SkeletonCard />
             ) : (
               <CardArticle articles={articles?.data} />
             )}
           </section>
         </main>
-        <div className="relative h-full min-h-screen w-auto max-w-[250px] ps-4 pt-6">
+
+        {/* Sidebar */}
+        <div className="relative h-full min-h-screen w-auto max-w-[370px] ps-4 pt-5 md:ps-10 md:pt-10">
           <StaffContainer />
         </div>
       </div>
+
+      {/* Footer */}
       <Footer />
     </>
   );

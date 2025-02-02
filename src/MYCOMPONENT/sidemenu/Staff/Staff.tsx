@@ -9,7 +9,7 @@ const StaffMedium = () => {
         <MyToolTip
           Content={
             <Card_profil
-              author_name="rabani"
+              user_name="rabani"
               img="https://github.com/shadcn.png"
             />
           }
@@ -20,7 +20,7 @@ const StaffMedium = () => {
         <MyToolTip
           Content={
             <Card_profil
-              author_name="rabani"
+              user_name="rabani"
               img="https://github.com/shadcn.png"
             />
           }

@@ -26,7 +26,7 @@ const MyDrawer: React.FC<Drawer> = ({
   Title,
 }) => {
   return (
-    <div className="h-fit">
+    <div className="h-full max-h-[70svh]">
       <Drawer>
         <DrawerTrigger>{triger}</DrawerTrigger>
         <DrawerContent>

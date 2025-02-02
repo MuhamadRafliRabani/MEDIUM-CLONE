@@ -24,7 +24,7 @@ export const validationSchema = yup.object({
 const CommentFilde = ({ id }: any) => {
   const router = useRouter();
   const { user } = useUser();
-  const Ref = useRef<HTMLInputElement | null>(null);
+  const Ref = useRef<HTMLTextAreaElement | null>(null);
 
   const { mutate } = useHandlePost<Comment>("/feature/comment/upload");
 
@@ -68,19 +68,19 @@ const CommentFilde = ({ id }: any) => {
       onSubmit={() => {}}
       className="mx-auto my-4 w-full max-w-2xl space-y-1 rounded-lg p-4"
     >
-      <label htmlFor="comment" className="font-semibold">
-        Type a Comment
-      </label>
-      <Input
-        type="text"
+      <textarea
         name="comment"
-        placeholder="your comment..."
-        className="max-h-20 w-full rounded-t-lg border-b border-slate-300 bg-white p-2 shadow-sm outline-none focus:ring-0"
+        placeholder="write your comment..."
+        className="min-h-4 rounded-t-lg border-b border-slate-300 bg-white p-2 shadow-sm outline-none focus:ring-1"
         ref={Ref}
         onChange={() => {}}
       />
-      <Button type="submit" variant="default" className="ms-auto block">
-        <SendHorizontal size={16} strokeWidth={0.5} />
+      <Button
+        type="submit"
+        variant="outline"
+        className="ms-auto block hover:bg-slate-800 hover:text-white"
+      >
+        <SendHorizontal size={16} strokeWidth={1} />
       </Button>
     </form>
   );

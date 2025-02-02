@@ -5,14 +5,15 @@ import MyToolTip from "../MyToolTip/MyToolTip";
 import MyDrawer from "../my_drawer/MyDrawer";
 import EditProfil from "@/features/profil/editProfil";
 import { Bell, SquarePen } from "lucide-react";
+import MyDropDownMenu from "../MyDropDownMenu/MyDropDownMenu";
+import { Profil } from "./profil";
 
 const Navbar: React.FC = () => {
   const { user } = useUser();
-
-  console.log(user);
+  console.log("🚀 ~ user:", user);
 
   return (
-    <nav className="fixed inset-x-0 top-0 bg-white shadow-sm">
+    <nav className="bg-white shadow-sm">
       <div className="container mx-auto flex items-center justify-between px-4 py-2">
         <div className="flex items-center space-x-4">
           <Link href="/">
@@ -20,50 +21,38 @@ const Navbar: React.FC = () => {
           </Link>
         </div>
 
-        <div className="flex items-center justify-center space-x-4 md:space-x-6">
-          <Link href="/article/new-story">
+        <div className="flex items-center justify-center space-x-4 md:space-x-8">
+          <Link
+            className="flex items-center gap-2 text-black/65"
+            href="/article/new-story"
+          >
             <MyToolTip
               Content={<p>make your story</p>}
               Trigger={
-                <SquarePen
-                  className="size-6 stroke-black text-black"
-                  strokeWidth={0.5}
-                />
+                <SquarePen className="size-6 stroke-black" strokeWidth={1} />
               }
               tag="p"
             />
+            <p>Write</p>
           </Link>
           <MyToolTip
             Content={<p>No notifications</p>}
             Trigger={
-              <Bell className="size-6" color="#000000" strokeWidth={0.5} />
+              <Bell
+                className="size-6 stroke-black"
+                color="#000000"
+                strokeWidth={1}
+              />
             }
             tag="p"
           />
-          <div>
-            {user && (
-              <MyToolTip
-                Content={<p>{user.email}</p>}
-                Trigger={
-                  <MyDrawer
-                    triger={
-                      <Image
-                        alt=""
-                        src={(user.photoURL as string) || "/user.jpg"}
-                        width={32}
-                        height={32}
-                        className="size-7 rounded-full bg-slate-200"
-                      />
-                    }
-                    Title="Update Profil"
-                    Description="Update your profil here"
-                    content={<EditProfil />}
-                  />
-                }
-                tag="p"
-              />
-            )}
-          </div>
+          {user && (
+            <Profil
+              image={
+                user.app_metadata.provider !== "email" ? user.id : "/user.jpg"
+              }
+            />
+          )}
         </div>
       </div>
     </nav>

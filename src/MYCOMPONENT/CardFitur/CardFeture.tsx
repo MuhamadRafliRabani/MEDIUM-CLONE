@@ -2,20 +2,23 @@ import MyToolTip from "../MyToolTip/MyToolTip";
 import MyDrawer from "../my_drawer/MyDrawer";
 import Comment from "@/features/comment/commentFilde";
 import { formatDate } from "@/lib/date";
+import { useHandleGet } from "@/lib/useGet";
 import { MessageCircle, Star, ThumbsUp } from "lucide-react";
 
-type CardFeture = {
+type CardFetureProps = {
   id?: number;
   date: string;
-  comments: string | number | null;
 };
 
-const CardFeture = ({ id, date, comments }: CardFeture) => {
-  const Date = formatDate(date);
+const CardFeture = ({ id, date }: CardFetureProps) => {
+  const { data: like } = useHandleGet(`/feature/like/${id}`);
+  const { data: comment } = useHandleGet(`/feature/comment/${id}`);
+  const formattedDate = formatDate(date);
 
   return (
     <div className="flex w-full items-center gap-4 pt-4 text-sm md:pt-0">
-      <div className="flex items-center justify-center gap-1 text-icon">
+      {/* Member-only Story Icon */}
+      <div className="flex items-center gap-1 text-icon">
         <MyToolTip
           Content={<p className="bg-primary">Member-only story</p>}
           Trigger={
@@ -29,18 +32,26 @@ const CardFeture = ({ id, date, comments }: CardFeture) => {
           tag="p"
         />
       </div>
-      <div className="flex items-center justify-center gap-2 text-[0.8rem] font-medium text-black/70">
-        {Date}
+
+      {/* Date */}
+      <div className="flex items-center gap-2 text-xs font-medium text-black/70">
+        {formattedDate}
       </div>
-      <div className="flex items-center gap-2 text-[0.8rem] text-black/70">
+
+      {/* Likes (Hidden on Mobile) */}
+      <div className="hidden items-center gap-2 text-xs text-black/70 md:flex">
         <button>
           <ThumbsUp className="fill-black/60" size={16} strokeWidth={0.5} />
         </button>
-        20
+        {like?.data.length}
       </div>
-      <div className="flex items-center justify-center gap-1 pt-1 text-black/70">
+
+      {/* Comments (Hidden on Mobile) */}
+      <div className="hidden items-center gap-2 text-xs text-black/70 md:flex">
         <MyToolTip
-          Content={<p className="bg-primary">{comments} response</p>}
+          Content={
+            <p className="bg-primary">{comment?.data.length} responses</p>
+          }
           Trigger={
             <MyDrawer
               content={<Comment id={id} />}
@@ -52,13 +63,12 @@ const CardFeture = ({ id, date, comments }: CardFeture) => {
                 />
               }
               Title="Comment"
-              Description="comment with a good word"
+              Description="Comment with a good word"
             />
           }
           tag="p"
         />
-        {comments}
-        60
+        {comment?.data.length}
       </div>
     </div>
   );

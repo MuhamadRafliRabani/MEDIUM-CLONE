@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import {
-  Ellipsis,
   MessageCircle,
   PlayCircle,
   Dot,
@@ -25,15 +24,15 @@ import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import CommentFilde from "@/features/comment/commentFilde";
 import CardComment from "@/MYCOMPONENT/myComment/Mycomment";
+import MyDropDownMenu from "@/MYCOMPONENT/MyDropDownMenu/MyDropDownMenu";
 
 const Article = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const { data: likes } = useHandleGet(`/feature/like/${id}`);
-  const { data: comments } = useHandleGet(`/feature/comment/73`);
-  console.log("🚀 ~ Article ~ comments:", comments);
-  const { data, isLoading, isError } = useHandleGet(`/article/${id}`);
+  const { data, isLoading, isError } = useHandleGet(`/article/${id}`, id);
+  const { data: comments } = useHandleGet(`/feature/comment/${id}`, id);
+  const { data: likes } = useHandleGet(`/feature/like/${id}`, id);
 
   if (isLoading) return <ArticleSkeleton />;
 
@@ -42,7 +41,7 @@ const Article = () => {
   const article = data?.data;
 
   return (
-    <section className="mt-14 space-y-4 px-4">
+    <section className="sohne mt-14 space-y-4 px-4">
       <div className="space-y-4 border-b border-primary pt-4 md:mx-auto md:max-w-2xl md:space-y-8 md:py-10">
         {article.member_only && (
           <blockquote className="noto-font flex items-center gap-2 text-[0.9em] text-black/60">
@@ -50,10 +49,10 @@ const Article = () => {
             <span>Member-only story</span>
           </blockquote>
         )}
-        <h1 className="text-3xl font-extrabold md:text-[42px]/[52px] md:font-bold">
+        <h1 className={`text-3xl md:text-[42px]/[48px] md:font-extrabold`}>
           {article?.title}
         </h1>
-        <h3 className="text-2xl/[28px] font-medium text-black/60 md:font-normal">
+        <h3 className="text-2xl font-light tracking-wide text-gray-500">
           {article?.description}
         </h3>
 
@@ -66,15 +65,15 @@ const Article = () => {
                 user_name={article?.user_name}
               />
             }
-            Trigger={<MyAvatar size="size-6" img={article?.user_image} />}
+            Trigger={<MyAvatar size="size-12" img={article?.user_image} />}
           />
-          <div className="flex flex-col text-[0.9rem] font-normal capitalize md:text-base/[20px]">
-            <h3 className="flex items-center">
-              <p>{article?.user_name}</p>
+          <div className="flex flex-col gap-1 text-[0.9rem] font-normal capitalize md:text-base/[20px]">
+            <div className="flex items-center">
+              <p className="font-[490]">{article?.user_name}</p>
               <Dot size={16} strokeWidth={0.5} />{" "}
-              <span className="text-green-400">Follow</span>
-            </h3>
-            <div className="flex items-center text-[0.907rem] font-normal text-black/60">
+              <span className="font-[490] text-green-400">Follow</span>
+            </div>
+            <div className="flex items-center text-[1.05rem] font-[490] text-black/60 md:text-[0.88rem]">
               <span>8 min read</span>
               <Dot size={16} strokeWidth={0.5} />
               {formatDate(article?.date)}
@@ -84,7 +83,7 @@ const Article = () => {
         {/* end header article */}
 
         {/* nav article */}
-        <div className="flex items-center justify-between border-y border-slate-200 p-3">
+        <div className="flex items-center justify-between border-y border-slate-200 px-3 py-1.5">
           <div className="flex items-center gap-8 text-sm text-icon">
             <div className="flex items-center gap-1">
               <MyToolTip
@@ -121,19 +120,18 @@ const Article = () => {
             <MyToolTip
               Content={<p className="bg-primary">Play</p>}
               Trigger={
-                <PlayCircle size={24} className="size-5 font-thin md:size-6" />
+                <PlayCircle
+                  strokeWidth={0.5}
+                  size={24}
+                  className="size-5 font-thin md:size-6"
+                />
               }
             />
             <MyToolTip
               Content={<p className="bg-primary">Share</p>}
               Trigger={<Share className="size-5" size={16} strokeWidth={0.5} />}
             />
-            <MyToolTip
-              Content={<p className="bg-primary">Menu</p>}
-              Trigger={
-                <Ellipsis className="size-5" size={16} strokeWidth={0.5} />
-              }
-            />
+            <MyDropDownMenu />
           </div>
         </div>
         {/* end nav article */}
@@ -149,16 +147,16 @@ const Article = () => {
           <AspectRatio ratio={4 / 3}>
             <Image
               width={800}
-              height={600}
+              height={400}
               src={article?.content_image}
               alt=""
-              className="h-full rounded-md object-cover"
+              className="h-[450px] w-full rounded-md object-cover"
             />
           </AspectRatio>
         </div>
 
         <ReactMarkdown
-          className="noto-font text-md leading-relaxed text-slate-600 md:text-[20px]/[32px]"
+          className="article-paragraft noto-font text-md leading-relaxed text-slate-600 md:text-[20px]/[32px]"
           remarkPlugins={[remarkGfm]}
           rehypePlugins={[rehypeRaw]}
         >
@@ -167,7 +165,7 @@ const Article = () => {
       </div>
       <CommentFilde id={id} />
       <div className="mx-auto max-w-3xl" id="comment">
-        {/* {comments?.data.map((comment: Comment, i: number) => (
+        {comments?.data.map((comment: Comment, i: number) => (
           <CardComment
             key={i}
             comment={comment.comment}
@@ -176,7 +174,7 @@ const Article = () => {
             create_at={comment.create_at}
             user_name={comment.user_name}
           />
-        ))} */}
+        ))}
       </div>
     </section>
   );

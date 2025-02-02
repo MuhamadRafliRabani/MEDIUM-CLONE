@@ -26,7 +26,11 @@ const MyDropDownMenu = () => {
           tag="p"
         />
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-[250px] border-none bg-white font-light shadow-lg">
+      <DropdownMenuContent
+        align="end"
+        side="bottom"
+        className="w-[250px] border-none bg-white font-light shadow-lg"
+      >
         <DropdownMenuLabel className="flex items-center gap-2 py-4">
           <BookmarkSimple size={16} /> Save
         </DropdownMenuLabel>
@@ -48,9 +52,7 @@ const MyDropDownMenu = () => {
           </span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="border-y-[0.3px] border-slate-100 py-4">
-          Follow author
-        </DropdownMenuItem>
+        <DropdownMenuItem>Follow author</DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem>Mute author</DropdownMenuItem>
         <DropdownMenuItem className="text-red-400">

@@ -5,56 +5,29 @@ import {
   TextStrikethrough,
   ListBullets,
   ListNumbers,
-  PlusCircle,
 } from "@phosphor-icons/react";
-import { EditorContent, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import Underline from "@tiptap/extension-underline";
-import BulletList from "@tiptap/extension-bullet-list";
-import ListItem from "@tiptap/extension-list-item";
-import OrderedList from "@tiptap/extension-ordered-list";
-import Document from "@tiptap/extension-document";
-import Paragraph from "@tiptap/extension-paragraph";
-import Text from "@tiptap/extension-text";
-import { Pilcrow, Redo, Undo } from "lucide-react";
+import { EditorContent } from "@tiptap/react";
+import { Heading1, Heading2, Pilcrow, Plus, Redo, Undo } from "lucide-react";
 import { useEffect, useState } from "react";
 import { debounce } from "lodash";
+import { FormikProps } from "formik";
+import { useTiptapConfigure } from "@/lib/tiptap";
 
-const ToolTipsText = ({ formik }: any) => {
+export interface TiptapConfigureProps {
+  formik: FormikProps<any>;
+  historyArticle: string | null;
+}
+
+const EditorToolbar = ({ formik, historyArticle }: TiptapConfigureProps) => {
   const [open, setIsOpen] = useState(false);
-  const HistoryArticleUser = localStorage.getItem("article");
 
   // configure tiptap
-  const editor = useEditor({
-    content:
-      HistoryArticleUser === null
-        ? "<p>Write your story here 😉</p>"
-        : HistoryArticleUser,
-    extensions: [
-      Document,
-      StarterKit,
-      Paragraph,
-      Text,
-      Underline,
-      BulletList,
-      ListItem,
-      OrderedList,
-    ],
-    editorProps: {
-      attributes: {
-        class:
-          "me:ps-4 w-full px-4 text-lg placeholder:text-icon focus:border-s focus:border-none focus:outline-none focus:ring-0 md:text-2xl",
-      },
-    },
+  const editor = useTiptapConfigure({ formik, historyArticle });
 
-    onUpdate: ({ editor }) => formik.setFieldValue("story", editor.getHTML()),
-  });
-
-  // handle save article user
   useEffect(() => {
     const articleUser = debounce(() => {
       if (editor) {
-        localStorage.setItem("article", editor?.getHTML() as string);
+        localStorage.setItem("article", editor.getHTML());
       }
     }, 3000);
 
@@ -65,172 +38,129 @@ const ToolTipsText = ({ formik }: any) => {
     };
   }, [editor]);
 
-  // handle animate rich text editor
-  const handleOpen = () => {
-    setIsOpen((prev) => !prev);
-  };
+  const handleOpen = () => setIsOpen((prev) => !prev);
 
   if (!editor) return null;
 
+  const toolTipsExtenxion = [
+    {
+      command: () => editor.chain().focus().toggleHeading({ level: 1 }).run(),
+      icon: <Heading1 size={16} />,
+      active: editor.isActive("heading", { level: 1 }),
+      name: "heading1",
+    },
+    {
+      command: () => editor.chain().focus().toggleBold().run(),
+      icon: <TextB size={16} />,
+      active: editor.isActive("bold"),
+      name: "bold",
+    },
+    {
+      command: () => editor.chain().focus().toggleItalic().run(),
+      icon: <TextItalic size={16} />,
+      active: editor.isActive("italic"),
+      name: "italic",
+    },
+    {
+      command: () => editor.chain().focus().toggleUnderline().run(),
+      icon: <TextUnderline size={16} />,
+      active: editor.isActive("underline"),
+      name: "underline",
+    },
+    {
+      command: () => editor.chain().focus().toggleStrike().run(),
+      icon: <TextStrikethrough size={16} />,
+      active: editor.isActive("strike"),
+      name: "strike",
+    },
+    {
+      command: () => editor.chain().focus().toggleBulletList().run(),
+      icon: <ListBullets size={16} />,
+      active: editor.isActive("bulletList"),
+      name: "bulletList",
+    },
+    {
+      command: () => editor.chain().focus().toggleOrderedList().run(),
+      icon: <ListNumbers size={16} />,
+      active: editor.isActive("orderedList"),
+      name: "orderedList",
+    },
+    {
+      command: () => editor.commands.setParagraph(),
+      icon: <Pilcrow size={16} />,
+      active: editor.isActive("paragraph"),
+      name: "paragraph",
+    },
+  ];
+
+  const renderButtonExtn = () => (
+    <div
+      className={`ms-3 flex w-full items-center space-x-6 ${
+        open ? "animate-open" : "animate-close"
+      }`}
+    >
+      {toolTipsExtenxion.map((btn, index) => {
+        const active = editor.isActive(btn.name);
+        return (
+          <label
+            key={index}
+            htmlFor={`editor-option-${btn.name}`}
+            className="relative cursor-pointer"
+          >
+            <input
+              type="checkbox"
+              name="editor-options"
+              id={`editor-option-${btn.name}`}
+              className="peer hidden"
+              onClick={btn.command}
+              checked={active}
+              readOnly
+            />
+            <span
+              className={
+                active
+                  ? "relative grid size-8 place-items-center rounded-md text-black transition-all duration-100 peer-checked:before:absolute peer-checked:before:-bottom-[0.8px] peer-checked:before:left-0 peer-checked:before:h-0.5 peer-checked:before:w-full peer-checked:before:bg-black peer-checked:before:opacity-100 peer-checked:before:transition-all peer-checked:before:duration-300"
+                  : "grid place-items-center bg-transparent text-primary"
+              }
+            >
+              {btn.icon}
+            </span>
+          </label>
+        );
+      })}
+    </div>
+  );
+
   return (
-    <div className="tl flex w-full flex-col items-start text-primary">
-      <div className="flex w-full items-center justify-start">
-        {/* Tombol Plus */}
-        <PlusCircle
-          size={24}
-          weight="thin"
-          className={`ms-4 ${open ? "rotate-180" : ""} duration-500`}
+    <div className="sohne relative flex w-full flex-col items-start text-primary">
+      <div className="sticky-animate flex w-full items-center">
+        <Plus
+          size={28}
+          strokeWidth={1}
+          className={`ms-4 w-fit ${open ? "rotate-180" : ""} text-black duration-500`}
           onClick={handleOpen}
         />
-
-        {/* Jika state open true, tampilkan tombol-tombol Tiptap */}
-        <div
-          className={`ms-3 flex items-center justify-start space-x-2 ${open ? "animate-open" : "animate-close"}`}
-        >
-          {/* Tombol Bold */}
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              editor.chain().focus().toggleBold().run();
-            }}
-            className={
-              editor.isActive("bold")
-                ? "btn-rich bg-primary text-white duration-500"
-                : "btn-rich bg-transparent text-primary duration-500"
-            }
-          >
-            <TextB size={16} />
-          </button>
-
-          {/* Tombol Italic */}
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              editor.chain().focus().toggleItalic().run();
-            }}
-            className={
-              editor.isActive("italic")
-                ? "btn-rich bg-primary text-white duration-500"
-                : "btn-rich bg-transparent text-primary duration-500"
-            }
-          >
-            <TextItalic size={16} />
-          </button>
-
-          {/* Tombol Underline */}
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              editor.chain().focus().toggleUnderline().run();
-            }}
-            className={
-              editor.isActive("underline")
-                ? "btn-rich bg-primary text-white duration-500"
-                : "btn-rich bg-transparent text-primary duration-500"
-            }
-          >
-            <TextUnderline size={16} />
-          </button>
-
-          {/* Tombol StrikeThrough */}
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              editor.chain().focus().toggleStrike().run();
-            }}
-            className={
-              editor.isActive("strike")
-                ? "btn-rich bg-primary text-white duration-500"
-                : "btn-rich bg-transparent text-primary duration-500"
-            }
-          >
-            <TextStrikethrough size={16} />
-          </button>
-
-          {/* Tombol BulletList */}
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              editor.chain().toggleBulletList().run();
-            }}
-            className={
-              editor.isActive("bulletList")
-                ? "btn-rich bg-primary text-white duration-500"
-                : "btn-rich bg-transparent text-primary duration-500"
-            }
-          >
-            <ListBullets size={16} />
-          </button>
-
-          {/* Tombol OrderedList */}
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              editor.chain().toggleOrderedList().run();
-            }}
-            className={
-              editor.isActive("orderedList")
-                ? "btn-rich bg-primary text-white duration-500"
-                : "btn-rich bg-transparent text-primary duration-500"
-            }
-          >
-            <ListNumbers size={16} />
-          </button>
-
-          {/* Tombol Paragraft */}
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              editor.commands.setParagraph();
-            }}
-            className={
-              editor.isActive("paragraft")
-                ? "btn-rich bg-primary text-white duration-500"
-                : "btn-rich bg-transparent text-primary duration-500"
-            }
-          >
-            <Pilcrow strokeWidth={1.3} size={16} />
-          </button>
-        </div>
-
-        {/* Tombol Undo dan Redo */}
+        {renderButtonExtn()}
         <div className="ms-auto space-x-4">
           <button
-            onClick={(e) => {
-              e.preventDefault();
-              editor.chain().undo().run();
-            }}
-            className={
-              editor.isActive("undo")
-                ? "btn-rich bg-primary text-white duration-500"
-                : "btn-rich bg-transparent text-primary duration-500"
-            }
+            onClick={() => editor.chain().undo().run()}
+            className="btn-rich bg-transparent text-primary duration-500"
           >
             <Undo size={16} />
           </button>
-
           <button
-            onClick={(e) => {
-              e.preventDefault();
-              editor.chain().redo().run();
-            }}
-            className={
-              editor.isActive("redo")
-                ? "btn-rich bg-primary text-white duration-500"
-                : "btn-rich bg-transparent text-primary duration-500"
-            }
+            onClick={() => editor.chain().redo().run()}
+            className="btn-rich bg-transparent text-primary duration-500"
           >
             <Redo size={16} />
           </button>
         </div>
       </div>
-
-      {/* EditorContent */}
       <div className="mt-4 w-full">
-        <EditorContent editor={editor} className="editor-props" />
+        <EditorContent editor={editor} />
       </div>
     </div>
   );
 };
 
-export default ToolTipsText;
+export default EditorToolbar;

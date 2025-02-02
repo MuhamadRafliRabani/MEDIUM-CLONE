@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { InitialValue } from "..";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/hooks/store/useUser";
 import { Topic_list } from "@/data/Topic_list";
@@ -17,77 +16,70 @@ import {
 } from "@/components/ui/select";
 import usehandleFileChange from "@/hooks/setImage";
 import { useHandlePost } from "@/lib/useHandlePost";
+import { InitialValue } from "@/pages/article/new-story";
 
 const FormPublish = ({ title, story }: InitialValue) => {
   const { user } = useUser();
   const router = useRouter();
   const [disable, setDisable] = useState<boolean>(true);
-  const { mutate } = useHandlePost("/feature/story/publish");
+  const { mutate, isIdle } = useHandlePost("/feature/upload/article");
   const { file, image, handleFileChange } = usehandleFileChange();
 
   const formik = useFormik({
     initialValues: {
       title: title || "",
       description: "",
-      type: "",
+      category: "",
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Title is required"),
       description: Yup.string().required("Description is required"),
-      type: Yup.string().required("Topic is required"),
     }),
     onSubmit: async (values) => {
       const formData = new FormData();
       formData.append("title", values.title);
       formData.append("description", values.description);
-      formData.append("type", values.type);
+      formData.append("category", values.category);
       formData.append("article", story || "");
-      formData.append("author_name", user.displayName || user.email || "");
-      formData.append("img_user", user.photoURL || "");
-      formData.append("likes", "0");
-      formData.append("comment", "");
-      formData.append("image", file ? file : "");
-
-      console.log({
-        title: values.title,
-        description: values.description,
-        type: values.type,
-        story,
-        author_name: user.displayName,
-        profil_img: user.photoURL,
-        file,
-      });
+      formData.append("user_name", user.email);
+      formData.append(
+        "user_image",
+        "https://cqhlafryyzzodifbdmia.supabase.co/storage/v1/object/public/image-article-medium/public/16a532c1-9f27-4e65-9523-a2c7d7968e1cdownload.jpg",
+      );
+      if (file) {
+        formData.append("image", file);
+      }
 
       mutate(formData, {
         onSuccess: () => {
-          toast.success("story created");
+          toast.success("Story created successfully");
           router.back();
         },
         onError: () => {
-          toast.error("story uncreated");
+          toast.error("Failed to create story");
           router.push("/article/new-story");
         },
       });
     },
   });
 
-  // handle disable button upload
-  const handleDisable = () => {
-    formik.values.title === "" ||
-    formik.values.description === "" ||
-    formik.values.type === "" ||
-    file === null
-      ? setDisable(true)
-      : setDisable(false);
-  };
+  // Handle disable button upload
+  const handleDisable = useCallback(() => {
+    const { title, description, category } = formik.values;
+    setDisable(!(title && description && category && file && isIdle));
+    if (!isIdle) {
+      toast.loading("loading...");
+    }
+  }, [formik.values, file, isIdle]);
 
   useEffect(() => {
     handleDisable();
-  }, [formik.values.description, formik.values.type, file]);
+  }, [formik.values, file, handleDisable]);
 
   return (
     <form onSubmit={formik.handleSubmit}>
       <div className="container flex w-full flex-col items-center justify-center gap-6 px-4 text-sm text-icon md:flex-row md:gap-8 md:p-0">
+        {/* Left Column: Story Preview and Inputs */}
         <div className="flex h-fit w-full flex-col justify-center gap-2 md:w-[500px]">
           <label htmlFor="file" className="text-xl font-bold text-black">
             Story Preview
@@ -118,6 +110,7 @@ const FormPublish = ({ title, story }: InitialValue) => {
               )}
             </label>
           </div>
+
           <Input
             type="text"
             name="title"
@@ -153,21 +146,27 @@ const FormPublish = ({ title, story }: InitialValue) => {
           </p>
         </div>
 
+        {/* Right Column: Publishing Options */}
         <div className="flex h-fit w-full flex-col justify-center gap-2 md:w-[500px]">
           <h1>Publishing to: Noirrr</h1>
           <p>
             Add or change topics (up to 5) so readers know what your story is
             about
           </p>
+
           <Select
-            name="type"
-            value={formik.values.type}
-            onValueChange={(value) => formik.setFieldValue("type", value)}
+            name="category"
+            value={formik.values.category}
+            onValueChange={(value) => formik.setFieldValue("category", value)}
           >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Topic" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent
+              className="max-h-48 overflow-y-auto"
+              align="center"
+              side="bottom"
+            >
               {Topic_list.map((article, i) => (
                 <SelectItem key={i} value={article}>
                   {article}
@@ -180,10 +179,11 @@ const FormPublish = ({ title, story }: InitialValue) => {
             <span className="underline">Learn more</span> about what happens to
             your post when you publish.
           </p>
+
           <div className="flex items-center gap-4">
             <Button
               type="submit"
-              className="rounded-lg bg-green-400 text-sm text-white hover:bg-none"
+              className="rounded-md bg-green-400 text-sm text-white hover:bg-none"
               disabled={disable}
             >
               Publish
