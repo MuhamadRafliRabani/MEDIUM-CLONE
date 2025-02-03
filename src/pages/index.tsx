@@ -32,10 +32,10 @@ function Home() {
 
   return (
     <>
-      <div className="sohne flex h-full min-h-[87vh] flex-wrap md:flex-nowrap md:justify-center">
+      <div className="sohne flex h-full min-h-[87vh] flex-wrap justify-center md:flex-nowrap md:pt-4">
         {/* Main Content */}
         <main
-          className={`flex w-full flex-col md:max-w-[52rem] md:ps-8 ${inter.className} relative border-slate-100 px-4 pt-4 md:border-e md:pt-8`}
+          className={`flex w-full flex-col sm:max-w-screen-sm md:max-w-[52rem] md:ps-10 ${inter.className} relative border-slate-100 px-4 pt-4 md:border-e`}
         >
           <MyCarousel />
 
@@ -50,7 +50,7 @@ function Home() {
         </main>
 
         {/* Sidebar */}
-        <div className="relative h-full min-h-screen w-auto max-w-[370px] ps-4 pt-5 md:ps-10 md:pt-10">
+        <div className="relative h-full min-h-screen w-full ps-4 pt-5 sm:max-w-screen-sm md:max-w-[370px] md:ps-8 md:pt-8">
           <StaffContainer />
         </div>
       </div>

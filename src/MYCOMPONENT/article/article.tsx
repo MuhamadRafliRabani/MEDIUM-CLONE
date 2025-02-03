@@ -38,27 +38,19 @@ const CardArticle: React.FC<CardArticleProps> = ({ articles }) => {
               }
               Trigger={<MyAvatar size="size-6" img={article.user_image} />}
             />
-            <MyToolTip
-              Content={
-                <Card_profil
-                  img={article.user_image}
-                  user_name={article.user_name}
-                />
-              }
-              Trigger={<p className="hover:underline">{article.user_name}</p>}
-            />
+            <p className="hover:underline">{article.user_name}</p>
           </div>
 
           {/* Article Content */}
-          <div className="grid grid-cols-[1fr_120px] border-b border-slate-200 md:grid-cols-[1fr_170px]">
+          <div className="grid grid-cols-[1fr_90px] border-b border-slate-200 sm:grid-cols-[1fr_150px] md:grid-cols-[1fr_170px]">
             {/* Text Content */}
-            <div className="flex flex-col gap-2 pr-2 md:pr-0">
+            <div className="flex w-full flex-col gap-2 pr-2 md:pr-0">
               <Link href={`/article/${article.article_id}`}>
-                <h1 className="w-[95%] text-pretty text-lg font-extrabold leading-6 md:text-2xl md:leading-7">
+                <h1 className="line-clamp-3 w-[95%] text-pretty text-lg font-extrabold leading-6 sm:line-clamp-3 md:text-2xl md:leading-7">
                   {article.title}
                 </h1>
               </Link>
-              <p className="w-4/5 whitespace-break-spaces text-base text-slate-500">
+              <p className="line-clamp-2 w-4/5 text-pretty text-base text-slate-500 sm:line-clamp-2 md:line-clamp-5">
                 {article.description}
               </p>
               <div className="flex w-11/12 items-center justify-evenly py-2 md:py-4">
@@ -93,7 +85,7 @@ const CardArticle: React.FC<CardArticleProps> = ({ articles }) => {
                 alt="Article Image"
                 width={180}
                 height={100}
-                className="h-[120px] rounded-sm object-cover"
+                className="h-[65px] w-full rounded-sm object-cover sm:h-[95px] md:h-[120px]"
               />
               {/* Mobile Actions */}
               <div className="-mb-3 flex items-center justify-between md:hidden">

@@ -5,7 +5,7 @@ import MyToolTip from "@/MYCOMPONENT/MyToolTip/MyToolTip";
 const StaffMedium = () => {
   return (
     <div className="w-full space-y-2">
-      <h1 className="flex items-center justify-start gap-2 text-sm font-light">
+      <h1 className="flex items-center gap-2 text-sm font-light">
         <MyToolTip
           Content={
             <Card_profil
@@ -16,7 +16,7 @@ const StaffMedium = () => {
           Trigger={
             <MyAvatar size="size-6" img="https://github.com/shadcn.png" />
           }
-        />{" "}
+        />
         <MyToolTip
           Content={
             <Card_profil
@@ -28,7 +28,7 @@ const StaffMedium = () => {
         />
         <p>from midgard</p>
       </h1>
-      <p className="text-base font-bold">
+      <p className="font-bold">
         Have Vegetables, Will Travel: A History of Vegetarian Vacations and
         Travel
       </p>

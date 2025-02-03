@@ -8,6 +8,7 @@ import { useHandlePost } from "@/lib/useHandlePost";
 import { useUser } from "@/hooks/store/useUser";
 import { SendHorizontal } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { RouterEvent } from "next/router";
 
 export type Comment = {
   user_name: string;
@@ -66,12 +67,12 @@ const CommentFilde = ({ id }: any) => {
   return (
     <form
       onSubmit={() => {}}
-      className="mx-auto my-4 w-full max-w-2xl space-y-1 rounded-lg p-4"
+      className="my-4 w-full max-w-[50px] space-y-1 rounded-lg p-4 md:mx-auto md:max-w-2xl"
     >
       <textarea
         name="comment"
         placeholder="write your comment..."
-        className="min-h-4 rounded-t-lg border-b border-slate-300 bg-white p-2 shadow-sm outline-none focus:ring-1"
+        className="min-h-4 w-full rounded-t-lg border-b border-slate-300 bg-white p-2 shadow-sm outline-none focus:ring-1"
         ref={Ref}
         onChange={() => {}}
       />

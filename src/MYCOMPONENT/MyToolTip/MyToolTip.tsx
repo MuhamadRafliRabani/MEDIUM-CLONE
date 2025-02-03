@@ -8,16 +8,16 @@ import {
 type ToolTipType = {
   Trigger: React.ReactNode;
   Content: React.ReactNode;
-  tag?: string;
+  primary?: boolean;
 };
 
-const MyToolTip = ({ Trigger, Content, tag }: ToolTipType) => {
+const MyToolTip = ({ Trigger, Content, primary = false }: ToolTipType) => {
   return (
     <TooltipProvider delayDuration={200} skipDelayDuration={100}>
       <Tooltip>
         <TooltipTrigger>{Trigger}</TooltipTrigger>
         <TooltipContent
-          className={`${tag ? "bg-primary text-white" : "bg-white text-primary"} tooltipContent border-none`}
+          className={`${primary ? "bg-primary text-white" : "bg-white text-primary"} tooltipContent border-none`}
         >
           {Content}
         </TooltipContent>

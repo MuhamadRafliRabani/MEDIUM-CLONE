@@ -23,7 +23,6 @@ const MyDropDownMenu = () => {
             <DotsThree size={22} className="mt-2 size-6 font-bold text-icon" />
           }
           Content={<p>More</p>}
-          tag="p"
         />
       </DropdownMenuTrigger>
       <DropdownMenuContent

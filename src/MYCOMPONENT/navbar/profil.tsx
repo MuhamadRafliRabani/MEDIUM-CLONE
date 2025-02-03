@@ -43,19 +43,19 @@ export function Profil({ image }: ProfilProps) {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem>
-            <User className="mr-2 h-4 w-4" />
+            <User className="mr-2 size-4" />
             <span>Profile</span>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <BookOpen className="mr-2 h-4 w-4" />
+            <BookOpen className="mr-2 size-4" />
             <span>Library</span>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <FileText className="mr-2 h-4 w-4" />
+            <FileText className="mr-2 size-4" />
             <span>Stories</span>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <LayoutDashboard className="mr-2 h-4 w-4" />
+            <LayoutDashboard className="mr-2 size-4" />
             <span>Stats</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
@@ -64,15 +64,15 @@ export function Profil({ image }: ProfilProps) {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem>
-            <Settings className="mr-2 h-4 w-4" />
+            <Settings className="mr-2 size-4" />
             <span>Settings</span>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Shield className="mr-2 h-4 w-4" />
+            <Shield className="mr-2 size-4" />
             <span>Refine recommendations</span>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Book className="mr-2 h-4 w-4" />
+            <Book className="mr-2 size-4" />
             <span>Manage publications</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
@@ -80,7 +80,7 @@ export function Profil({ image }: ProfilProps) {
         {/* Logout Section */}
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <LogOut className="mr-2 h-4 w-4" />
+          <LogOut className="mr-2 size-4" />
           <span>Log out</span>
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>

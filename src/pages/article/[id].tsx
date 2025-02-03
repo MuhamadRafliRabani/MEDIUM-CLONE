@@ -41,7 +41,7 @@ const Article = () => {
   const article = data?.data;
 
   return (
-    <section className="sohne mt-14 space-y-4 px-4">
+    <section className="sohne mt-8 space-y-4 overflow-hidden px-2 md:mt-14">
       <div className="space-y-4 border-b border-primary pt-4 md:mx-auto md:max-w-2xl md:space-y-8 md:py-10">
         {article.member_only && (
           <blockquote className="noto-font flex items-center gap-2 text-[0.9em] text-black/60">
@@ -49,15 +49,17 @@ const Article = () => {
             <span>Member-only story</span>
           </blockquote>
         )}
-        <h1 className={`text-3xl md:text-[42px]/[48px] md:font-extrabold`}>
+        <h1
+          className={`Segoe-font mx-auto w-[95%] text-pretty text-[2rem]/[2.3rem] font-extrabold sm:text-[2.65rem]/[2.7rem] md:w-full md:text-[2.625rem]/[3rem]`}
+        >
           {article?.title}
         </h1>
-        <h3 className="text-2xl font-light tracking-wide text-gray-500">
+        <h3 className="mx-auto w-[95%] text-2xl tracking-wide text-gray-500">
           {article?.description}
         </h3>
 
         {/* header article */}
-        <div className="flex items-center gap-3 font-medium">
+        <div className="mx-auto flex w-[95%] items-center gap-3 font-medium">
           <MyToolTip
             Content={
               <Card_profil
@@ -67,13 +69,13 @@ const Article = () => {
             }
             Trigger={<MyAvatar size="size-12" img={article?.user_image} />}
           />
-          <div className="flex flex-col gap-1 text-[0.9rem] font-normal capitalize md:text-base/[20px]">
+          <div className="flex flex-col gap-1 text-[0.9rem] font-normal capitalize md:text-base/[1.25rem]">
             <div className="flex items-center">
-              <p className="font-[490]">{article?.user_name}</p>
+              <p>{article?.user_name}</p>
               <Dot size={16} strokeWidth={0.5} />{" "}
-              <span className="font-[490] text-green-400">Follow</span>
+              <span className="text-green-400">Follow</span>
             </div>
-            <div className="flex items-center text-[1.05rem] font-[490] text-black/60 md:text-[0.88rem]">
+            <div className="flex items-center text-black/60 md:text-[0.88rem]">
               <span>8 min read</span>
               <Dot size={16} strokeWidth={0.5} />
               {formatDate(article?.date)}
@@ -87,9 +89,7 @@ const Article = () => {
           <div className="flex items-center gap-8 text-sm text-icon">
             <div className="flex items-center gap-1">
               <MyToolTip
-                Content={
-                  <p className="bg-primary">{likes?.data.length} claps</p>
-                }
+                Content={<p>{likes?.data.length} claps</p>}
                 Trigger={
                   <ThumbsUp className="size-5" size={16} strokeWidth={0.5} />
                 }
@@ -98,9 +98,7 @@ const Article = () => {
             </div>
             <div className="flex items-center gap-1">
               <MyToolTip
-                Content={
-                  <p className="bg-primary">{comments?.data.length} response</p>
-                }
+                Content={<p>{comments?.data.length} response</p>}
                 Trigger={
                   <Link href="#comment">
                     <MessageCircle className="size-5" strokeWidth={0.5} />
@@ -112,13 +110,13 @@ const Article = () => {
           </div>
           <div className="flex items-center gap-8 text-sm text-icon">
             <MyToolTip
-              Content={<p className="bg-primary">Save</p>}
+              Content={<p>Save</p>}
               Trigger={
                 <Bookmark className="size-5" size={16} strokeWidth={0.5} />
               }
             />
             <MyToolTip
-              Content={<p className="bg-primary">Play</p>}
+              Content={<p>Play</p>}
               Trigger={
                 <PlayCircle
                   strokeWidth={0.5}
@@ -128,7 +126,7 @@ const Article = () => {
               }
             />
             <MyToolTip
-              Content={<p className="bg-primary">Share</p>}
+              Content={<p>Share</p>}
               Trigger={<Share className="size-5" size={16} strokeWidth={0.5} />}
             />
             <MyDropDownMenu />
@@ -136,7 +134,7 @@ const Article = () => {
         </div>
         {/* end nav article */}
 
-        <blockquote className="noto-font -ms-4 border-s-2 border-black ps-4 font-bold italic text-black/75 md:text-[20px]/[32px]">
+        <blockquote className="noto-font -ms-4 border-s-2 border-black ps-4 font-bold italic text-black/75 md:text-[1.25rem]/[2rem]">
           <strong>Read this article for free</strong>
           <Link href="/">
             <strong className="underline"> Here</strong>
@@ -150,13 +148,13 @@ const Article = () => {
               height={400}
               src={article?.content_image}
               alt=""
-              className="h-[450px] w-full rounded-md object-cover"
+              className="h-[250px] w-full rounded-md object-cover md:h-[350px]"
             />
           </AspectRatio>
         </div>
 
         <ReactMarkdown
-          className="article-paragraft noto-font text-md leading-relaxed text-slate-600 md:text-[20px]/[32px]"
+          className="article-paragraft noto-font text-md leading-relaxed text-slate-600 md:text-[1.25rem]/[2rem]"
           remarkPlugins={[remarkGfm]}
           rehypePlugins={[rehypeRaw]}
         >
