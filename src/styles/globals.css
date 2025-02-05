@@ -79,8 +79,8 @@
   body {
     @apply bg-background text-foreground;
   }
-  .btn-rich {
-    @apply rounded-lg p-4 text-primary hover:bg-primary hover:text-white;
+  .checked-effect {
+    @apply text-black/80 transition-all duration-100 before:opacity-0 hover:text-black peer-checked:text-black peer-checked:before:absolute peer-checked:before:-bottom-[8.5px] peer-checked:before:right-0 peer-checked:before:block peer-checked:before:h-0.5 peer-checked:before:w-full peer-checked:before:rounded-md peer-checked:before:bg-black peer-checked:before:opacity-100 peer-checked:before:transition-all peer-checked:before:duration-300;
   }
 }
 
@@ -113,6 +113,10 @@
 
 :root {
   interpolate-size: allow-keywords; /* 👈 */
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
 
 body {
@@ -159,6 +163,18 @@ body {
   font-size: 1.8rem;
 }
 
+.editor-props {
+  font-size: 1.8rem;
+}
+
+.ProseMirror-trailingBreak {
+  display: none;
+}
+
+.hidden {
+  display: none;
+}
+
 /* sticy animate start */
 .sticky-animate {
   animation: sticky both;
@@ -172,8 +188,6 @@ body {
   }
   100% {
     position: sticky;
-    z-index: 99999;
-    top: 0;
     opacity: 1;
   }
 }
@@ -224,6 +238,26 @@ body {
   }
 }
 /* open style conditons end */
+
+/* caret animation start*/
+.animate {
+  animation: scaleYAnimation 1s linear infinite;
+}
+
+@keyframes scaleYAnimation {
+  0% {
+    transform: scaleY(0);
+  } /* Initial state, no scaling */
+
+  50% {
+    transform: scaleY(0.95);
+  } /* Scale up in the middle */
+
+  100% {
+    transform: scaleY(0);
+  } /* Return to original size */
+}
+/* caret animation end*/
 
 form {
   textarea {

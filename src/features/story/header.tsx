@@ -12,7 +12,7 @@ const HeaderStory = ({ title, story }: InitialValue) => {
   const { user } = useUser();
 
   return (
-    <nav className="fixed inset-x-0 top-0 z-[9999] flex max-h-14 items-center justify-between border-b border-gray-200 bg-white p-4">
+    <nav className="fixed inset-x-0 top-0 z-10 flex max-h-14 items-center justify-between border-b border-gray-200 bg-white px-4 py-5">
       <div className="flex items-center space-x-4">
         <Link href="/" className="text-2xl font-bold text-black">
           Medium

@@ -42,13 +42,13 @@ const MakeArticle = () => {
 
   useEffect(() => {
     setHistoryArticle(formik.values.story);
-    console.log("🚀 ~ useEffect ~ :", formik.values.story);
+    console.log("🚀 ~ useEffect ~ formik.values.story:", formik.values.story);
   }, [formik.values.story, setHistoryArticle]);
 
   return (
     <div className="mt-10">
       <HeaderStory title={formik.values.title} story={formik.values.story} />
-      <div className="focus mx-auto mt-6 flex w-article flex-col items-start justify-center gap-2 md:w-1/2">
+      <div className="focus mt-6 flex flex-col items-start gap-2 sm:max-w-screen-sm md:mx-auto md:max-w-screen-sm">
         <div className="relative h-full w-full">
           <textarea
             name="title"
@@ -57,9 +57,9 @@ const MakeArticle = () => {
             value={formik.values.title}
             onChange={formik.handleChange}
             ref={titleRef}
-            className="noto-font textarea peer w-full text-pretty border-black/30 px-4 text-xl font-medium caret-black/30 placeholder:pt-2 placeholder:text-[48px]/[49px] placeholder:font-medium placeholder:text-black/35 focus:outline-none focus:ring-0 md:px-3 md:text-[48px]/[54px] md:font-bold"
+            className="noto-font textarea peer w-full text-pretty border-black/30 px-4 text-[36px]/[42px] font-bold caret-black/30 placeholder:pt-2 placeholder:text-[36px]/[42px] placeholder:font-medium placeholder:text-black/35 focus:outline-none focus:ring-0 md:px-3 md:text-[42px]/[46px] md:font-bold placeholder:md:text-[48px]/[49px]"
           ></textarea>
-          <div className="absolute inset-x-0 bottom-0 h-full w-[1px] scale-y-0 transform bg-black transition-transform duration-300 peer-focus-within:scale-y-100"></div>
+          <div className="animate absolute inset-x-0 bottom-0 h-full w-[1px] scale-y-0 transform bg-black transition-transform duration-300 peer-focus-within:scale-y-100"></div>
         </div>
         <ToolTipsText formik={formik} historyArticle={historyArticle} />
       </div>

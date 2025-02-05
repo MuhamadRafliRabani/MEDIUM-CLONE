@@ -25,6 +25,7 @@ import rehypeRaw from "rehype-raw";
 import CommentFilde from "@/features/comment/commentFilde";
 import CardComment from "@/MYCOMPONENT/myComment/Mycomment";
 import MyDropDownMenu from "@/MYCOMPONENT/MyDropDownMenu/MyDropDownMenu";
+import BlockquoteMember from "@/MYCOMPONENT/BlockquoteMember";
 
 const Article = () => {
   const router = useRouter();
@@ -41,25 +42,21 @@ const Article = () => {
   const article = data?.data;
 
   return (
-    <section className="sohne mt-8 space-y-4 overflow-hidden px-2 md:mt-14">
-      <div className="space-y-4 border-b border-primary pt-4 md:mx-auto md:max-w-2xl md:space-y-8 md:py-10">
-        {article.member_only && (
-          <blockquote className="noto-font flex items-center gap-2 text-[0.9em] text-black/60">
-            <Star className="fill-yellow-400 stroke-none" />
-            <span>Member-only story</span>
-          </blockquote>
-        )}
+    <section className="sohne mt-4 space-y-4 overflow-hidden px-2">
+      <div className="space-y-4 border-b border-primary pt-4 md:mx-auto md:max-w-[680px] md:space-y-7 md:py-10">
+        <BlockquoteMember member_only={article.member_only} />
+
         <h1
-          className={`Segoe-font mx-auto w-[95%] text-pretty text-[2rem]/[2.3rem] font-extrabold sm:text-[2.65rem]/[2.7rem] md:w-full md:text-[2.625rem]/[3rem]`}
+          className={`Segoe-font mx-auto w-[95%] text-pretty text-[2rem]/[2.3rem] font-extrabold sm:text-[2.65rem]/[2.7rem] md:w-full md:text-5xl`}
         >
           {article?.title}
         </h1>
-        <h3 className="mx-auto w-[95%] text-2xl tracking-wide text-gray-500">
+        <h3 className="mx-auto w-[95%] text-2xl/[2.1rem] text-black/65 md:mx-0">
           {article?.description}
         </h3>
 
         {/* header article */}
-        <div className="mx-auto flex w-[95%] items-center gap-3 font-medium">
+        <div className="mx-auto flex w-full items-center gap-3 font-medium">
           <MyToolTip
             Content={
               <Card_profil
@@ -142,19 +139,17 @@ const Article = () => {
         </blockquote>
 
         <div className="w-full">
-          <AspectRatio ratio={4 / 3}>
-            <Image
-              width={800}
-              height={400}
-              src={article?.content_image}
-              alt=""
-              className="h-[250px] w-full rounded-md object-cover md:h-[350px]"
-            />
-          </AspectRatio>
+          <Image
+            width={800}
+            height={400}
+            src={article?.content_image}
+            alt=""
+            className="h-[250px] w-full rounded-md object-cover md:h-[450px]"
+          />
         </div>
 
         <ReactMarkdown
-          className="article-paragraft noto-font text-md leading-relaxed text-slate-600 md:text-[1.25rem]/[2rem]"
+          className="article-paragraft sohne text-md leading-relaxed md:text-[1.25rem]/[2rem]"
           remarkPlugins={[remarkGfm]}
           rehypePlugins={[rehypeRaw]}
         >

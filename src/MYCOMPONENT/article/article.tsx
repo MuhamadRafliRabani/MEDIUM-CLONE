@@ -8,6 +8,8 @@ import { BookmarkSimple, MinusCircle, Smiley } from "@phosphor-icons/react";
 import MyDropDownMenu from "../MyDropDownMenu/MyDropDownMenu";
 import Image from "next/image";
 import { Article } from "@/pages";
+import { Star } from "lucide-react";
+import BlockquoteMember from "../BlockquoteMember";
 
 type CardArticleProps = {
   articles: Article[];
@@ -27,6 +29,8 @@ const CardArticle: React.FC<CardArticleProps> = ({ articles }) => {
     <>
       {articles.map((article, i) => (
         <article key={i} className="w-full space-y-4 pb-4 md:w-article md:pb-0">
+          <BlockquoteMember member_only={article.member_only} />
+
           {/* Profil Section */}
           <div className="flex items-center gap-3 text-sm">
             <MyToolTip
@@ -50,11 +54,15 @@ const CardArticle: React.FC<CardArticleProps> = ({ articles }) => {
                   {article.title}
                 </h1>
               </Link>
-              <p className="line-clamp-2 w-4/5 text-pretty text-base text-slate-500 sm:line-clamp-2 md:line-clamp-5">
+              <p className="line-clamp-2 w-4/5 text-pretty text-slate-500 transition-all duration-300 hover:md:line-clamp-3">
                 {article.description}
               </p>
               <div className="flex w-11/12 items-center justify-evenly py-2 md:py-4">
-                <CardFeture id={article.article_id} date={article.date} />
+                <CardFeture
+                  id={article.article_id}
+                  date={article.date}
+                  member_only={article.member_only}
+                />
                 {/* Desktop Actions */}
                 <div className="hidden items-center gap-2 text-slate-500 md:flex">
                   <MyToolTip

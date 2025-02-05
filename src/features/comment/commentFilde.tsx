@@ -67,12 +67,12 @@ const CommentFilde = ({ id }: any) => {
   return (
     <form
       onSubmit={() => {}}
-      className="my-4 w-full max-w-[50px] space-y-1 rounded-lg p-4 md:mx-auto md:max-w-2xl"
+      className="my-4 w-full space-y-1 rounded-lg p-4 md:mx-auto md:max-w-[680px] md:p-0"
     >
       <textarea
         name="comment"
         placeholder="write your comment..."
-        className="min-h-4 w-full rounded-t-lg border-b border-slate-300 bg-white p-2 shadow-sm outline-none focus:ring-1"
+        className="min-h-4 w-full rounded-t-lg border-b border-slate-300 bg-white shadow-sm outline-none focus:ring-1"
         ref={Ref}
         onChange={() => {}}
       />

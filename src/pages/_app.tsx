@@ -14,6 +14,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <Component {...pageProps} />;
       <Toaster
         icons={{ info: <Info size={20} />, success: <Check size={20} /> }}
+        position="top-right"
         toastOptions={{
           classNames: {
             error: "bg-red-400",

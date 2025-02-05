@@ -27,19 +27,18 @@ export const useTiptapConfigure = ({
       BulletList,
       ListItem,
       OrderedList,
+
       HardBreak.extend({
         addKeyboardShortcuts() {
           return {
             Enter: () => {
-              this.editor
-                .chain()
-                .focus()
-                .splitBlock()
-                .createParagraphNear()
-                .run();
+              this.editor.commands.splitBlock();
+
+              this.editor.commands.setHardBreak();
 
               return true;
             },
+
             "Shift-Enter": () => {
               this.editor.commands.setHardBreak();
               return true;
@@ -58,7 +57,6 @@ export const useTiptapConfigure = ({
           "me:ps-4 w-full px-4 rounded-md min-h-20 text-lg placeholder:text-icon focus:border-s editor-props focus:border-none focus:outline-none focus:ring-0 md:text-2xl",
       },
     },
-    // split the current node and keep marks
     onUpdate: async ({ editor }) => {
       const html = editor.getHTML();
       await formik?.setFieldValue("story", html);

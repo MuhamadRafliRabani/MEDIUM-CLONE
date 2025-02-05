@@ -17,6 +17,7 @@ import {
 import usehandleFileChange from "@/hooks/setImage";
 import { useHandlePost } from "@/lib/useHandlePost";
 import { InitialValue } from "@/pages/article/new-story";
+import { ChevronDown } from "lucide-react";
 
 const FormPublish = ({ title, story }: InitialValue) => {
   const { user } = useUser();
@@ -30,6 +31,7 @@ const FormPublish = ({ title, story }: InitialValue) => {
       title: title || "",
       description: "",
       category: "",
+      member_only: "",
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Title is required"),
@@ -46,6 +48,11 @@ const FormPublish = ({ title, story }: InitialValue) => {
         "user_image",
         "https://cqhlafryyzzodifbdmia.supabase.co/storage/v1/object/public/image-article-medium/public/16a532c1-9f27-4e65-9523-a2c7d7968e1cdownload.jpg",
       );
+      formData.append(
+        "member_only",
+        values.member_only == "member only" ? "true" : "false",
+      );
+
       if (file) {
         formData.append("image", file);
       }
@@ -148,7 +155,25 @@ const FormPublish = ({ title, story }: InitialValue) => {
 
         {/* Right Column: Publishing Options */}
         <div className="flex h-fit w-full flex-col justify-center gap-2 md:w-[500px]">
-          <h1>Publishing to: Noirrr</h1>
+          <div className="flex items-center">
+            <Select
+              name="Publishing to"
+              value={formik.values.member_only}
+              onValueChange={(value) =>
+                formik.setFieldValue("member_only", value)
+              }
+            >
+              <SelectTrigger className="-ms-2 flex w-fit items-center gap-2 border-none focus:ring-0">
+                <h1>Publishing to : </h1>
+                {"  "}
+                <SelectValue placeholder={formik.values.member_only} />
+              </SelectTrigger>
+              <SelectContent align="center" side="bottom">
+                <SelectItem value="public">Public</SelectItem>
+                <SelectItem value="member_only">Member only</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
           <p>
             Add or change topics (up to 5) so readers know what your story is
             about
@@ -159,7 +184,7 @@ const FormPublish = ({ title, story }: InitialValue) => {
             value={formik.values.category}
             onValueChange={(value) => formik.setFieldValue("category", value)}
           >
-            <SelectTrigger className="w-full">
+            <SelectTrigger className="w-full focus:border-green-400 focus:ring-0">
               <SelectValue placeholder="Topic" />
             </SelectTrigger>
             <SelectContent

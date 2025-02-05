@@ -21,6 +21,7 @@ export type Article = {
   date: string;
   content_image: string;
   category: string;
+  member_only: boolean;
 };
 
 function Home() {
@@ -35,7 +36,7 @@ function Home() {
       <div className="sohne flex h-full min-h-[87vh] flex-wrap justify-center md:flex-nowrap md:pt-4">
         {/* Main Content */}
         <main
-          className={`flex w-full flex-col sm:max-w-screen-sm md:max-w-[52rem] md:ps-10 ${inter.className} relative border-slate-100 px-4 pt-4 md:border-e`}
+          className={`${inter.className} relative flex w-full flex-col border-slate-100 px-4 pt-4 sm:max-w-screen-sm md:max-w-[52rem] md:border-e md:ps-10`}
         >
           <MyCarousel />
 

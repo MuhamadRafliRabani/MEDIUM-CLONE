@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { debounce } from "lodash";
 import { FormikProps } from "formik";
 import { useTiptapConfigure } from "@/lib/tiptap";
+import MyToolTip from "../MyToolTip/MyToolTip";
 
 export interface TiptapConfigureProps {
   formik: FormikProps<any>;
@@ -119,7 +120,7 @@ const EditorToolbar = ({ formik, historyArticle }: TiptapConfigureProps) => {
             <span
               className={
                 active
-                  ? "relative grid size-8 place-items-center rounded-md text-black transition-all duration-100 peer-checked:before:absolute peer-checked:before:-bottom-[0.8px] peer-checked:before:left-0 peer-checked:before:h-0.5 peer-checked:before:w-full peer-checked:before:bg-black peer-checked:before:opacity-100 peer-checked:before:transition-all peer-checked:before:duration-300"
+                  ? "checked-effect relative grid size-8 place-items-center rounded-md peer-checked:before:-bottom-[0.8px]"
                   : "grid place-items-center bg-transparent text-primary"
               }
             >
@@ -132,8 +133,8 @@ const EditorToolbar = ({ formik, historyArticle }: TiptapConfigureProps) => {
   );
 
   return (
-    <div className="sohne relative flex w-full flex-col items-start text-primary">
-      <div className="sticky-animate flex w-full items-center">
+    <div className="sohne relative flex w-full flex-col text-primary">
+      <div className="sticky-animate top-4 z-20 -ms-2 flex w-full items-center sm:ms-0 md:ms-0">
         <Plus
           size={28}
           strokeWidth={1}
@@ -141,16 +142,16 @@ const EditorToolbar = ({ formik, historyArticle }: TiptapConfigureProps) => {
           onClick={handleOpen}
         />
         {renderButtonExtn()}
-        <div className="ms-auto space-x-4">
+        <div className="ms-auto space-x-4 overflow-auto whitespace-nowrap">
           <button
             onClick={() => editor.chain().undo().run()}
-            className="btn-rich bg-transparent text-primary duration-500"
+            className="border-black hover:border-b"
           >
             <Undo size={16} />
           </button>
           <button
             onClick={() => editor.chain().redo().run()}
-            className="btn-rich bg-transparent text-primary duration-500"
+            className="border-black hover:border-b"
           >
             <Redo size={16} />
           </button>
