@@ -1,9 +1,10 @@
-import MyToolTip from "../MyToolTip/MyToolTip";
-import MyDrawer from "../my_drawer/MyDrawer";
-import Comment from "@/features/comment/commentFilde";
+import { useUser } from "@/hooks/store/zustand";
 import { formatDate } from "@/lib/date";
 import { useHandleGet } from "@/lib/useGet";
-import { MessageCircle, Star, ThumbsUp } from "lucide-react";
+import { MessageCircle, Star } from "lucide-react";
+import Link from "next/link";
+import ToolTips from "../toolTip/MyToolTip";
+import { Like } from "@/features/like/handleLike";
 
 type CardFetureProps = {
   id?: number;
@@ -12,16 +13,16 @@ type CardFetureProps = {
 };
 
 const CardFeture = ({ id, date, member_only = false }: CardFetureProps) => {
-  const { data: like } = useHandleGet(`/feature/like/${id}`);
   const { data: comment } = useHandleGet(`/feature/comment/${id}`);
   const formattedDate = formatDate(date);
+  const { user } = useUser();
 
   return (
     <div className="flex w-full items-center gap-4 pt-4 text-sm md:pt-0">
       {/* Member-only Story Icon */}
       {member_only && (
         <div className="flex items-center gap-1 text-icon">
-          <MyToolTip
+          <ToolTips
             Content={<p>Member-only story</p>}
             Trigger={
               <Star
@@ -41,35 +42,20 @@ const CardFeture = ({ id, date, member_only = false }: CardFetureProps) => {
       </div>
 
       {/* Likes (Hidden on Mobile) */}
-      <div className="hidden items-center gap-2 text-xs text-black/70 md:flex">
-        <button>
-          <MyToolTip
-            Content={<p>{like?.data.length} likes</p>}
-            Trigger={
-              <ThumbsUp className="fill-black/60" size={16} strokeWidth={0.5} />
-            }
-          />
-        </button>
-        {like?.data.length}
-      </div>
+      <Like user_id={user ? user.id : null} article_id={id} />
 
       {/* Comments (Hidden on Mobile) */}
-      <div className="hidden items-center gap-2 text-xs text-black/70 md:flex">
-        <MyToolTip
+      <div className="-mt-1 hidden items-center gap-2 text-xs text-black/70 sm:flex md:flex">
+        <ToolTips
           Content={<p>{comment?.data.length} responses</p>}
           Trigger={
-            <MyDrawer
-              content={<Comment id={id} />}
-              triger={
-                <MessageCircle
-                  className="fill-black/60"
-                  size={16}
-                  strokeWidth={0.5}
-                />
-              }
-              Title="Comment"
-              Description="Comment with a good word"
-            />
+            <Link href={`/article/${id}`}>
+              <MessageCircle
+                size={16}
+                strokeWidth={0.5}
+                className="fill-black/60"
+              />
+            </Link>
           }
         />
         {comment?.data.length}

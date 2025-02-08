@@ -1,12 +1,12 @@
 import React from "react";
-import MyDropDownMenu from "@/MYCOMPONENT/MyDropDownMenu/MyDropDownMenu";
 import Link from "next/link";
-import MyDrawer from "../../MYCOMPONENT/my_drawer/MyDrawer";
 import { Button } from "@/components/ui/button";
 import FormPublish from "./publish/formPublish";
 import Image from "next/image";
-import { useUser } from "@/hooks/store/useUser";
+import { useUser } from "@/hooks/store/zustand";
 import { InitialValue } from "@/pages/article/new-story";
+import MyDrawer from "@/components/drawer/MyDrawer";
+import MyDropDownMenu from "@/components/dropDown/MyDropDownMenu";
 
 const HeaderStory = ({ title, story }: InitialValue) => {
   const { user } = useUser();

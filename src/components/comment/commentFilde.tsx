@@ -3,14 +3,10 @@ import { useFormik } from "formik";
 import { useEffect, useRef } from "react";
 import * as yup from "yup";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import { useHandlePost } from "@/lib/useHandlePost";
-import { useUser } from "@/hooks/store/useUser";
+import { useUser } from "@/hooks/store/zustand";
 import { SendHorizontal } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { RouterEvent } from "next/router";
 
-export type Comment = {
+export type CommentData = {
   user_name: string;
   article_id: number;
   comment: string;
@@ -22,63 +18,77 @@ export const validationSchema = yup.object({
   comment: yup.string().required("Comment is required"),
 });
 
-const CommentFilde = ({ id }: any) => {
-  const router = useRouter();
+type CommentTypeFilde = {
+  id: string | string[] | undefined;
+  mutate: any;
+  isSuccess: boolean;
+};
+
+const CommentFilde = ({ id, mutate, isSuccess }: CommentTypeFilde) => {
   const { user } = useUser();
   const Ref = useRef<HTMLTextAreaElement | null>(null);
-
-  const { mutate } = useHandlePost<Comment>("/feature/comment/upload");
+  let isDisabled;
 
   const formik = useFormik({
     initialValues: {
       comment: "",
     },
-
     validationSchema: validationSchema,
     onSubmit: (values) => {
+      if (!user || !user.id || !user.email) {
+        toast.error("You must be logged in to comment");
+        return;
+      }
+
       const data = {
-        user_name: user.email,
         article_id: id,
+        user_id: user.id,
         comment: values.comment,
-        image: user.photoURL || "/user.jpg",
+        user_name: user.email,
+        image: "https://placehold.co/600x400",
       };
 
-      if (values.comment && user.email) {
-        mutate(data, {
-          onSuccess: () => {
-            router.back();
-            toast.success("comment sended");
-          },
-          onError: () => {
-            toast.error("comment not sended");
-          },
-        });
-      }
+      isDisabled = true;
+      mutate(data, {
+        onSuccess: () => {
+          isDisabled = false;
+          formik.resetForm();
+        },
+        onError: () => {
+          toast.error("Failed to send comment");
+        },
+      });
     },
   });
 
   useEffect(() => {
     if (Ref.current) {
       Ref.current.style.height = "auto";
-      Ref.current.style.height = `${Ref.current?.scrollHeight}px`;
+      Ref.current.style.height = `${Ref.current.scrollHeight}px`;
     }
   }, [formik.values.comment]);
 
   return (
     <form
-      onSubmit={() => {}}
+      onSubmit={formik.handleSubmit}
       className="my-4 w-full space-y-1 rounded-lg p-4 md:mx-auto md:max-w-[680px] md:p-0"
     >
       <textarea
         name="comment"
-        placeholder="write your comment..."
-        className="min-h-4 w-full rounded-t-lg border-b border-slate-300 bg-white shadow-sm outline-none focus:ring-1"
+        placeholder="Write your comment..."
+        className="max-h-28 min-h-4 w-full rounded-t-lg border-b border-slate-300 bg-white shadow-sm outline-none"
         ref={Ref}
-        onChange={() => {}}
+        value={formik.values.comment}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
       />
+      {formik.errors.comment && formik.touched.comment && (
+        <p className="text-sm text-red-500">{formik.errors.comment}</p>
+      )}
       <Button
         type="submit"
         variant="outline"
+        disabled={isDisabled}
         className="ms-auto block hover:bg-slate-800 hover:text-white"
       >
         <SendHorizontal size={16} strokeWidth={1} />

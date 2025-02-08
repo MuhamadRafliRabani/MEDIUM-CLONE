@@ -1,12 +1,12 @@
-import MyAvatar from "@/MYCOMPONENT/avatar/MyAvatar";
-import Card_profil from "@/MYCOMPONENT/card profil";
-import MyToolTip from "@/MYCOMPONENT/MyToolTip/MyToolTip";
+import MyAvatar from "@/components/avatar/MyAvatar";
+import Card_profil from "@/components/card profil";
+import ToolTips from "@/components/toolTip/MyToolTip";
 
 const StaffMedium = () => {
   return (
     <div className="w-full space-y-2">
       <h1 className="flex items-center gap-2 text-sm font-light">
-        <MyToolTip
+        <ToolTips
           Content={
             <Card_profil
               user_name="rabani"
@@ -17,7 +17,7 @@ const StaffMedium = () => {
             <MyAvatar size="size-6" img="https://github.com/shadcn.png" />
           }
         />
-        <MyToolTip
+        <ToolTips
           Content={
             <Card_profil
               user_name="rabani"

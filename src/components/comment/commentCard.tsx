@@ -1,10 +1,10 @@
-import type { Comment } from "@/features/comment/commentFilde";
-import MyToolTip from "../MyToolTip/MyToolTip";
 import Card_profil from "../card profil";
 import MyAvatar from "../avatar/MyAvatar";
 import { formatDate } from "@/lib/date";
+import ToolTips from "../toolTip/MyToolTip";
+import { CommentData } from "./commentFilde";
 
-const CardComment = ({ user_name, comment, create_at, image }: Comment) => {
+const CardComment = ({ user_name, comment, create_at, image }: CommentData) => {
   const date = formatDate(create_at);
 
   return (
@@ -12,7 +12,7 @@ const CardComment = ({ user_name, comment, create_at, image }: Comment) => {
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <div className="">
-            <MyToolTip
+            <ToolTips
               Content={<Card_profil img={image} user_name={user_name} />}
               Trigger={<MyAvatar size="size-6 rounded-full" img={image} />}
             />

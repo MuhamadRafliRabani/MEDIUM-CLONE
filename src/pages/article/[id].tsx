@@ -1,39 +1,30 @@
 import { useRouter } from "next/router";
-import {
-  MessageCircle,
-  PlayCircle,
-  Dot,
-  Share,
-  ThumbsUp,
-  Bookmark,
-  Star,
-} from "lucide-react";
-import MyAvatar from "@/MYCOMPONENT/avatar/MyAvatar";
-import MyToolTip from "@/MYCOMPONENT/MyToolTip/MyToolTip";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { MessageCircle, PlayCircle, Dot, Share, Bookmark } from "lucide-react";
 import Image from "next/image";
-import Card_profil from "@/MYCOMPONENT/card profil";
-import ArticleSkeleton from "@/MYCOMPONENT/article/articleSkeleton";
 import { toast } from "sonner";
-import type { Comment } from "@/features/comment/commentFilde";
 import { useHandleGet } from "@/lib/useGet";
 import { formatDate } from "@/lib/date";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
-import CommentFilde from "@/features/comment/commentFilde";
-import CardComment from "@/MYCOMPONENT/myComment/Mycomment";
-import MyDropDownMenu from "@/MYCOMPONENT/MyDropDownMenu/MyDropDownMenu";
-import BlockquoteMember from "@/MYCOMPONENT/BlockquoteMember";
+import { useUser } from "@/hooks/store/zustand";
+import ArticleSkeleton from "@/components/article/articleSkeleton";
+import BlockquoteMember from "@/components/blockquoteMember";
+import ToolTips from "@/components/toolTip/MyToolTip";
+import Card_profil from "@/components/card profil";
+import MyAvatar from "@/components/avatar/MyAvatar";
+import { Like } from "@/features/like/handleLike";
+import MyDropDownMenu from "@/components/dropDown/MyDropDownMenu";
+import Comment from "@/features/comment/comment";
 
 const Article = () => {
   const router = useRouter();
   const { id } = router.query;
+  const { user } = useUser();
 
   const { data, isLoading, isError } = useHandleGet(`/article/${id}`, id);
   const { data: comments } = useHandleGet(`/feature/comment/${id}`, id);
-  const { data: likes } = useHandleGet(`/feature/like/${id}`, id);
 
   if (isLoading) return <ArticleSkeleton />;
 
@@ -57,7 +48,7 @@ const Article = () => {
 
         {/* header article */}
         <div className="mx-auto flex w-full items-center gap-3 font-medium">
-          <MyToolTip
+          <ToolTips
             Content={
               <Card_profil
                 img={article?.user_image}
@@ -85,16 +76,10 @@ const Article = () => {
         <div className="flex items-center justify-between border-y border-slate-200 px-3 py-1.5">
           <div className="flex items-center gap-8 text-sm text-icon">
             <div className="flex items-center gap-1">
-              <MyToolTip
-                Content={<p>{likes?.data.length} claps</p>}
-                Trigger={
-                  <ThumbsUp className="size-5" size={16} strokeWidth={0.5} />
-                }
-              />
-              {likes?.data.length}
+              <Like article_id={id} user_id={user ? user.id : null} />
             </div>
             <div className="flex items-center gap-1">
-              <MyToolTip
+              <ToolTips
                 Content={<p>{comments?.data.length} response</p>}
                 Trigger={
                   <Link href="#comment">
@@ -106,13 +91,13 @@ const Article = () => {
             </div>
           </div>
           <div className="flex items-center gap-8 text-sm text-icon">
-            <MyToolTip
+            <ToolTips
               Content={<p>Save</p>}
               Trigger={
                 <Bookmark className="size-5" size={16} strokeWidth={0.5} />
               }
             />
-            <MyToolTip
+            <ToolTips
               Content={<p>Play</p>}
               Trigger={
                 <PlayCircle
@@ -122,7 +107,7 @@ const Article = () => {
                 />
               }
             />
-            <MyToolTip
+            <ToolTips
               Content={<p>Share</p>}
               Trigger={<Share className="size-5" size={16} strokeWidth={0.5} />}
             />
@@ -156,19 +141,7 @@ const Article = () => {
           {article?.article}
         </ReactMarkdown>
       </div>
-      <CommentFilde id={id} />
-      <div className="mx-auto max-w-3xl" id="comment">
-        {comments?.data.map((comment: Comment, i: number) => (
-          <CardComment
-            key={i}
-            comment={comment.comment}
-            article_id={comment.article_id}
-            image={comment.image || "/user.jpg"}
-            create_at={comment.create_at}
-            user_name={comment.user_name}
-          />
-        ))}
-      </div>
+      <Comment id={id} />
     </section>
   );
 };

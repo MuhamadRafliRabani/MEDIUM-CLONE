@@ -5,11 +5,11 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { usesetTopic } from "@/hooks/store/useUser";
+import { usesetTopic } from "@/hooks/store/zustand";
 import { Topic_list } from "@/data/Topic_list";
 
 const MyCarousel: React.FC = () => {
-  const { setTopic } = usesetTopic();
+  const { topic: topicGlobal, setTopic } = usesetTopic();
 
   return (
     <div className="sticky-animate relative top-0 md:w-article">
@@ -26,6 +26,7 @@ const MyCarousel: React.FC = () => {
                   name="topic"
                   id={`topic-${index}`}
                   className="peer hidden"
+                  checked={topic == topicGlobal ? true : false}
                   onClick={(e) => setTopic(topic)}
                 />
                 <span className="checked-effect relative text-[0.85rem] font-[350]">

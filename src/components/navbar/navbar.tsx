@@ -1,11 +1,13 @@
 import Link from "next/link";
-import { useUser } from "@/hooks/store/useUser";
-import MyToolTip from "../MyToolTip/MyToolTip";
+import { useUser } from "@/hooks/store/zustand";
 import { Bell, SquarePen } from "lucide-react";
 import { Profil } from "./profil";
+import MyToolTip from "../toolTip/MyToolTip";
+import ToolTips from "../toolTip/MyToolTip";
 
 const Navbar: React.FC = () => {
   const { user } = useUser();
+  console.log("🚀 ~ user:", user);
 
   return (
     <nav className="bg-white shadow-sm">
@@ -21,7 +23,7 @@ const Navbar: React.FC = () => {
             className="flex items-center gap-2 text-black/65"
             href="/article/new-story"
           >
-            <MyToolTip
+            <ToolTips
               Content={<p>make your story</p>}
               Trigger={
                 <SquarePen className="size-6 stroke-black" strokeWidth={1} />

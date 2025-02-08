@@ -1,5 +1,5 @@
 import FormCard from "@/features/auth";
-import { useUser } from "@/hooks/store/useUser";
+import { useUser } from "@/hooks/store/zustand";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 

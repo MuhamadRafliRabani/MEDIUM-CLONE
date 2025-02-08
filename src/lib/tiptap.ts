@@ -35,7 +35,6 @@ export const useTiptapConfigure = ({
               this.editor.commands.splitBlock();
 
               this.editor.commands.setHardBreak();
-
               return true;
             },
 

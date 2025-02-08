@@ -2,14 +2,13 @@ import React from "react";
 import Link from "next/link";
 import MyAvatar from "../avatar/MyAvatar";
 import Card_profil from "../card profil";
-import MyToolTip from "../MyToolTip/MyToolTip";
-import CardFeture from "../CardFitur/CardFeture";
 import { BookmarkSimple, MinusCircle, Smiley } from "@phosphor-icons/react";
-import MyDropDownMenu from "../MyDropDownMenu/MyDropDownMenu";
 import Image from "next/image";
 import { Article } from "@/pages";
-import { Star } from "lucide-react";
-import BlockquoteMember from "../BlockquoteMember";
+import BlockquoteMember from "../blockquoteMember";
+import ToolTips from "../toolTip/MyToolTip";
+import CardFeture from "../cardFitur/CardFeture";
+import MyDropDownMenu from "../dropDown/MyDropDownMenu";
 
 type CardArticleProps = {
   articles: Article[];
@@ -33,7 +32,7 @@ const CardArticle: React.FC<CardArticleProps> = ({ articles }) => {
 
           {/* Profil Section */}
           <div className="flex items-center gap-3 text-sm">
-            <MyToolTip
+            <ToolTips
               Content={
                 <Card_profil
                   img={article.user_image}
@@ -65,13 +64,13 @@ const CardArticle: React.FC<CardArticleProps> = ({ articles }) => {
                 />
                 {/* Desktop Actions */}
                 <div className="hidden items-center gap-2 text-slate-500 md:flex">
-                  <MyToolTip
+                  <ToolTips
                     Content="Show less like this"
                     Trigger={
                       <MinusCircle size={16} className="text-outLineIcon" />
                     }
                   />
-                  <MyToolTip
+                  <ToolTips
                     Content="Save"
                     Trigger={
                       <BookmarkSimple
@@ -97,7 +96,7 @@ const CardArticle: React.FC<CardArticleProps> = ({ articles }) => {
               />
               {/* Mobile Actions */}
               <div className="-mb-3 flex items-center justify-between md:hidden">
-                <MyToolTip
+                <ToolTips
                   Content="Show less like this"
                   Trigger={<MinusCircle size={16} className="text-icon" />}
                 />

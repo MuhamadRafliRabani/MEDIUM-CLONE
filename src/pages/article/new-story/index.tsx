@@ -1,11 +1,11 @@
 "use client";
 import Hoc from "@/hoc/Hoc";
-import ToolTipsText from "@/MYCOMPONENT/RichTextEditor/toolTipsTeks";
 import { useEffect, useRef } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import HeaderStory from "@/features/story/header";
 import { useLocalStorage } from "@/hooks/useLocalstorage";
+import ToolTipEditor from "@/components/richTextEditor/toolTipsTeks";
 
 export type InitialValue = {
   title: string;
@@ -14,7 +14,6 @@ export type InitialValue = {
 
 const MakeArticle = () => {
   const titleRef = useRef<HTMLTextAreaElement | null>(null);
-  const storyRef = useRef<HTMLTextAreaElement | null>(null);
   const [historyArticle, setHistoryArticle] = useLocalStorage("article", null);
 
   const validationSchema = yup.object({
@@ -42,7 +41,6 @@ const MakeArticle = () => {
 
   useEffect(() => {
     setHistoryArticle(formik.values.story);
-    console.log("🚀 ~ useEffect ~ formik.values.story:", formik.values.story);
   }, [formik.values.story, setHistoryArticle]);
 
   return (
@@ -61,7 +59,7 @@ const MakeArticle = () => {
           ></textarea>
           <div className="animate absolute inset-x-0 bottom-0 h-full w-[1px] scale-y-0 transform bg-black transition-transform duration-300 peer-focus-within:scale-y-100"></div>
         </div>
-        <ToolTipsText formik={formik} historyArticle={historyArticle} />
+        <ToolTipEditor formik={formik} historyArticle={historyArticle} />
       </div>
     </div>
   );

@@ -12,13 +12,13 @@ import {
   MinusCircle,
   PlusCircle,
 } from "@phosphor-icons/react";
-import MyToolTip from "../MyToolTip/MyToolTip";
+import ToolTips from "../toolTip/MyToolTip";
 
 const MyDropDownMenu = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <MyToolTip
+        <ToolTips
           Trigger={
             <DotsThree size={22} className="mt-2 size-6 font-bold text-icon" />
           }

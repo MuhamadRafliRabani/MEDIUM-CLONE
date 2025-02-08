@@ -7,22 +7,20 @@ import {
   ListNumbers,
 } from "@phosphor-icons/react";
 import { EditorContent } from "@tiptap/react";
-import { Heading1, Heading2, Pilcrow, Plus, Redo, Undo } from "lucide-react";
+import { Heading1, Pilcrow, Plus, Redo, Undo } from "lucide-react";
 import { useEffect, useState } from "react";
 import { debounce } from "lodash";
 import { FormikProps } from "formik";
 import { useTiptapConfigure } from "@/lib/tiptap";
-import MyToolTip from "../MyToolTip/MyToolTip";
 
 export interface TiptapConfigureProps {
   formik: FormikProps<any>;
   historyArticle: string | null;
 }
 
-const EditorToolbar = ({ formik, historyArticle }: TiptapConfigureProps) => {
+const ToolTipEditor = ({ formik, historyArticle }: TiptapConfigureProps) => {
   const [open, setIsOpen] = useState(false);
 
-  // configure tiptap
   const editor = useTiptapConfigure({ formik, historyArticle });
 
   useEffect(() => {
@@ -164,4 +162,4 @@ const EditorToolbar = ({ formik, historyArticle }: TiptapConfigureProps) => {
   );
 };
 
-export default EditorToolbar;
+export default ToolTipEditor;

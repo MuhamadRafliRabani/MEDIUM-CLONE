@@ -1,12 +1,12 @@
 import { Inter } from "next/font/google";
-import MyCarousel from "@/MYCOMPONENT/Carousell";
-import StaffContainer from "@/MYCOMPONENT/sidemenu/Staff/StaffContainer";
-import { usesetTopic } from "@/hooks/store/useUser";
-import SkeletonCard from "@/MYCOMPONENT/article/cardSeleton";
-import CardArticle from "@/MYCOMPONENT/article/article";
+import { usesetTopic, useUser } from "@/hooks/store/zustand";
 import Hoc from "@/hoc/Hoc";
-import Footer from "@/MYCOMPONENT/MyFooter";
 import { useHandleGet } from "@/lib/useGet";
+import MyCarousel from "@/components/carousell";
+import SkeletonCard from "@/components/article/cardSeleton";
+import CardArticle from "@/components/article/article";
+import StaffContainer from "@/components/sidemenu/Staff/StaffContainer";
+import Footer from "@/components/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,6 +30,10 @@ function Home() {
     `/articles/${topic}`,
     topic,
   );
+
+  const { user } = useUser();
+
+  if (!user) return null;
 
   return (
     <>

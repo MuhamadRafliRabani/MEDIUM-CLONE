@@ -11,7 +11,7 @@ type ToolTipType = {
   primary?: boolean;
 };
 
-const MyToolTip = ({ Trigger, Content, primary = false }: ToolTipType) => {
+const ToolTips = ({ Trigger, Content, primary = false }: ToolTipType) => {
   return (
     <TooltipProvider delayDuration={200} skipDelayDuration={100}>
       <Tooltip>
@@ -26,4 +26,4 @@ const MyToolTip = ({ Trigger, Content, primary = false }: ToolTipType) => {
   );
 };
 
-export default MyToolTip;
+export default ToolTips;

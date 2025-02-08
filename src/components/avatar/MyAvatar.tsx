@@ -1,5 +1,4 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import Card_profil from "../card profil";
 
 type AvatarType = {
   size: string;

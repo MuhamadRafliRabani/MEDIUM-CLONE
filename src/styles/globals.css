@@ -127,6 +127,15 @@ body {
   display: block;
 }
 
+.article-paragraft ul {
+  padding-left: 45px;
+  list-style-type: disc;
+}
+
+.article-paragraft ol {
+  list-style-type: decimal;
+}
+
 /* fonts start */
 .Segoe-font {
   font-family: "Segoe", Tahoma, Geneva, Verdana, sans-serif;
@@ -163,8 +172,8 @@ body {
   font-size: 1.8rem;
 }
 
-.editor-props {
-  font-size: 1.8rem;
+.editor-props ul {
+  padding-left: 40px;
 }
 
 .ProseMirror-trailingBreak {

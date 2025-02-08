@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { GoogleLogo, GithubLogo } from "@phosphor-icons/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useUser } from "@/hooks/store/useUser";
+import { useUser } from "@/hooks/store/zustand";
 import { useState } from "react";
 import { useHandlePost } from "@/lib/useHandlePost";
 import { toast } from "sonner";
