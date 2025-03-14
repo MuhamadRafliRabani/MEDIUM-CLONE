@@ -3,11 +3,7 @@ import { BookBookmark } from "@phosphor-icons/react";
 import MyAvatar from "./avatar/MyAvatar";
 import Link from "next/link";
 import { useUser } from "@/hooks/store/zustand";
-
-type Profil = {
-  img: any;
-  user_name: any;
-};
+import { Profil } from "@/lib";
 
 const Card_profil: React.FC<Profil> = ({ img, user_name }) => {
   const { user } = useUser();

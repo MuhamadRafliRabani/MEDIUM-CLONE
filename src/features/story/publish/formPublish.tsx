@@ -1,12 +1,7 @@
-import { useCallback, useEffect, useState, useRef } from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
+import { useCallback, useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import { useUser } from "@/hooks/store/zustand";
 import { Topic_list } from "@/data/Topic_list";
-import { toast } from "sonner";
 import {
   Select,
   SelectContent,
@@ -14,136 +9,69 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import useHandleFileChange from "@/hooks/setImage";
-import { useHandlePost } from "@/lib/useHandlePost";
-import { InitialValue } from "@/pages/article/new-story";
+import { InitialValue } from "@/lib";
+import ImageUpload from "./imageUpload";
+import { PublishConfiguration } from "./publish-configure";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const FormPublish = ({ title, story }: InitialValue) => {
-  const { user } = useUser();
-  const router = useRouter();
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
-  const { mutate, isPending } = useHandlePost("/feature/upload/article");
-  const { file, image, handleFileChange } = useHandleFileChange();
 
-  // Formik configuration
-  const formik = useFormik({
-    initialValues: {
-      title: title || "",
-      description: "",
-      category: "",
-      member_only: "public",
-    },
-    validationSchema: Yup.object({
-      title: Yup.string().required("Title is required"),
-      description: Yup.string().required("Description is required"),
-      category: Yup.string().required("Category is required"),
-    }),
-    onSubmit: async (values) => {
-      if (!user?.email) return;
+  // publish Configurations
+  const { isPending, useFormik } = PublishConfiguration(title, story);
 
-      const formData = new FormData();
-      formData.append("title", values.title);
-      formData.append("description", values.description);
-      formData.append("category", values.category);
-      formData.append("article", story || "");
-      formData.append("user_name", user.email);
-      formData.append("user_image", "https://example.com/default-image.jpg");
-      formData.append(
-        "member_only",
-        values.member_only === "member_only" ? "true" : "false",
-      );
+  const {
+    values,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    setFieldValue,
+    errors,
+    touched,
+  } = useFormik;
+  //end  publish Configurations
 
-      if (file) {
-        formData.append("image", file);
-      }
-
-      toast.promise(
-        new Promise(() => {
-          mutate(formData, {
-            onSuccess: () => {
-              router.back();
-            },
-            onError: () => {
-              router.push("/article/new-story");
-            },
-          });
-        }),
-        {
-          loading: "Publishing...",
-          success: "Story published successfully!",
-          error: "Failed to publish story.",
-        },
-      );
-    },
-  });
-
-  // Handle button disable state
   const handleDisable = useCallback(() => {
-    const { title, description, category } = formik.values;
-    setIsDisabled(!(title && description && category && file));
-  }, [formik.values, file]);
+    const { title, description, category } = values;
+    setIsDisabled(!(title && description && category && values.image));
+  }, [values]);
 
   useEffect(() => {
     handleDisable();
-  }, [formik.values, file, handleDisable]);
+  }, [handleDisable]);
 
   return (
     <form
-      onSubmit={formik.handleSubmit}
-      className="container-2xl mx-auto flex flex-col justify-center gap-6 px-4 md:flex-row md:gap-8"
+      onSubmit={handleSubmit}
+      className="container mx-auto flex flex-col items-center justify-center gap-6 px-4 md:flex-row md:gap-8"
     >
       {/* Left Column */}
       <div className="flex w-full flex-col gap-4 md:w-[500px]">
         <label className="text-xl font-bold text-black">Story Preview</label>
-        <div className="flex flex-col items-center">
-          <input
-            type="file"
-            ref={fileInputRef}
-            className="hidden"
-            accept="image/*"
-            onChange={handleFileChange}
-          />
-          <label
-            onClick={() => fileInputRef.current?.click()}
-            className={`flex h-[200px] w-full cursor-pointer items-center justify-center bg-gray-100 ${
-              !image && "border border-dashed"
-            }`}
-          >
-            {image ? (
-              <img
-                src={image}
-                alt="Preview"
-                className="h-[200px] w-full border border-gray-300 object-cover"
-              />
-            ) : (
-              <span>Choose file</span>
-            )}
-          </label>
-        </div>
+        <ImageUpload setImage={setFieldValue} />
 
         <Input
           name="title"
           placeholder="Write a title"
           className="border-b border-gray-400 text-lg font-extrabold"
-          value={formik.values.title}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
+          value={values.title}
+          onChange={handleChange}
+          onBlur={handleBlur}
         />
-        {formik.touched.title && formik.errors.title && (
-          <div className="text-red-500">{formik.errors.title}</div>
+        {touched.title && errors.title && (
+          <div className="text-red-500">{errors.title}</div>
         )}
 
         <Input
           name="description"
           placeholder="Write a description..."
           className="border-b border-gray-400 text-gray-600"
-          value={formik.values.description}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
+          value={values.description}
+          onChange={handleChange}
+          onBlur={handleBlur}
         />
-        {formik.touched.description && formik.errors.description && (
-          <div className="text-red-500">{formik.errors.description}</div>
+        {touched.description && errors.description && (
+          <div className="text-red-500">{errors.description}</div>
         )}
 
         <p className="text-sm">
@@ -153,23 +81,19 @@ const FormPublish = ({ title, story }: InitialValue) => {
       </div>
 
       {/* Right Column */}
-      <div className="flex w-full flex-col gap-4 md:w-[500px]">
-        <div className="flex items-center">
-          <Select
-            value={formik.values.member_only}
-            onValueChange={(value) =>
-              formik.setFieldValue("member_only", value)
-            }
+      <div className="flex w-full flex-col gap-4 md:-mt-16 md:w-[500px]">
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id="member-only"
+            checked={values.member_only}
+            onCheckedChange={(checked) => setFieldValue("member_only", checked)}
+          />
+          <label
+            htmlFor="member-only"
+            className="text-sm font-medium leading-none"
           >
-            <SelectTrigger className="max-w-fit space-x-2 border-none focus:ring-0">
-              <span>Publishing to: </span>
-              <SelectValue placeholder={formik.values.member_only} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="public">Public</SelectItem>
-              <SelectItem value="member_only">Member only</SelectItem>
-            </SelectContent>
-          </Select>
+            Members Only
+          </label>
         </div>
 
         <p>
@@ -178,8 +102,8 @@ const FormPublish = ({ title, story }: InitialValue) => {
         </p>
 
         <Select
-          value={formik.values.category}
-          onValueChange={(value) => formik.setFieldValue("category", value)}
+          value={values.category}
+          onValueChange={(value) => setFieldValue("category", value)}
         >
           <SelectTrigger className="w-full focus:ring-0">
             <SelectValue placeholder="Topic" />

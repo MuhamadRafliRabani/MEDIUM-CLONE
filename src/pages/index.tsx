@@ -10,26 +10,13 @@ import Footer from "@/components/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export type Article = {
-  article_id: number;
-  title: string;
-  article: string;
-  description: string;
-  user_name: string;
-  user_image: string;
-  comments: string | null;
-  date: string;
-  content_image: string;
-  category: string;
-  member_only: boolean;
-};
-
 function Home() {
   const { topic } = usesetTopic();
-  const { data: articles, isLoading } = useHandleGet(
-    `/articles/${topic}`,
-    topic,
-  );
+  const { data: articles, isLoading } = useHandleGet({
+    url: `/articles/${topic}`,
+    key: topic,
+  });
+  console.log("🚀 ~ Home ~ articles:", articles);
 
   const { user } = useUser();
 
@@ -40,7 +27,7 @@ function Home() {
       <div className="sohne flex h-full min-h-[87vh] flex-wrap justify-center md:flex-nowrap md:pt-4">
         {/* Main Content */}
         <main
-          className={`${inter.className} relative flex w-full flex-col border-slate-100 px-4 pt-4 sm:max-w-screen-sm md:max-w-[52rem] md:border-e md:ps-10`}
+          className={`${inter.className} flex w-full flex-col border-slate-100 px-4 pt-4 sm:max-w-screen-sm md:max-w-[52rem] md:border-e md:ps-10`}
         >
           <MyCarousel />
 

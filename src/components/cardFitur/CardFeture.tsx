@@ -5,15 +5,14 @@ import { MessageCircle, Star } from "lucide-react";
 import Link from "next/link";
 import ToolTips from "../toolTip/MyToolTip";
 import { Like } from "@/features/like/handleLike";
+import { toSnakeCase } from "@/hooks/use-snake-case";
+import { CardFetureProps } from "@/lib";
 
-type CardFetureProps = {
-  id?: number;
-  date: string;
-  member_only: boolean;
-};
-
-const CardFeture = ({ id, date, member_only = false }: CardFetureProps) => {
-  const { data: comment } = useHandleGet(`/feature/comment/${id}`);
+const CardFeture = ({ id, date, member_only, url }: CardFetureProps) => {
+  const { data: comment } = useHandleGet({
+    url: `/feature/comment/${id}`,
+    key: id,
+  });
   const formattedDate = formatDate(date);
   const { user } = useUser();
 
@@ -49,7 +48,7 @@ const CardFeture = ({ id, date, member_only = false }: CardFetureProps) => {
         <ToolTips
           Content={<p>{comment?.data.length} responses</p>}
           Trigger={
-            <Link href={`/article/${id}`}>
+            <Link href={toSnakeCase(url + "#comment")}>
               <MessageCircle
                 size={16}
                 strokeWidth={0.5}

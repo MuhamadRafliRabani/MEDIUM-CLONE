@@ -2,7 +2,7 @@ import Card_profil from "../card profil";
 import MyAvatar from "../avatar/MyAvatar";
 import { formatDate } from "@/lib/date";
 import ToolTips from "../toolTip/MyToolTip";
-import { CommentData } from "./commentFilde";
+import { CommentData } from "@/lib";
 
 const CardComment = ({ user_name, comment, create_at, image }: CommentData) => {
   const date = formatDate(create_at);

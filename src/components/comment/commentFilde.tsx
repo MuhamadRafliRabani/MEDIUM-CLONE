@@ -5,26 +5,13 @@ import * as yup from "yup";
 import { toast } from "sonner";
 import { useUser } from "@/hooks/store/zustand";
 import { SendHorizontal } from "lucide-react";
-
-export type CommentData = {
-  user_name: string;
-  article_id: number;
-  comment: string;
-  image: string;
-  create_at?: string | null | undefined;
-};
+import { CommentFildeProps } from "@/lib";
 
 export const validationSchema = yup.object({
   comment: yup.string().required("Comment is required"),
 });
 
-type CommentTypeFilde = {
-  id: string | string[] | undefined;
-  mutate: any;
-  isSuccess: boolean;
-};
-
-const CommentFilde = ({ id, mutate, isSuccess }: CommentTypeFilde) => {
+const CommentFilde = ({ id, mutate, isSuccess }: CommentFildeProps) => {
   const { user } = useUser();
   const Ref = useRef<HTMLTextAreaElement | null>(null);
   let isDisabled;

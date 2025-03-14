@@ -5,12 +5,8 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import HeaderStory from "@/features/story/header";
 import { useLocalStorage } from "@/hooks/useLocalstorage";
+import { InitialValue } from "@/lib";
 import ToolTipEditor from "@/components/richTextEditor/toolTipsTeks";
-
-export type InitialValue = {
-  title: string;
-  story: string;
-};
 
 const MakeArticle = () => {
   const titleRef = useRef<HTMLTextAreaElement | null>(null);
@@ -27,9 +23,7 @@ const MakeArticle = () => {
       story: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
-    },
+    onSubmit: () => {},
   });
 
   useEffect(() => {
@@ -55,7 +49,7 @@ const MakeArticle = () => {
             value={formik.values.title}
             onChange={formik.handleChange}
             ref={titleRef}
-            className="noto-font textarea peer w-full text-pretty border-black/30 px-4 text-[36px]/[42px] font-bold caret-black/30 placeholder:pt-2 placeholder:text-[36px]/[42px] placeholder:font-medium placeholder:text-black/35 focus:outline-none focus:ring-0 md:px-3 md:text-[42px]/[46px] md:font-bold placeholder:md:text-[48px]/[49px]"
+            className="noto-font textarea peer max-h-48 w-full text-pretty border-black/30 px-4 pt-3 text-[36px]/[42px] font-bold caret-black/30 placeholder:text-[36px]/[42px] placeholder:font-medium placeholder:text-black/35 focus:outline-none focus:ring-0 md:px-3 md:text-[48px]/[50px] md:font-bold placeholder:md:text-[48px]/[49px]"
           ></textarea>
           <div className="animate absolute inset-x-0 bottom-0 h-full w-[1px] scale-y-0 transform bg-black transition-transform duration-300 peer-focus-within:scale-y-100"></div>
         </div>

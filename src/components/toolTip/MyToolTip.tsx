@@ -4,12 +4,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
-type ToolTipType = {
-  Trigger: React.ReactNode;
-  Content: React.ReactNode;
-  primary?: boolean;
-};
+import { ToolTipType } from "@/lib";
 
 const ToolTips = ({ Trigger, Content, primary = false }: ToolTipType) => {
   return (

@@ -4,20 +4,17 @@ import MyAvatar from "../avatar/MyAvatar";
 import Card_profil from "../card profil";
 import { BookmarkSimple, MinusCircle, Smiley } from "@phosphor-icons/react";
 import Image from "next/image";
-import { Article } from "@/pages";
 import BlockquoteMember from "../blockquoteMember";
 import ToolTips from "../toolTip/MyToolTip";
 import CardFeture from "../cardFitur/CardFeture";
 import MyDropDownMenu from "../dropDown/MyDropDownMenu";
-
-type CardArticleProps = {
-  articles: Article[];
-};
+import { CardArticleProps } from "@/lib";
+import { toSnakeCase } from "@/hooks/use-snake-case";
 
 const CardArticle: React.FC<CardArticleProps> = ({ articles }) => {
   if (articles?.length === 0) {
     return (
-      <div className="flex w-full flex-col items-center justify-center space-y-4 border-b border-slate-200 pb-4 md:w-[1036px] md:pb-0">
+      <div className="flex min-h-screen w-full flex-col items-center justify-center space-y-4 border-b border-slate-200 pb-4 md:w-[750px] md:pb-0">
         <Smiley size={40} />
         <h1 className="text-2xl text-primary">No articles in this topic</h1>
       </div>
@@ -45,10 +42,14 @@ const CardArticle: React.FC<CardArticleProps> = ({ articles }) => {
           </div>
 
           {/* Article Content */}
-          <div className="grid grid-cols-[1fr_90px] border-b border-slate-200 sm:grid-cols-[1fr_150px] md:grid-cols-[1fr_170px]">
+          <div className="grid h-full grid-cols-[1fr_90px] border-b border-slate-200 sm:grid-cols-[1fr_150px] md:grid-cols-[1fr_170px]">
             {/* Text Content */}
             <div className="flex w-full flex-col gap-2 pr-2 md:pr-0">
-              <Link href={`/article/${article.article_id}`}>
+              <Link
+                href={toSnakeCase(
+                  "/article/" + article.title + "?q=" + article.article_id,
+                )}
+              >
                 <h1 className="line-clamp-3 w-[95%] text-pretty text-lg font-extrabold leading-6 sm:line-clamp-3 md:text-2xl md:leading-7">
                   {article.title}
                 </h1>
@@ -61,6 +62,7 @@ const CardArticle: React.FC<CardArticleProps> = ({ articles }) => {
                   id={article.article_id}
                   date={article.date}
                   member_only={article.member_only}
+                  url={"/article/" + article.title + "?q=" + article.article_id}
                 />
                 {/* Desktop Actions */}
                 <div className="hidden items-center gap-2 text-slate-500 md:flex">

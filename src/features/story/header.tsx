@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 import FormPublish from "./publish/formPublish";
 import Image from "next/image";
 import { useUser } from "@/hooks/store/zustand";
-import { InitialValue } from "@/pages/article/new-story";
 import MyDrawer from "@/components/drawer/MyDrawer";
 import MyDropDownMenu from "@/components/dropDown/MyDropDownMenu";
+import { InitialValue } from "@/lib";
 
 const HeaderStory = ({ title, story }: InitialValue) => {
   const { user } = useUser();

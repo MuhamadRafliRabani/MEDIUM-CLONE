@@ -4,22 +4,22 @@ export const formatDate = (date: string | null | undefined) => {
 
   const day = String(TIME.getDate()).padStart(2, "0");
   const monthNames = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
+    "January",
+    "February",
+    "March",
+    "April",
     "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
 
   const month = monthNames[TIME.getMonth()];
-  const year = String(TIME.getFullYear()).slice(-2);
+  const year = String(TIME.getFullYear());
 
-  return `${month} ${year}`;
+  return `${month} ${day}, ${year}`;
 };

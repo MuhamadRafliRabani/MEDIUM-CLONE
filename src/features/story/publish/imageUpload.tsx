@@ -1,26 +1,39 @@
-import { usehandleFileChange } from "@/hooks/setImage";
+import useHandleFileChange from "@/hooks/setImage";
+import { ImageUploadProps } from "@/lib";
+import Image from "next/image";
+import { useEffect, useRef } from "react";
 
-const FileUpload = ({ image, handleFileChange }: any) => {
+const ImageUpload = ({ setImage }: ImageUploadProps) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { file, handleFileChange, image } = useHandleFileChange();
+
+  useEffect(() => {
+    if (file) {
+      setImage("image", file);
+    }
+  }, [setImage, file]);
+
   return (
     <div className="flex flex-col items-center">
       <input
         type="file"
-        name="file"
-        id="file"
+        ref={fileInputRef}
         className="hidden"
         accept="image/*"
-        onChange={(e) => handleFileChange(e)}
+        onChange={handleFileChange}
       />
       <label
-        htmlFor="file"
-        className={`flex h-[200px] w-full cursor-pointer items-center justify-center bg-[#FAFAFA] text-gray-600 ${
+        onClick={() => fileInputRef.current?.click()}
+        className={`flex h-[200px] w-full cursor-pointer items-center justify-center bg-gray-100 ${
           !image && "border border-dashed"
         }`}
       >
         {image ? (
-          <img
+          <Image
             src={image}
-            alt="Selected"
+            alt="Preview"
+            height={200}
+            width={150}
             className="h-[200px] w-full border border-gray-300 object-cover"
           />
         ) : (
@@ -31,4 +44,4 @@ const FileUpload = ({ image, handleFileChange }: any) => {
   );
 };
 
-export default FileUpload;
+export default ImageUpload;

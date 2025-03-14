@@ -1,4 +1,3 @@
-import { TiptapConfigureProps } from "@/MYCOMPONENT/RichTextEditor/toolTipsTeks";
 import BulletList from "@tiptap/extension-bullet-list";
 import Document from "@tiptap/extension-document";
 import HardBreak from "@tiptap/extension-hard-break";
@@ -10,11 +9,12 @@ import Text from "@tiptap/extension-text";
 import Underline from "@tiptap/extension-underline";
 import { useEditor, Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import { TiptapConfigureProps } from ".";
 
-export const useTiptapConfigure = ({
+export const useTiptapConfigure = <T>({
   formik,
   historyArticle,
-}: TiptapConfigureProps): Editor | null => {
+}: TiptapConfigureProps<T>): Editor | null => {
   const editor = useEditor({
     content:
       historyArticle === null ? "Write your story here 😉" : historyArticle,

@@ -1,25 +1,21 @@
 import CardComment from "@/components/comment/commentCard";
-import CommentFilde, { CommentData } from "@/components/comment/commentFilde";
+import CommentFilde from "@/components/comment/commentFilde";
+import { CommentData } from "@/lib";
 import { useHandleGet } from "@/lib/useGet";
 import { useHandlePost } from "@/lib/useHandlePost";
 
-type commentType = {
-  id: string | string[] | undefined;
-};
-
-const Comment = ({ id }: commentType) => {
-  const { mutate, isIdle, isSuccess } = useHandlePost<Comment>(
+const Comment = ({ id }: { id: string | string[] | undefined }) => {
+  const { mutate, isSuccess } = useHandlePost<Comment>(
     "/feature/upload/comment",
   );
 
-  const { data: comments } = useHandleGet(
-    `/feature/comment/${id}`,
-    id,
-    isSuccess,
-  );
+  const { data: comments } = useHandleGet({
+    url: `/feature/comment/${id}`,
+    key: isSuccess,
+  });
 
   return (
-    <div>
+    <>
       <CommentFilde id={id} mutate={mutate} isSuccess={isSuccess} />
       <div className="mx-auto max-w-3xl" id="comment">
         {comments?.data.map((comment: CommentData, i: number) => (
@@ -33,7 +29,7 @@ const Comment = ({ id }: commentType) => {
           />
         ))}
       </div>
-    </div>
+    </>
   );
 };
 

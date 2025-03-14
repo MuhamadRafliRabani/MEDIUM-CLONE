@@ -156,14 +156,6 @@ body {
 }
 /* fonts end */
 
-.textarea {
-  min-height: 3.5rem;
-  max-height: 11.5rem;
-  overflow-y: auto;
-  resize: none;
-  transition: max-height 0.3s ease;
-}
-
 .textarea:placeholder-shown {
   max-height: 5rem;
 }
@@ -319,3 +311,8 @@ form {
     list-style-type: decimal;
   }
 }
+
+/* .max-h-input {
+  height: fit-content;
+  
+} */

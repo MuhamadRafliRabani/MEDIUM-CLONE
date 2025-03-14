@@ -19,12 +19,18 @@ import MyDropDownMenu from "@/components/dropDown/MyDropDownMenu";
 import Comment from "@/features/comment/comment";
 
 const Article = () => {
-  const router = useRouter();
-  const { id } = router.query;
+  const { query } = useRouter();
   const { user } = useUser();
 
-  const { data, isLoading, isError } = useHandleGet(`/article/${id}`, id);
-  const { data: comments } = useHandleGet(`/feature/comment/${id}`, id);
+  const { data, isLoading, isError } = useHandleGet({
+    url: `/article/${query.q}`,
+    key: query.q,
+  });
+
+  const { data: comments } = useHandleGet({
+    url: `/feature/comment/${query.q}`,
+    key: query.q,
+  });
 
   if (isLoading) return <ArticleSkeleton />;
 
@@ -76,7 +82,7 @@ const Article = () => {
         <div className="flex items-center justify-between border-y border-slate-200 px-3 py-1.5">
           <div className="flex items-center gap-8 text-sm text-icon">
             <div className="flex items-center gap-1">
-              <Like article_id={id} user_id={user ? user.id : null} />
+              <Like article_id={query.q} user_id={user ? user.id : null} />
             </div>
             <div className="flex items-center gap-1">
               <ToolTips
@@ -141,7 +147,7 @@ const Article = () => {
           {article?.article}
         </ReactMarkdown>
       </div>
-      <Comment id={id} />
+      <Comment id={query.q} />
     </section>
   );
 };
