@@ -14,8 +14,10 @@ export const Like = ({ user_id, article_id }: LikeProps) => {
   const { mutate, isPending, isSuccess } = useHandlePost(
     `/feature/like/${user_id}/${article_id}`,
   );
-  console.log("🚀 ~ Like ~ isSuccess:", isSuccess);
-  const { data: likes, refetch } = useHandleGet(`/feature/like/${article_id}`);
+  const { data: likes, refetch } = useHandleGet({
+    url: `/feature/like/${article_id}`,
+    key: article_id,
+  });
 
   const hasLiked =
     likes?.data?.some((like: any) => like.user_id === user_id) ?? false;
