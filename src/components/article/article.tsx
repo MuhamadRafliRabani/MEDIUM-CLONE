@@ -45,11 +45,7 @@ const CardArticle: React.FC<CardArticleProps> = ({ articles }) => {
           <div className="grid h-full grid-cols-[1fr_90px] border-b border-slate-200 sm:grid-cols-[1fr_150px] md:grid-cols-[1fr_170px]">
             {/* Text Content */}
             <div className="flex w-full flex-col gap-2 pr-2 md:pr-0">
-              <Link
-                href={toSnakeCase(
-                  "/article/" + article.title + "?q=" + article.article_id,
-                )}
-              >
+              <Link href={toSnakeCase("/article/" + article.article_id)}>
                 <h1 className="line-clamp-3 w-[95%] text-pretty text-lg font-extrabold leading-6 sm:line-clamp-3 md:text-2xl md:leading-7">
                   {article.title}
                 </h1>
@@ -62,7 +58,7 @@ const CardArticle: React.FC<CardArticleProps> = ({ articles }) => {
                   id={article.article_id}
                   date={article.date}
                   member_only={article.member_only}
-                  url={"/article/" + article.title + "?q=" + article.article_id}
+                  url={"/article/" + article.article_id}
                 />
                 {/* Desktop Actions */}
                 <div className="hidden items-center gap-2 text-slate-500 md:flex">

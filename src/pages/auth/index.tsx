@@ -10,7 +10,7 @@ const Index = () => {
     if (user) {
       Route.push("/");
     }
-  }, [user]);
+  }, [user, Route]);
 
   return <FormCard />;
 };

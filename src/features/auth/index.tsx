@@ -29,7 +29,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const FormCard: React.FC = () => {
-  const { setUser, user } = useUser();
+  const { setUser } = useUser();
   const [isSignUp, setIsSignUp] = useState<boolean>(true);
   const route = useRouter();
   const {

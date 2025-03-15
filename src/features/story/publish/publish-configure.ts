@@ -6,7 +6,11 @@ import { useHandlePost } from "@/lib/useHandlePost";
 import { useRouter } from "next/navigation";
 
 export const PublishConfiguration = (title: string, story: string) => {
-  const { mutate, isPending } = useHandlePost("/feature/upload/article");
+  const { mutate, isPending, isIdle } = useHandlePost(
+    "/feature/upload/article",
+  );
+  console.log("🚀 ~ PublishConfiguration ~ isIdle:", isIdle);
+  console.log("🚀 ~ PublishConfiguration ~ isPending:", isPending);
   const router = useRouter();
   const { user } = useUser();
 
@@ -45,24 +49,16 @@ export const PublishConfiguration = (title: string, story: string) => {
           formData.append("image", values.image);
         }
 
-        toast.promise(
-          new Promise(() => {
-            mutate(formData, {
-              onSuccess: () => {
-                router.back();
-              },
-              onError: () => {
-                router.push("/article/new-story");
-              },
-            });
-          }),
-
-          {
-            loading: "Publishing...",
-            success: "Story published successfully!",
-            error: "Failed to publish story.",
+        mutate(formData, {
+          onSuccess: () => {
+            toast.success("Story published successfully!");
+            router.back();
           },
-        );
+          onError: () => {
+            toast.error("Failed to publish story.");
+            router.push("/article/new-story");
+          },
+        });
       },
     }),
   };

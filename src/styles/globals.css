@@ -128,7 +128,12 @@ body {
 }
 
 .article-paragraft ul {
-  padding-left: 45px;
+  padding-left: 5px;
+  list-style-type: disc;
+}
+
+.article-paragraft ul {
+  padding-left: 5px;
   list-style-type: disc;
 }
 
@@ -165,15 +170,22 @@ body {
 }
 
 .editor-props ul {
-  padding-left: 40px;
+  margin-left: 30px;
 }
 
-.ProseMirror-trailingBreak {
-  display: none;
+.editor-props ol {
+  margin-left: 30px;
 }
 
-.hidden {
-  display: none;
+br {
+  display: block;
+  width: 100px;
+}
+
+strong {
+  font-weight: 500;
+  font-display: var(--accent);
+  color: var(--primary);
 }
 
 /* sticy animate start */

@@ -33,8 +33,6 @@ export const useTiptapConfigure = <T>({
           return {
             Enter: () => {
               this.editor.commands.splitBlock();
-
-              this.editor.commands.setHardBreak();
               return true;
             },
 
@@ -53,7 +51,7 @@ export const useTiptapConfigure = <T>({
     editorProps: {
       attributes: {
         class:
-          "me:ps-4 w-full px-4 rounded-md min-h-20 text-lg placeholder:text-icon focus:border-s editor-props focus:border-none focus:outline-none focus:ring-0 md:text-2xl",
+          "me:ps-4 w-full px-4 rounded-md min-h-20 text-lg placeholder:text-icon focus:border-s editor-props focus:border-none focus:outline-none focus:ring-0 md:text-xl",
       },
     },
     onUpdate: async ({ editor }) => {
