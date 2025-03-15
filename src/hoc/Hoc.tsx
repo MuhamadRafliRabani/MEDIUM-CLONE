@@ -5,7 +5,17 @@ import { useEffect } from "react";
 const Hoc = (WrappedComponent: React.ComponentType) => {
   const HOCComponent = (props: any) => {
     const router = useRouter();
-    const { user } = useUser();
+    const { user, setUser } = useUser();
+
+    useEffect(() => {
+      if (typeof window !== "undefined") {
+        const localData = localStorage.getItem("user");
+
+        if (localData) {
+          setUser(getUserFromLocalStorage());
+        }
+      }
+    }, [setUser]);
 
     useEffect(() => {
       if (!user) {

@@ -14,7 +14,7 @@ import { useUser } from "@/hooks/store/zustand";
 import { useState } from "react";
 import { useHandlePost } from "@/lib/useHandlePost";
 import { toast } from "sonner";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export type FormValues = {
   email: string;
@@ -32,9 +32,12 @@ const FormCard: React.FC = () => {
   const { setUser, user } = useUser();
   const [isSignUp, setIsSignUp] = useState<boolean>(true);
   const route = useRouter();
-  const { mutate: auth, isIdle } = useHandlePost(
-    `/auth/email/${isSignUp ? "signUp" : "signIn"}`,
-  );
+  const {
+    mutate: auth,
+    isIdle,
+
+    error,
+  } = useHandlePost(`/auth/email/${isSignUp ? "signUp" : "signIn"}`);
 
   const formik = useFormik<FormValues>({
     initialValues: {
@@ -58,12 +61,25 @@ const FormCard: React.FC = () => {
               toast.info("please check your email to verify your account");
 
               route.push("/");
+
+              saveUserToLocalStorage(data.data.user.user);
+
+              return null;
             }
 
             toast.success("Sign In Success");
 
             setUser(data.data.user.user);
+
             route.push("/");
+
+            saveUserToLocalStorage(data.data.user.user);
+
+            return null;
+          },
+          onError: () => {
+            toast.error(error?.message);
+            return null;
           },
         },
       );
@@ -150,8 +166,14 @@ const FormCard: React.FC = () => {
               {isSignUp ? "login" : "signUp"}
             </span>
           </p>
-          <Button type="submit" className="w-full">
-            {isSignUp ? "sign Up" : "sign In"}
+          <Button type="submit" disabled={!isIdle} className="w-full">
+            {!isIdle ? (
+              <div
+                className="text-surface me-1.5 inline-block size-4 animate-spin rounded-full border-2 border-solid border-current border-e-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-primary"
+                role="status"
+              ></div>
+            ) : null}
+            {isSignUp ? " sign Up" : " sign In"}
           </Button>
         </form>
       </CardContent>

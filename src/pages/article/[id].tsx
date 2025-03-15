@@ -26,8 +26,6 @@ const Article = () => {
     url: `/article/${query.q}`,
     key: query,
   });
-  console.log("🚀 ~ Article ~ query:", query);
-  console.log("🚀 ~ Article ~ data:", data);
 
   const { data: comments } = useHandleGet({
     url: `/feature/comment/${query.q}`,

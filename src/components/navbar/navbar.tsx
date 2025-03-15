@@ -41,13 +41,7 @@ const Navbar: React.FC = () => {
               />
             }
           />
-          {user && (
-            <Profil
-              image={
-                user.app_metadata.provider !== "email" ? user.id : "/user.jpg"
-              }
-            />
-          )}
+          {user && <Profil image={"/user.jpg"} />}
         </div>
       </div>
     </nav>
