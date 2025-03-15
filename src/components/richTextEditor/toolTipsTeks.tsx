@@ -2,7 +2,6 @@ import { EditorContent } from "@tiptap/react";
 import { Plus, Redo, Undo } from "lucide-react";
 import { useEffect, useState } from "react";
 import { debounce } from "lodash";
-import { FormikProps } from "formik";
 import { useTiptapConfigure } from "@/lib/tiptap";
 import BtnExtention from "./btn-extention";
 import { TiptapConfigureProps } from "@/lib";
