@@ -19,8 +19,10 @@ export const Like = ({ user_id, article_id }: LikeProps) => {
     key: article_id,
   });
 
-  const hasLiked =
-    likes?.data?.some((like: any) => like.user_id === user_id) ?? false;
+  const hasLiked = likes
+    ? // ? likes?.data?.some((like: any) => like.user_id === user_id)
+      true
+    : false;
 
   const handleLike = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

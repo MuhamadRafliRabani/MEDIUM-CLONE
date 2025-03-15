@@ -23,13 +23,14 @@ const Article = () => {
   const { user } = useUser();
 
   const { data, isLoading, isError } = useHandleGet({
-    url: `/article/${query.q}`,
-    key: query.q,
+    url: `/article/${query?.q}`,
+    key: query?.q,
   });
+  console.log("🚀 ~ Article ~ data:", data);
 
   const { data: comments } = useHandleGet({
     url: `/feature/comment/${query.q}`,
-    key: query.q,
+    key: query?.q,
   });
 
   if (isLoading) return <ArticleSkeleton />;
@@ -82,7 +83,7 @@ const Article = () => {
         <div className="flex items-center justify-between border-y border-slate-200 px-3 py-1.5">
           <div className="flex items-center gap-8 text-sm text-icon">
             <div className="flex items-center gap-1">
-              <Like article_id={query.q} user_id={user ? user.id : null} />
+              <Like article_id={query?.q} user_id={user ? user.id : null} />
             </div>
             <div className="flex items-center gap-1">
               <ToolTips
