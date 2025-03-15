@@ -23,9 +23,10 @@ const Article = () => {
   const { user } = useUser();
 
   const { data, isLoading, isError } = useHandleGet({
-    url: `/article/${query?.q}`,
-    key: query?.q,
+    url: `/article/${query.q}`,
+    key: query,
   });
+  console.log("🚀 ~ Article ~ query:", query);
   console.log("🚀 ~ Article ~ data:", data);
 
   const { data: comments } = useHandleGet({
